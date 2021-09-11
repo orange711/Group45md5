@@ -88,5 +88,11 @@ class VacbookApplicationTests {
         System.out.println("result = " + result);
     }
 
+    @Test
+    void selectById(){
+        Admin admin = adminMapper.selectById(1);
+        System.out.println(admin);
+    }
+
 
 }

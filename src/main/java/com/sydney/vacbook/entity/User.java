@@ -3,6 +3,8 @@ package com.sydney.vacbook.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +17,7 @@ import lombok.EqualsAndHashCode;
  * @since 2021-09-11
  */
 @Data
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class User implements Serializable {
 
