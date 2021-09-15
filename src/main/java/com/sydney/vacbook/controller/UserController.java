@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author Group45
@@ -24,34 +24,37 @@ import java.util.List;
 @RequestMapping("/vacbook/user")
 @Controller
 public class UserController {
-@Autowired
+    @Autowired
     private UserMapper userMapper;
-//返回userList
-@GetMapping("/userList")
-    public List<User> list(){
+
+    //返回userList
+    @GetMapping("/userList")
+    public List<User> list() {
         List<User> users = userMapper.selectList(null);
-        for (User user:users
-             ) {
+        for (User user : users
+        ) {
             System.out.println(user);
         }
         return users;
     }
-//插入一个user
+
+    //插入一个user
     @GetMapping("/userInsert")
-    public int userInsert(User user){
+    public int userInsert(User user) {
         int insert = userMapper.insert(user);
         return insert;
     }
-//插入测试；
+
+    //插入测试；
     @GetMapping("/userAddTest")
-    public int userAddTest(){
-        int insert = userMapper.insert(new User(6,"1234567890","11@11.com","ass","sss","male","sydney",3,"new","123","ss","ff"));
+    public int userAddTest() {
+        int insert = userMapper.insert(new User(6, "1234567890", "11@11.com", "ass", "sss", "male", "sydney", 3, "new", "123", "ss", "ff"));
         return insert;
     }
 
     //更新一个user
     @GetMapping("/userupdate")
-    public int userUpdate(User user){
+    public int userUpdate(User user) {
         int i = userMapper.updateById(user);
         return i;
 
