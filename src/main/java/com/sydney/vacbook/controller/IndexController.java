@@ -19,6 +19,10 @@ public class IndexController {
         return "index";
     }
 
+    public String viewLoginPage(){
+        return null;
+    }
+
 
 
 
