@@ -2,21 +2,17 @@ package com.sydney.vacbook.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.sydney.vacbook.entity.Admin;
-import com.sydney.vacbook.entity.User;
+import com.sydney.vacbook.entity.*;
 import com.sydney.vacbook.mapper.AdminMapper;
 import com.sydney.vacbook.mapper.UserMapper;
-import com.sydney.vacbook.service.IAdminService;
-import com.sydney.vacbook.service.IUserService;
+import com.sydney.vacbook.service.*;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -35,11 +31,47 @@ public class AdminController {
     @Autowired
     private IAdminService iAdminService;
 
-    @GetMapping("{id}/fetch")
-    public Admin fetch(@PathVariable("id") int id) {
+    @Autowired
+    private IVaccineService iVaccineService;
+
+    @Autowired
+    private IBookingService iBookingService;
+
+    @Autowired
+    private ILocationService iLocationService;
+
+    @GetMapping("{id}/dashboard")
+    public Map<String, Object> fetch(@PathVariable("id") int id) {
         System.out.print(id);
         Admin admin = iAdminService.getById(id);
-        return admin;
+
+        QueryWrapper<Vaccine> findVaccineByAdminId  = new QueryWrapper<>();
+        findVaccineByAdminId .lambda().eq(Vaccine::getAdminId, id);
+        List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
+        List<String> vaccineNames = new ArrayList<>();
+        List<Integer> vaccineIds = new ArrayList<>();
+        for(Vaccine vaccine : vaccineList){
+            vaccineNames.add(vaccine.getVaccineName());
+            vaccineIds.add(vaccine.getVaccineId());
+        }
+
+        int bookingNum = 0;
+        for(Integer vaccineId : vaccineIds){
+            QueryWrapper<Booking> findBookingByVaccineId= new QueryWrapper<>();
+            findBookingByVaccineId.lambda().eq(Booking::getVaccineId, vaccineId);
+            bookingNum += iBookingService.count(findBookingByVaccineId);
+        }
+
+        Location location = iLocationService.getById(admin.getLocationId());
+
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("account", admin.getAdminAccount());
+        result.put("name", admin.getAdminName());
+        result.put("location", location.getLocation());
+        result.put("vaccines", vaccineNames);
+        result.put("booking num", bookingNum);
+        System.out.print(result);
+        return result;
     }
 
     @GetMapping("{id}/update")
@@ -72,7 +104,7 @@ public class AdminController {
         List<User> userList = iUserService.list(queryWrapper);
         return userList;
     }
-    
+
 //
 //    @GetMapping("login")
 //    public String getLogin(Admin admin, Map<Object, Object> map) {
