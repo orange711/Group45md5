@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @Controller
+
 public class IndexController {
 
 
@@ -19,6 +20,26 @@ public class IndexController {
         return "index";
     }
 
+    @RequestMapping("/user/login")
+    public String userLogin() {
+        return "userlogin";
+    }
+    @RequestMapping("/getAllUserInfo")
+    public String getAllUser(){
+        return null;
+    }
+
+    @PostMapping("/sendGuestEmail")
+    public void sendGuestEmail(){
+
+    }
+
+
+
+//
+//    @RequestMapping("/admin/fetch")
+//    public String adminLogin() {
+//        return "index";
 
 
 
