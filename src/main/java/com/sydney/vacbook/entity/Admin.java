@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class Admin implements Serializable {
 
-//    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
 
    @TableId(value = "admin_id", type = IdType.AUTO)
     private Integer adminId;
