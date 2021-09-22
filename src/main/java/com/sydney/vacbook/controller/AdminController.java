@@ -40,13 +40,13 @@ public class AdminController {
     List<Admin> list=new ArrayList<>();
 
 
-    @GetMapping("/addAdmin")
+    @GetMapping("/add")
     public int addAdmin(Admin admin) {
         int insert = adminMapper.insert(admin);
         return insert;
     }
 
-    @GetMapping("/updateAdmin")
+    @GetMapping("/setting/update")
     public int updateAdmin(Admin admin){
 
 
@@ -54,7 +54,7 @@ public class AdminController {
         return update;
     }
 
-    @GetMapping("adminLogin")
+    @GetMapping("login")
     public String getLogin(Admin admin, Map<Object, Object> map) {
 
         //System.out.println(admin);
@@ -77,6 +77,42 @@ public class AdminController {
             return "redirect:index";//重定向
         }
     }
+
+    @GetMapping("/register")
+    public void adminRegister(Admin admin){
+
+    }
+
+    @GetMapping("/logout")
+    public void adminLogout(Admin admin){
+
+    }
+
+    @GetMapping("/dashboard")
+    public void adminDashboard(Admin admin){
+
+    }
+
+    @GetMapping("/booking")
+    public void adminBooking(Admin admin){
+
+    }
+    @GetMapping("/vaccine")
+    public void adminVaccine(Admin admin){
+
+    }
+
+    @GetMapping("/setting")
+    public void adminSetting(Admin admin){
+
+    }
+
+    @GetMapping("/booking/user")
+    public void checkBookingUser(Admin admin){
+
+    }
+
+
 
 
 }

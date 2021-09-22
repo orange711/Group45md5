@@ -6,6 +6,7 @@ import com.sydney.vacbook.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ public class UserController {
 @Autowired
     private UserMapper userMapper;
 //返回userList
-@GetMapping("/userList")
+@GetMapping("/list")
     public List<User> list(){
         List<User> users = userMapper.selectList(null);
         for (User user:users
@@ -37,22 +38,52 @@ public class UserController {
         return users;
     }
 //插入一个user
-    @GetMapping("/userInsert")
+    @GetMapping("/insert")
     public int userInsert(User user){
         int insert = userMapper.insert(user);
         return insert;
     }
 //插入测试；
-    @GetMapping("/userAddTest")
+    @GetMapping("/addTest")
     public int userAddTest(){
         int insert = userMapper.insert(new User(6,"1234567890","11@11.com","ass","sss","male","sydney",3,"new","123","ss","ff"));
         return insert;
     }
 
     //更新一个user
-    @GetMapping("/userupdate")
+    @GetMapping("/update/{id}")
     public int userUpdate(User user){
         int i = userMapper.updateById(user);
         return i;
     }
+
+    @GetMapping("/info")
+    public int getUserInfo(User user){
+        int i = userMapper.updateById(user);
+        return i;
+    }
+
+    @PostMapping("/info/{id}")
+    public int postUserInfo(User user){
+        int i = userMapper.updateById(user);
+        return i;
+    }
+
+    @PostMapping("/forgetPassword/{id}")
+    public boolean forgetPassword(){
+        return true;
+    }
+
+    @GetMapping("/register")
+    public void registerUserInfo(User user){
+
+    }
+
+    @GetMapping("/logout")
+    public void UserLogout(User user){
+
+    }
+
+
+
 }
