@@ -3,6 +3,7 @@ package com.sydney.vacbook.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,4 +50,42 @@ public class User implements Serializable {
     private String userSafeKey;
 
 
+    public void updateByMap(Map<String, Object> body) {
+        for (Map.Entry<String, Object> item : body.entrySet()) {
+            String key = item.getKey();
+            Object value = item.getValue();
+            switch (key) {
+                case "phoneNumber":
+                    this.setPhoneNumber(value.toString());
+                    break;
+                case "email":
+                    this.setEmail(value.toString());
+                    break;
+                case "userLastname":
+                    this.setUserLastname(value.toString());
+                    break;
+                case "userFirstname":
+                    this.setUserFirstname(value.toString());
+                    break;
+                case "gender":
+                    this.setGender(value.toString());
+                    break;
+                case "address":
+                    this.setAddress(value.toString());
+                    break;
+                case "age":
+                    this.setAge((int) value);
+                    break;
+                case "userPassword":
+                    this.setUserPassword(value.toString());
+                    break;
+                case "userQuestion":
+                    this.setUserQuestion(value.toString());
+                    break;
+                case "userSafeKey":
+                    this.setUserSafeKey(value.toString());
+                    break;
+            }
+        }
+    }
 }
