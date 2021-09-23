@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- *
  * @author shuonan wang
  * @since 2021-09-15
  */
@@ -40,24 +39,24 @@ public class AdminController {
     @Autowired
     private ILocationService iLocationService;
 
-    @GetMapping("{id}/dashboard")
-    public Map<String, Object> fetch(@PathVariable("id") int id) {
-        System.out.print(id);
-        Admin admin = iAdminService.getById(id);
+    @GetMapping("{admin_id}/dashboard")
+    public Map<String, Object> fetchDashboard(@PathVariable("admin_id") int admin_id) {
+        System.out.print(admin_id);
+        Admin admin = iAdminService.getById(admin_id);
 
-        QueryWrapper<Vaccine> findVaccineByAdminId  = new QueryWrapper<>();
-        findVaccineByAdminId .lambda().eq(Vaccine::getAdminId, id);
+        QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
+        findVaccineByAdminId.lambda().eq(Vaccine::getAdminId, admin_id);
         List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
         List<String> vaccineNames = new ArrayList<>();
         List<Integer> vaccineIds = new ArrayList<>();
-        for(Vaccine vaccine : vaccineList){
+        for (Vaccine vaccine : vaccineList) {
             vaccineNames.add(vaccine.getVaccineName());
             vaccineIds.add(vaccine.getVaccineId());
         }
 
         int bookingNum = 0;
-        for(Integer vaccineId : vaccineIds){
-            QueryWrapper<Booking> findBookingByVaccineId= new QueryWrapper<>();
+        for (Integer vaccineId : vaccineIds) {
+            QueryWrapper<Booking> findBookingByVaccineId = new QueryWrapper<>();
             findBookingByVaccineId.lambda().eq(Booking::getVaccineId, vaccineId);
             bookingNum += iBookingService.count(findBookingByVaccineId);
         }
@@ -74,41 +73,63 @@ public class AdminController {
         return result;
     }
 
-    @GetMapping("{id}/update")
-    public void updateAdmin(@PathVariable("id") int id){
-        Admin admin = iAdminService.getById(id);
-        admin.setAdminName("super_kevin");
-        iAdminService.saveOrUpdate(admin);
+    /**
+     * @param admin_id
+     * @param body     body can used to get reject booking request
+     * @return
+     */
+    @PostMapping("/{admin_id}/bookings")
+    public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
+        //TODO JAMES
+        return null;
     }
 
-    @GetMapping("{id}/getUserByAge")
-    public List<User> getUserByAge(@PathVariable("id") int id, @RequestParam("age") int age) {
-        System.out.println("hellp");
-
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        //lambda写法:
-        queryWrapper.lambda().eq(User::getAge, age);
-
-
-        List<User> userList = iUserService.list(queryWrapper);
-        return userList;
+    @GetMapping("/{admin_id}/booking/user/{user_id}")
+    public User fetchBookingUser(@PathVariable("user_id") int user_id) {
+        User user = iUserService.getById(user_id);
+        return user;
     }
 
-    @GetMapping("/getUserListByAgeLimit")
-    public List<User> getUserListByAgeLimit() {
-
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().gt(User::getAge, 1);
-        queryWrapper.lambda().lt(User::getAge, 25);
-
-        List<User> userList = iUserService.list(queryWrapper);
-        return userList;
+    /**
+     * @param admin_id
+     * @param body     body can used to get add, delete, update requests based on the design of figma
+     * @return
+     */
+    @PostMapping("/{admin_id}/vaccines")
+    public List<Vaccine> fetchVaccines(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
+        //TODO ZHENGCHENG
+        return null;
     }
 
-//
-//    @GetMapping("login")
-//    public String getLogin(Admin admin, Map<Object, Object> map) {
-//
+    @PostMapping("/{admin_id}/setting")
+    public Map<String, Object> fetchAndUpdateSetting(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
+        Admin admin = iAdminService.getById(admin_id);
+        // if body has content, change admin information
+        if (!body.isEmpty()) {
+            System.out.println(body);
+            String changeName = body.get("adminName").toString();
+            String changePassword = body.get("adminPassword").toString();
+            Integer changeLocationId = (int) body.get("adminLocationId");
+            admin.setAdminName(changeName);
+            admin.setAdminPassword(changePassword);
+            admin.setLocationId(changeLocationId);
+            iAdminService.saveOrUpdate(admin);
+        }
+
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("account", admin.getAdminAccount());
+        result.put("name", admin.getAdminName());
+        Location location = iLocationService.getById(admin.getLocationId());
+        result.put("location", location.getLocation());
+        List<Location> locationList = iLocationService.list();
+        result.put("location_options", locationList);
+
+        return result;
+    }
+
+    @PostMapping("/login")
+    public String login(Admin admin, @RequestBody Map<String, Object> map) {
+        //TODO WORDE
 //        //System.out.println(admin);
 //
 //        //调用管理员查询方法
@@ -128,6 +149,50 @@ public class AdminController {
 //
 //            return "redirect:index";//重定向
 //        }
+        return null;
+    }
+
+    @PostMapping("/register")
+    public void register(Admin admin, Map<Object, Object> body) {
+        //TODO WORDE
+    }
+
+    @PostMapping("/{admin_id}/logout")
+    public void logout(@PathVariable("admin_id") int admin_id) {
+        //TODO WORDE
+    }
+
+
+// exercises
+//    @GetMapping("{id}/getUserByAge")
+//    public List<User> getUserByAge(@PathVariable("id") int id, @RequestParam("age") int age) {
+//        System.out.println("hellp");
+//
+//        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+//        //lambda写法:
+//        queryWrapper.lambda().eq(User::getAge, age);
+//
+//
+//        List<User> userList = iUserService.list(queryWrapper);
+//        return userList;
+//    }
+//
+//    @GetMapping("/getUserListByAgeLimit")
+//    public List<User> getUserListByAgeLimit() {
+//
+//        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.lambda().gt(User::getAge, 1);
+//        queryWrapper.lambda().lt(User::getAge, 25);
+//
+//        List<User> userList = iUserService.list(queryWrapper);
+//        return userList;
+//    }
+
+//    @GetMapping("{id}/update")
+//    public void updateAdmin(@PathVariable("id") int id) {
+//        Admin admin = iAdminService.getById(id);
+//        admin.setAdminName("super_kevin");
+//        iAdminService.saveOrUpdate(admin);
 //    }
 
 
