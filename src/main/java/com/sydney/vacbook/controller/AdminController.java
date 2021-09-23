@@ -2,6 +2,7 @@ package com.sydney.vacbook.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.sydney.vacbook.entity.*;
 import com.sydney.vacbook.mapper.AdminMapper;
 import com.sydney.vacbook.mapper.UserMapper;
@@ -101,21 +102,15 @@ public class AdminController {
         return null;
     }
 
-    @PostMapping("/{admin_id}/setting")
+    @PutMapping("/{admin_id}/setting")
     public Map<String, Object> fetchAndUpdateSetting(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
         Admin admin = iAdminService.getById(admin_id);
-        // if body has content, change admin information
+        // if body has content, update admin information
         if (!body.isEmpty()) {
             System.out.println(body);
-            String changeName = body.get("adminName").toString();
-            String changePassword = body.get("adminPassword").toString();
-            Integer changeLocationId = (int) body.get("adminLocationId");
-            admin.setAdminName(changeName);
-            admin.setAdminPassword(changePassword);
-            admin.setLocationId(changeLocationId);
+            admin.updateByMap(body);
             iAdminService.saveOrUpdate(admin);
         }
-
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("account", admin.getAdminAccount());
         result.put("name", admin.getAdminName());

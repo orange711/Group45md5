@@ -1,20 +1,24 @@
 package com.sydney.vacbook.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.sydney.vacbook.entity.Admin;
+import com.sydney.vacbook.entity.Location;
 import com.sydney.vacbook.entity.User;
 import com.sydney.vacbook.mapper.UserMapper;
+import com.sydney.vacbook.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
-
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
- * 前端控制器
+ *  前端控制器
  * </p>
  *
  * @author Group45
@@ -25,39 +29,88 @@ import java.util.List;
 @Controller
 public class UserController {
     @Autowired
-    private UserMapper userMapper;
+    private IUserService iUserService;
 
-    //返回userList
-    @GetMapping("/userList")
-    public List<User> list() {
-        List<User> users = userMapper.selectList(null);
-        for (User user : users
-        ) {
-            System.out.println(user);
+    @Autowired
+    private IAdminService iAdminService;
+
+    @Autowired
+    private IVaccineService iVaccineService;
+
+    @Autowired
+    private IBookingService iBookingService;
+
+    @Autowired
+    private ILocationService iLocationService;
+
+    @PutMapping("/{user_id}")
+    public User fetchAndUpdateUser(@PathVariable("user_id") int user_id, @RequestBody Map<String, Object> body) {
+        User user = iUserService.getById(user_id);
+        // if body has content, update user information
+        if (!body.isEmpty()) {
+            System.out.println(body);
+            user.updateByMap(body);
+            iUserService.saveOrUpdate(user);
         }
-        return users;
+        return user;
     }
 
-    //插入一个user
-    @GetMapping("/userInsert")
-    public int userInsert(User user) {
-        int insert = userMapper.insert(user);
-        return insert;
+    @PostMapping("/getUserQuestion")
+    public String getUserQuestion(@RequestBody Map<String, Object> body){
+        String user_account = body.get("user_account").toString();
+        QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
+        findUserByAccount.lambda().eq(User::getUserAccount, user_account);
+        User user = iUserService.getOne(findUserByAccount);
+        if(user == null) return null;
+        //AJAX render ??
+        String question = user.getUserQuestion();
+        return question;
     }
 
-    //插入测试；
-    @GetMapping("/userAddTest")
-    public int userAddTest() {
-        int insert = userMapper.insert(new User(6, "1234567890", "11@11.com", "ass", "sss", "male", "sydney", 3, "new", "123", "ss", "ff"));
-        return insert;
+    @PostMapping("/forgetPassword")
+    public boolean forgetPassword(@RequestBody Map<String, Object> body){
+        String user_account = body.get("user_account").toString();
+        String input_answer = body.get("answer").toString();
+        QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
+        findUserByAccount.lambda().eq(User::getUserAccount, user_account);
+        User user = iUserService.getOne(findUserByAccount);
+        if(!user.getUserSafeKey().equalsIgnoreCase(input_answer)){
+            System.out.println(input_answer);
+            System.out.println(user.getUserSafeKey());
+            return false;
+        }
+        //return user;
+        return true;
     }
 
-    //更新一个user
-    @GetMapping("/userupdate")
-    public int userUpdate(User user) {
-        int i = userMapper.updateById(user);
-        return i;
-
-        //hello
+    @PostMapping("/changePassword")
+    public void changePassword(User user, @RequestBody Map<String, Object> body){
+        String changePassword = body.get("changePassword").toString();
+        user.setUserPassword(changePassword);
+        iUserService.saveOrUpdate(user);
     }
+
+    /**
+     * Auth part
+     * TODO WORDE
+     * @param body
+     * @return
+     */
+    @PostMapping("/login")
+    public void login( @RequestBody Map<String, Object> body) {
+
+    }
+
+    @GetMapping("/register")
+    public void register(@RequestBody Map<String, Object> body){
+
+    }
+
+    @GetMapping("/logout")
+    public void logout(User user){
+
+    }
+
+
+
 }
