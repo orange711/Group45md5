@@ -159,7 +159,7 @@ public class AdminController {
         boolean newAdmin = iAdminService.save(admin);
         if (newAdmin == false) {
             System.err.println("This account has been registered");
-            return "redirect:/admin/index.jsp";//重定向
+            return "redirect:/admin/index.html";//重定向
         } else {
             System.out.println("Thanks for join our system");
 

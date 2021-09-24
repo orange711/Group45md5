@@ -66,6 +66,12 @@ public class VaccineController {
         return getVaccineListByAdminId;
 
     }
+    //del vaccine
+    @GetMapping("/delvaccine")
+    public boolean delVaccine(Vaccine vaccine){
+        boolean removeVaccineById = iVaccineService.removeById(vaccine.getVaccineId());
+        return removeVaccineById;
+    }
 
 
 

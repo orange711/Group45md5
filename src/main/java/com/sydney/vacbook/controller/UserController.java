@@ -146,7 +146,7 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public void register(User user,@RequestBody Map<String, Object> body,HttpServletRequest request){
+    public String register(User user,@RequestBody Map<String, Object> body,HttpServletRequest request){
 
         user.setUserPassword(request.getParameter("password"));
         user.setUserAccount(request.getParameter("account"));
@@ -165,6 +165,7 @@ public class UserController {
 
         if (newUser == false){
             System.err.println("This account has been ...");
+            return "NO";
         }
         else{
             System.out.println("Hi!");
@@ -200,6 +201,8 @@ public class UserController {
             body.put("phoneNumber",phoneNumber);
             body.put("question",question);
             body.put("userSafeKey",userSafeKey);
+
+            return "OK";
 
         }
 
