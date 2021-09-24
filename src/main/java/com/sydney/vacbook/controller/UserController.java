@@ -6,12 +6,14 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.sydney.vacbook.entity.Admin;
 import com.sydney.vacbook.entity.Location;
 import com.sydney.vacbook.entity.User;
+import com.sydney.vacbook.entity.Vaccine;
 import com.sydney.vacbook.mapper.UserMapper;
 import com.sydney.vacbook.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,20 +97,125 @@ public class UserController {
      * TODO WORDE
      * @param body
      * @return
+     * ajax
      */
     @PostMapping("/login")
-    public void login( @RequestBody Map<String, Object> body) {
+    public String login(User user, @RequestBody Map<String, Object> body, HttpServletRequest request) {
 
+        user.setUserAccount(request.getParameter("name"));
+        user.setUserPassword(request.getParameter("password"));
+
+//		//按用户名密码查询
+        QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
+        sectionQueryWrapper.eq("user_account", user.getUserAccount());
+        sectionQueryWrapper.eq("admin_password", user.getUserPassword());
+        List<User> listUser = iUserService.list(sectionQueryWrapper);
+
+        if (!listUser.toString().equals("[]")) {
+
+            int userid = listUser.get(0).getUserId();
+            String account = listUser.get(0).getUserAccount();
+            String password = listUser.get(0).getUserPassword();
+            String email = listUser.get(0).getEmail();
+            String userLastName = listUser.get(0).getUserLastname();
+            String userFirstName = listUser.get(0).getUserFirstname();
+            String address = listUser.get(0).getAddress();
+            int age =  listUser.get(0).getAge();
+            String phoneNumber = listUser.get(0).getPhoneNumber();
+            String question = listUser.get(0).getUserQuestion();
+            String userSafeKey = listUser.get(0).getUserSafeKey();
+
+
+
+            body.put("userid", userid);
+            body.put("username", account);
+            body.put("password", password);
+            body.put("email", email);
+            body.put("userFirstName",userFirstName);
+            body.put("address",address);
+            body.put("age",age);
+            body.put("phoneNumber",phoneNumber);
+            body.put("question",question);
+            body.put("userSafeKey",userSafeKey);
+
+            return "OK";
+        } else {
+
+            return "NO";
+        }
     }
 
     @GetMapping("/register")
-    public void register(@RequestBody Map<String, Object> body){
+    public void register(User user,@RequestBody Map<String, Object> body,HttpServletRequest request){
+
+        user.setUserPassword(request.getParameter("password"));
+        user.setUserAccount(request.getParameter("account"));
+        user.setUserSafeKey(request.getParameter("safeKey"));
+        user.setAddress(request.getParameter("address"));
+        user.setAge(request.getIntHeader("age"));//could be some problems
+        user.setGender(request.getParameter("gender"));
+        user.setUserFirstname(request.getParameter("first"));
+        user.setUserLastname(request.getParameter("last"));
+        user.setUserQuestion(request.getParameter("question"));
+        user.setPhoneNumber(request.getParameter("phone"));
+        user.setEmail(request.getParameter("email"));
+
+
+        boolean newUser = iUserService.save(user);
+
+        if (newUser == false){
+            System.err.println("This account has been ...");
+        }
+        else{
+            System.out.println("Hi!");
+
+
+            QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
+            sectionQueryWrapper.eq("user_account", user.getUserAccount());
+            sectionQueryWrapper.eq("admin_password", user.getUserPassword());
+            List<User> listUser = iUserService.list(sectionQueryWrapper);
+
+
+            int userid = listUser.get(0).getUserId();
+            String account = listUser.get(0).getUserAccount();
+            String password = listUser.get(0).getUserPassword();
+            String email = listUser.get(0).getEmail();
+            String userLastName = listUser.get(0).getUserLastname();
+            String userFirstName = listUser.get(0).getUserFirstname();
+            String address = listUser.get(0).getAddress();
+            int age =  listUser.get(0).getAge();
+            String phoneNumber = listUser.get(0).getPhoneNumber();
+            String question = listUser.get(0).getUserQuestion();
+            String userSafeKey = listUser.get(0).getUserSafeKey();
+
+
+
+            body.put("userid", userid);
+            body.put("username", account);
+            body.put("password", password);
+            body.put("email", email);
+            body.put("userFirstName",userFirstName);
+            body.put("address",address);
+            body.put("age",age);
+            body.put("phoneNumber",phoneNumber);
+            body.put("question",question);
+            body.put("userSafeKey",userSafeKey);
+
+        }
+
+
+
+
+
+
 
     }
 
     @GetMapping("/logout")
-    public void logout(User user){
-
+    public String logout(Map<Object, Object> map){
+        map.put("userid", "");
+        map.put("username", "");
+        return "redirect:/index.jsp";// 重定向
     }
 
 

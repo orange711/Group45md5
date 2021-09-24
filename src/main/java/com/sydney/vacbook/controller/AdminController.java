@@ -42,6 +42,8 @@ public class AdminController {
 
     @Autowired
     VaccineController vaccineController;
+    //一个adminList来判断登录合法性
+    List<Admin> list = new ArrayList<>();
 
     @GetMapping("{admin_id}/dashboard")
     public Map<String, Object> fetchDashboard(@PathVariable("admin_id") int admin_id) {
@@ -99,7 +101,7 @@ public class AdminController {
      * @param body     body can used to get add, delete, update requests based on the design of figma
      * @return
      */
-    @PostMapping("/{admin_id}/vaccines")
+    @GetMapping("/{admin_id}/vaccines")
     public List<Vaccine> fetchVaccines(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
         //TODO ZHENGCHENG
 
@@ -130,36 +132,58 @@ public class AdminController {
     @PostMapping("/login")
     public String login(Admin admin, @RequestBody Map<String, Object> map) {
         //TODO WORDE
-//        //System.out.println(admin);
-//
-//        //调用管理员查询方法
-//        list=iAdminService.list();
-//        String str=list.toString();
-//
-//        //System.out.println(list);
-//
-//        if (!str.equals("[]")) {
-//
-//            map.put("adminList", list.get(0));
-////            plateController.getPlate(map); 得到admin下面的疫苗表
-////            UserController.getUser(map);得到admin下面的预定用户
-//
-//            return "redirect:index";//重定向
-//        } else {
-//
-//            return "redirect:index";//重定向
-//        }
-        return null;
+        QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
+        sectionQueryWrapper.eq("admin_account", admin.getAdminAccount());
+        sectionQueryWrapper.eq("admin_password", admin.getAdminPassword());
+        list = iAdminService.list(sectionQueryWrapper);
+
+        String str = list.toString();
+
+        if (!str.equals("[]")) {
+
+            map.put("adminList", list.get(0));
+//下面写登录后想要获得的更多东西例如获取疫苗
+            map.put("vaccineList", vaccineController.getVaccineListByAdminId(admin.getAdminId()));
+
+            return "redirect:vacbook/admin/index.html";//重定向
+        } else {
+
+            return "redirect:vacbook/admin/index.html";//重定向
+        }
+
     }
 
     @PostMapping("/register")
-    public void register(Admin admin, Map<Object, Object> body) {
+    public String register(Admin admin, Map<Object, Object> body) {
         //TODO WORDE
+        boolean newAdmin = iAdminService.save(admin);
+        if (newAdmin == false) {
+            System.err.println("This account has been registered");
+            return "redirect:/admin/index.jsp";//重定向
+        } else {
+            System.out.println("Thanks for join our system");
+
+            QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
+            sectionQueryWrapper.eq("admin_account", admin.getAdminAccount());
+            sectionQueryWrapper.eq("admin_password", admin.getAdminPassword());
+            list = iAdminService.list(sectionQueryWrapper);
+
+            body.put("adminList", list.get(0));
+
+
+            return "admin";
+        }
+
+
     }
 
-    @PostMapping("/{admin_id}/logout")
-    public void logout(@PathVariable("admin_id") int admin_id) {
+    @PostMapping("/logout")
+    public String  logout(Map<Object, Object> map) {
         //TODO WORDE
+        map.put("adminList","");
+        return "redirect:vacbook/admin/index.html";// 重定向
+
+
     }
 
 
