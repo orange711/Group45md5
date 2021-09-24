@@ -40,6 +40,9 @@ public class AdminController {
     @Autowired
     private ILocationService iLocationService;
 
+    @Autowired
+    VaccineController vaccineController;
+
     @GetMapping("{admin_id}/dashboard")
     public Map<String, Object> fetchDashboard(@PathVariable("admin_id") int admin_id) {
         System.out.print(admin_id);
@@ -99,7 +102,9 @@ public class AdminController {
     @PostMapping("/{admin_id}/vaccines")
     public List<Vaccine> fetchVaccines(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
         //TODO ZHENGCHENG
-        return null;
+
+        List<Vaccine> resultSet = vaccineController.getVaccineListByAdminId(admin_id);
+        return resultSet;
     }
 
     @PutMapping("/{admin_id}/setting")
