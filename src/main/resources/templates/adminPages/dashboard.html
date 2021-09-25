@@ -1,11 +1,13 @@
 <!DOCTYPE html >
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="adminPages/base.html">
-    <div layout:fragment="content" class="container" style="max-width: 700px; padding-top: 50px; line-height:30px;">
-        <h>information</h>
-        <div>Admin account: <span th:text = "${result.account}"></span></div>
-        <div>Admin name: <span th:text = "${result.name}"></span></div>
-        <div>Admin location: <span th:text = "${result.location}"></span></div>
-        <div>Vaccines: <span th:text = "${result.vaccines}"></span></div>
-        <div>Total booking num: <span th:text = "${result.booking_num}"></span></div>
-    </div>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="adminPages/base.html">
+<div layout:fragment="content" class="container"
+     style="max-width: 700px; padding-top: 50px;  padding-bottom: 50px;line-height:30px;">
+    <h1>Information</h1>
+    <div>Admin account: <span th:text="${result.account}"></span></div>
+    <div>Admin name: <span th:text="${result.name}"></span></div>
+    <div>Admin location: <span th:text="${result.location}"></span></div>
+    <div>Vaccines: <span th:text="${result.vaccines}"></span></div>
+    <div>Total booking num: <span th:text="${result.booking_num}"></span></div>
+</div>
 </html>

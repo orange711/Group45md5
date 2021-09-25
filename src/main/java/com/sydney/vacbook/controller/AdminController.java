@@ -105,16 +105,11 @@ public class AdminController {
         return null;
     }
 
-    @PutMapping("/{admin_id}/setting")
-    public Map<String, Object> fetchAndUpdateSetting(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
+    @GetMapping("/{admin_id}/setting")
+    public ModelAndView fetchSetting(@PathVariable("admin_id") int admin_id){
         Admin admin = iAdminService.getById(admin_id);
-        // if body has content, update admin information
-        if (!body.isEmpty()) {
-            System.out.println(body);
-            admin.updateByMap(body);
-            iAdminService.saveOrUpdate(admin);
-        }
         Map<String, Object> result = new LinkedHashMap<>();
+        result.put("admin_id", admin.getAdminId());
         result.put("account", admin.getAdminAccount());
         result.put("name", admin.getAdminName());
         Location location = iLocationService.getById(admin.getLocationId());
@@ -122,7 +117,23 @@ public class AdminController {
         List<Location> locationList = iLocationService.list();
         result.put("location_options", locationList);
 
-        return result;
+        ModelAndView modelAndView = new ModelAndView( "adminPages/setting","result", result);
+        return modelAndView;
+    }
+
+    @PostMapping("/{admin_id}/setting")
+    public boolean udateSetting( @PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
+        //ModelAndView modelAndView = new ModelAndView( "adminPages/setting", new );
+        //if body has content, update admin information
+        System.out.println(body);
+        Admin admin = iAdminService.getById(admin_id);
+        if (!body.isEmpty()) {
+            System.out.println(body);
+            admin.updateByMap(body);
+            iAdminService.saveOrUpdate(admin);
+            return  true;
+        }
+        return false;
     }
 
     @PostMapping("/login")
