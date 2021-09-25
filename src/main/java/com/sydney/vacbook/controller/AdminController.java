@@ -10,7 +10,9 @@ import com.sydney.vacbook.service.*;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.Serializable;
 import java.util.*;
@@ -21,8 +23,8 @@ import java.util.*;
  */
 
 @RestController
-@RequestMapping("/vacbook/admin")
 @Controller
+@RequestMapping("/vacbook/admin")
 public class AdminController {
 
     @Autowired
@@ -41,7 +43,7 @@ public class AdminController {
     private ILocationService iLocationService;
 
     @GetMapping("{admin_id}/dashboard")
-    public Map<String, Object> fetchDashboard(@PathVariable("admin_id") int admin_id) {
+    public ModelAndView fetchDashboard(@PathVariable("admin_id") int admin_id) {
         System.out.print(admin_id);
         Admin admin = iAdminService.getById(admin_id);
 
@@ -69,9 +71,10 @@ public class AdminController {
         result.put("name", admin.getAdminName());
         result.put("location", location.getLocation());
         result.put("vaccines", vaccineNames);
-        result.put("booking num", bookingNum);
+        result.put("booking_num", bookingNum);
         System.out.print(result);
-        return result;
+        ModelAndView modelAndView = new ModelAndView( "adminPages/dashboard","result", result);
+        return modelAndView;
     }
 
     /**
