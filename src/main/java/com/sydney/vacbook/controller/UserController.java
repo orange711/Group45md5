@@ -65,39 +65,43 @@ public class UserController {
         return false;
     }
 
-    @PostMapping("/getUserQuestion")
-    public String getUserQuestion(@RequestBody Map<String, Object> body){
-        String user_account = body.get("user_account").toString();
+    /**
+     * send account and receive user to get question
+     */
+    @GetMapping("/get_user_by_account")
+    public User getUserByAccount(@RequestParam("user_account") String user_account){//@RequestBody Map<String, Object> body){
+        //String user_account = body.get("user_account").toString();
+        System.out.println(user_account);
         QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
         findUserByAccount.lambda().eq(User::getUserAccount, user_account);
         User user = iUserService.getOne(findUserByAccount);
-        if(user == null) return null;
-        //AJAX render ??
-        String question = user.getUserQuestion();
-        return question;
+        System.out.println(user);
+        return user;
     }
 
-    @PostMapping("/forgetPassword")
-    public boolean forgetPassword(@RequestBody Map<String, Object> body){
-        String user_account = body.get("user_account").toString();
-        String input_answer = body.get("answer").toString();
-        QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
-        findUserByAccount.lambda().eq(User::getUserAccount, user_account);
-        User user = iUserService.getOne(findUserByAccount);
-        if(!user.getUserSafeKey().equalsIgnoreCase(input_answer)){
-            System.out.println(input_answer);
-            System.out.println(user.getUserSafeKey());
-            return false;
-        }
-        //return user;
-        return true;
-    }
+    // fontend should do this validation
+//    @PostMapping("/forgetPassword")
+//    public boolean forgetPassword(@RequestBody Map<String, Object> body){
+//        String user_account = body.get("user_account").toString();
+//        String input_answer = body.get("answer").toString();
+//        QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
+//        findUserByAccount.lambda().eq(User::getUserAccount, user_account);
+//        User user = iUserService.getOne(findUserByAccount);
+//        if(!user.getUserSafeKey().equalsIgnoreCase(input_answer)){
+//            System.out.println(input_answer);
+//            System.out.println(user.getUserSafeKey());
+//            return false;
+//        }
+//        //return user;
+//        return true;
+//    }
 
     @PostMapping("/changePassword")
     public void changePassword(User user, @RequestBody Map<String, Object> body){
         String changePassword = body.get("changePassword").toString();
         user.setUserPassword(changePassword);
         iUserService.saveOrUpdate(user);
+        //return main
     }
 
     /**
