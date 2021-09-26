@@ -89,9 +89,10 @@ public class AdminController {
     }
 
     @GetMapping("/{admin_id}/booking/user/{user_id}")
-    public User fetchBookingUser(@PathVariable("user_id") int user_id) {
+    public ModelAndView fetchBookingUser(@PathVariable("user_id") int user_id) {
         User user = iUserService.getById(user_id);
-        return user;
+        ModelAndView modelAndView = new ModelAndView( "adminPages/booking_user","result", user);
+        return modelAndView;
     }
 
     /**
@@ -121,7 +122,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    @PostMapping("/{admin_id}/setting")
+    @PutMapping("/{admin_id}/setting")
     public boolean udateSetting( @PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
         //ModelAndView modelAndView = new ModelAndView( "adminPages/setting", new );
         //if body has content, update admin information

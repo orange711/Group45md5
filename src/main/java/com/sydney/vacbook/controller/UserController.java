@@ -11,6 +11,7 @@ import com.sydney.vacbook.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,16 +44,25 @@ public class UserController {
     @Autowired
     private ILocationService iLocationService;
 
+    @GetMapping("/{user_id}")
+    public ModelAndView fetchUser(@PathVariable("user_id") int user_id){
+        User user = iUserService.getById(user_id);
+        ModelAndView modelAndView = new ModelAndView( "userPages/user_profile","result", user);
+        System.out.println(user);
+        return  modelAndView;
+    }
+
     @PutMapping("/{user_id}")
-    public User fetchAndUpdateUser(@PathVariable("user_id") int user_id, @RequestBody Map<String, Object> body) {
+    public boolean updateUser(@PathVariable("user_id") int user_id, @RequestBody Map<String, Object> body) {
         User user = iUserService.getById(user_id);
         // if body has content, update user information
         if (!body.isEmpty()) {
             System.out.println(body);
             user.updateByMap(body);
             iUserService.saveOrUpdate(user);
+            return true;
         }
-        return user;
+        return false;
     }
 
     @PostMapping("/getUserQuestion")
