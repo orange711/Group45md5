@@ -1,0 +1,42 @@
+<!DOCTYPE html >
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+<!--  <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VacBook</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+  </script>
+</head>
+<body class="bg">
+  <div id="fh5co-page">
+
+    <aside id="fh5co-aside" role="complementary" class="border js-fullheight">
+      <a style="color: #1a1a1a;" href="/"><h1 id="fh5co-logo">VacBook</h1></a>
+      <nav id="fh5co-main-menu" role="navigation">
+        <ul>
+          <li id="home_page"><a href="/index">Log Out</a></li>
+          <!--  navigation bug need to fix it when cilck from url:vacbook/admin/1/booking/user/1-->
+          <li><a href=#></a></li>
+          <li><a href="dashboard">Dashboard</a></li>
+          <li><a href="bookings">Bookings</a></li>
+          <li><a href="vaccines">Vaccines</a></li>
+          <li><a href="setting">Setting</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div layout:fragment = "content">
+      admin pages
+    </div>
+
+  </div>
+</body>
+</html>
+
+

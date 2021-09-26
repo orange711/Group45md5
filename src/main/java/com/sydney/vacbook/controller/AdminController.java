@@ -10,7 +10,9 @@ import com.sydney.vacbook.service.*;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.Serializable;
 import java.util.*;
@@ -21,8 +23,8 @@ import java.util.*;
  */
 
 @RestController
-@RequestMapping("/vacbook/admin")
 @Controller
+@RequestMapping("/vacbook/admin")
 public class AdminController {
 
     @Autowired
@@ -46,7 +48,7 @@ public class AdminController {
     List<Admin> list = new ArrayList<>();
 
     @GetMapping("{admin_id}/dashboard")
-    public Map<String, Object> fetchDashboard(@PathVariable("admin_id") int admin_id) {
+    public ModelAndView fetchDashboard(@PathVariable("admin_id") int admin_id) {
         System.out.print(admin_id);
         Admin admin = iAdminService.getById(admin_id);
 
@@ -74,9 +76,10 @@ public class AdminController {
         result.put("name", admin.getAdminName());
         result.put("location", location.getLocation());
         result.put("vaccines", vaccineNames);
-        result.put("booking num", bookingNum);
+        result.put("booking_num", bookingNum);
         System.out.print(result);
-        return result;
+        ModelAndView modelAndView = new ModelAndView( "adminPages/dashboard","result", result);
+        return modelAndView;
     }
 
     /**
@@ -91,9 +94,10 @@ public class AdminController {
     }
 
     @GetMapping("/{admin_id}/booking/user/{user_id}")
-    public User fetchBookingUser(@PathVariable("user_id") int user_id) {
+    public ModelAndView fetchBookingUser(@PathVariable("user_id") int user_id) {
         User user = iUserService.getById(user_id);
-        return user;
+        ModelAndView modelAndView = new ModelAndView( "adminPages/booking_user","result", user);
+        return modelAndView;
     }
 
     /**
@@ -109,16 +113,11 @@ public class AdminController {
         return resultSet;
     }
 
-    @PutMapping("/{admin_id}/setting")
-    public Map<String, Object> fetchAndUpdateSetting(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
+    @GetMapping("/{admin_id}/setting")
+    public ModelAndView fetchSetting(@PathVariable("admin_id") int admin_id){
         Admin admin = iAdminService.getById(admin_id);
-        // if body has content, update admin information
-        if (!body.isEmpty()) {
-            System.out.println(body);
-            admin.updateByMap(body);
-            iAdminService.saveOrUpdate(admin);
-        }
         Map<String, Object> result = new LinkedHashMap<>();
+        result.put("admin_id", admin.getAdminId());
         result.put("account", admin.getAdminAccount());
         result.put("name", admin.getAdminName());
         Location location = iLocationService.getById(admin.getLocationId());
@@ -126,7 +125,23 @@ public class AdminController {
         List<Location> locationList = iLocationService.list();
         result.put("location_options", locationList);
 
-        return result;
+        ModelAndView modelAndView = new ModelAndView( "adminPages/setting","result", result);
+        return modelAndView;
+    }
+
+    @PutMapping("/{admin_id}/setting")
+    public boolean udateSetting( @PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
+        //ModelAndView modelAndView = new ModelAndView( "adminPages/setting", new );
+        //if body has content, update admin information
+        System.out.println(body);
+        Admin admin = iAdminService.getById(admin_id);
+        if (!body.isEmpty()) {
+            System.out.println(body);
+            admin.updateByMap(body);
+            iAdminService.saveOrUpdate(admin);
+            return  true;
+        }
+        return false;
     }
 
     @PostMapping("/login")
