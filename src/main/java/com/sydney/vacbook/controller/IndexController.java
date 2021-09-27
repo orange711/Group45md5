@@ -1,9 +1,6 @@
 package com.sydney.vacbook.controller;
 
-import com.sydney.vacbook.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,20 +8,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @Controller
-
 public class IndexController {
 
 
-    @RequestMapping("/index")
+    @GetMapping("vacBook/user/index")
     public String viewHomePage() {
         return "index";
     }
 
-    @RequestMapping("/user/login")
+    @GetMapping("vacBook/user/login")
     public String userLogin() {
-        return "userlogin";
+        return "userPages/userLogin";
     }
-    @RequestMapping("/getAllUserInfo")
+
+    @GetMapping("/user/register")
+    public String userRegister() {
+        return "userPages/userRegister";
+    }
+
+    @GetMapping("vacBook/user/checkEligibility")
+    public String userCheckEligibility() {
+        return "userPages/userCheckEligibility";
+    }
+
+
+    @GetMapping("/getAllUserInfo")
     public String getAllUser(){
         return null;
     }
