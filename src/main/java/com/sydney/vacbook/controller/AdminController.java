@@ -22,7 +22,7 @@ import java.util.*;
  * @since 2021-09-15
  */
 
-//@RestController
+//@RestController   如果加了这行注释 return 只会返回return里的实际内容、而不会跳转网页
 @Controller
 @RequestMapping("/vacbook/admin")
 public class AdminController {
@@ -143,12 +143,12 @@ public class AdminController {
         }
         return false;
     }
-
+//这个地方改成index了
     @RequestMapping("/index")
     public String index(){
         return "adminPages/adminLogin";
     }
-
+//跳转到login  --- 但是现在登录成功的return我有点迷惑 报500错误
     @RequestMapping("/login")
     public String login(@RequestParam String account,String password, Map<String, Object> map) {
         System.out.println("1111111111111111111111111111");
