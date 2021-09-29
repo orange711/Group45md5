@@ -23,10 +23,10 @@
 
           <nav style="background-color: lightpink; height: 100vh" id="fh5co-main-menu" >
                 <ul>
-                  <li><a href="dashboard"><span>Dashboard</span></a></li>
+                  <li><a th:href="@{/vacbook/admin/1/dashboard}"><span>Dashboard</span></a></li>
                   <li><a href="bookings"><span>Bookings</span></a></li>
                   <li><a href="vaccines"><span>Vaccines</span></a></li>
-                  <li><a href="setting"><span>Setting</span> </a></li>
+                  <li><a th:href="@{/vacbook/admin/1/setting}"><span>Setting</span> </a></li>
                 </ul>
             <div class ="logout">
               <a  th:href="@{/vacBook/user/index}"><span>Log out</span></a>
@@ -36,10 +36,10 @@
   </aside>
   <div style="width: 79vw; height: 100vh">
     <div style="background-color: lightpink; height: 70px">
-      <div>
-        <input class="btn btn-default" type="text" value="Welcome Admin: " />
-        <span th:text="${result.name}"></span>
-      </div>
+<!--      <div>-->
+<!--        <input class="btn btn-default" type="text" value="Welcome Admin: " />-->
+<!--        <span th:text="${result.name}"></span>-->
+<!--      </div>-->
 
     </div>
     <div layout:fragment = "content">

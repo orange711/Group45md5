@@ -158,6 +158,7 @@ public class AdminController {
     @PostMapping("/login")
     public String login(Admin admin, @RequestBody Map<String, Object> map) {
         //TODO WORDE
+        System.out.println("==============");
         QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
         sectionQueryWrapper.eq("admin_account", admin.getAdminAccount());
         sectionQueryWrapper.eq("admin_password", admin.getAdminPassword());
@@ -171,7 +172,7 @@ public class AdminController {
 //下面写登录后想要获得的更多东西例如获取疫苗
             map.put("vaccineList", vaccineController.getVaccineListByAdminId(admin.getAdminId()));
 
-            return "redirect:vacbook/admin/index.html";//重定向
+            return "index";//重定向
         } else {
 
             return "redirect:vacbook/admin/index.html";//重定向
