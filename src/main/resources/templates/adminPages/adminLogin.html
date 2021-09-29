@@ -21,10 +21,10 @@
     <img th:src ="@{/img/logo.png}">
   </div>
   <center>
-    <form class="form" th:action="@{/vacBook/admin/login}" method = 'post'>
+    <form class="form" th:action="@{/vacbook/admin/login}">
       <p>login here As An admin</p>
-      <input type="text" name = 'name' placeholder="Username" required>
-      <input type="password" name = 'password' placeholder="Password" required>
+      <input type="text" name = "account" class="form-control" placeholder="Username" required>
+      <input type="password" name = "password" class="form-control" placeholder="Password" required>
       <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button">Log In</button>
       <!--      <button formaction="/register-page.html" class="shadow p-3 mb-3 bg-body rounded" type="submit"-->
       <!--              id="login-button">Register</button>-->

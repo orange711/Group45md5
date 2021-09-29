@@ -2,24 +2,27 @@ package com.sydney.vacbook.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.sydney.vacbook.entity.*;
+import com.sydney.vacbook.mapper.AdminMapper;
+import com.sydney.vacbook.mapper.UserMapper;
 import com.sydney.vacbook.service.*;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * @author shuonan wang
  * @since 2021-09-15
  */
 
-@RestController
+//@RestController
 @Controller
 @RequestMapping("/vacbook/admin")
 public class AdminController {
@@ -84,23 +87,9 @@ public class AdminController {
      * @param body     body can used to get reject booking request
      * @return
      */
-    @GetMapping("/{admin_id}/bookings")
-    public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id) {
-        Admin admin = iAdminService.getById(admin_id);
-        if(admin!=null){
-            QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
-            List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
-            List<String> vaccineNames = new ArrayList<>();
-            List<Integer> vaccineIds = new ArrayList<>();
-            for (Vaccine vaccine : vaccineList) {
-                vaccineNames.add(vaccine.getVaccineName());
-                vaccineIds.add(vaccine.getVaccineId());
-            }
-            QueryWrapper<Booking> queryWrapper = new QueryWrapper<>();
-            queryWrapper.in("vaccine_id",vaccineIds);
-            List<Booking> bookingList = iBookingService.list(queryWrapper);
-            return bookingList;
-        }
+    @PostMapping("/{admin_id}/bookings")
+    public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
+        //TODO JAMES
         return null;
     }
 
@@ -155,13 +144,18 @@ public class AdminController {
         return false;
     }
 
-    @PostMapping("/login")
-    public String login(Admin admin, @RequestBody Map<String, Object> map) {
+    @RequestMapping("/index")
+    public String index(){
+        return "adminPages/adminLogin";
+    }
+
+    @RequestMapping("/login")
+    public String login(@RequestParam String account,String password, Map<String, Object> map) {
+        System.out.println("1111111111111111111111111111");
         //TODO WORDE
-        System.out.println("==============");
         QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
-        sectionQueryWrapper.eq("admin_account", admin.getAdminAccount());
-        sectionQueryWrapper.eq("admin_password", admin.getAdminPassword());
+        sectionQueryWrapper.eq("admin_account", account);
+        sectionQueryWrapper.eq("admin_password", password);
         list = iAdminService.list(sectionQueryWrapper);
 
         String str = list.toString();
@@ -170,27 +164,27 @@ public class AdminController {
 
             map.put("adminList", list.get(0));
 //下面写登录后想要获得的更多东西例如获取疫苗
-            map.put("vaccineList", vaccineController.getVaccineListByAdminId(admin.getAdminId()));
+           // map.put("vaccineList", vaccineController.getVaccineListByAdminId(admin.getAdminId()));
 
-            return "index";//重定向
+            return "adminPages/base";//重定向
         } else {
 
-            return "redirect:vacbook/admin/index.html";//重定向
+            return "adminPages/adminLogin";//重定向
         }
 
     }
 
-    @GetMapping("/login")
-    public ModelAndView getAdminLoginPage(){
-        ModelAndView modelAndView = new ModelAndView( "adminPages/adminLogin");
-        return modelAndView;
-    }
+//    @GetMapping("/login")
+//    public ModelAndView getAdminLoginPage(){
+//        ModelAndView modelAndView = new ModelAndView( "adminPages/adminLogin");
+//        return modelAndView;
+//    }
 
-    @GetMapping("/register")
-    public ModelAndView getAdminRegisterPage(){
-        ModelAndView modelAndView = new ModelAndView( "adminPages/adminRegister");
-        return modelAndView;
-    }
+//    @GetMapping("/register")
+//    public ModelAndView getAdminRegisterPage(){
+//        ModelAndView modelAndView = new ModelAndView( "adminPages/adminRegister");
+//        return modelAndView;
+//    }
 
     @PostMapping("/register")
     public String register(Admin admin, Map<Object, Object> body) {
