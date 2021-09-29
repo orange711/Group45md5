@@ -2,20 +2,17 @@ package com.sydney.vacbook.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.sydney.vacbook.entity.*;
-import com.sydney.vacbook.mapper.AdminMapper;
-import com.sydney.vacbook.mapper.UserMapper;
 import com.sydney.vacbook.service.*;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author shuonan wang
@@ -87,9 +84,23 @@ public class AdminController {
      * @param body     body can used to get reject booking request
      * @return
      */
-    @PostMapping("/{admin_id}/bookings")
-    public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
-        //TODO JAMES
+    @GetMapping("/{admin_id}/bookings")
+    public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id) {
+        Admin admin = iAdminService.getById(admin_id);
+        if(admin!=null){
+            QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
+            List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
+            List<String> vaccineNames = new ArrayList<>();
+            List<Integer> vaccineIds = new ArrayList<>();
+            for (Vaccine vaccine : vaccineList) {
+                vaccineNames.add(vaccine.getVaccineName());
+                vaccineIds.add(vaccine.getVaccineId());
+            }
+            QueryWrapper<Booking> queryWrapper = new QueryWrapper<>();
+            queryWrapper.in("vaccine_id",vaccineIds);
+            List<Booking> bookingList = iBookingService.list(queryWrapper);
+            return bookingList;
+        }
         return null;
     }
 

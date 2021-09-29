@@ -144,3 +144,7 @@ INSERT INTO `vaccine` VALUES (4, 'mRNA', 'AZ', '666', 3, 111);
 INSERT INTO `vaccine` VALUES (5, 'mRNA', 'Pfizer', '666', 3, 11111);
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+
+
