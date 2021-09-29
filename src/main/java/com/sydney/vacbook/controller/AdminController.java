@@ -179,6 +179,18 @@ public class AdminController {
 
     }
 
+    @GetMapping("/login")
+    public ModelAndView getAdminLoginPage(){
+        ModelAndView modelAndView = new ModelAndView( "adminPages/adminLogin");
+        return modelAndView;
+    }
+
+    @GetMapping("/register")
+    public ModelAndView getAdminRegisterPage(){
+        ModelAndView modelAndView = new ModelAndView( "adminPages/adminRegister");
+        return modelAndView;
+    }
+
     @PostMapping("/register")
     public String register(Admin admin, Map<Object, Object> body) {
         //TODO WORDE

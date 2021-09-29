@@ -1,23 +1,26 @@
 <!DOCTYPE html >
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="adminPages/base.html">
-<div layout:fragment="content" class="container" style="max-width: 700px; padding-top: 50px; padding-bottom: 50px; line-height:30px;">
+<div layout:fragment="content" class="container" style=" max-width: 700px; padding-top: 100px; padding-bottom: 50px; line-height:30px;">
     <h1>Setting</h1>
-    <form action="#" th:action="@{/setting}" th:object="${result}" method="post">
+    <form th:action="@{/vacBook/admin/{admin_id}/setting (admin_id=${result.admin_id})}" th:object="${result}" method="put">
         <div th:text="${result.admin_id}"></div>
-        Account: <span th:text="${result.account}"></span><br/>
-        Name:
-            <input th:value="${result.name}"/><br/>
-        Location:
-        <select>
-            <option th:text="${result.location}"></option>
-            <option th:each="l:${result.location_options}"
-                    th:if="${l.location != result.location}"
-                    th:text="${l.location}">
-            </option>
-        </select><br/>
-        Change Password: <input value="" type="password"/><br/>
-        Confrim Password: <input value="" type="password"/><br/>
-        <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button">Save</button>
+        <div>
+            Account: <span th:text="${result.account}"></span><br/>
+            Name:
+                <input id = "adminName" th:value="${result.name}"/><br/>
+            Location:
+            <select id="locationId">
+                <option th:text="${result.location}"></option>
+                <option th:each="l:${result.location_options}"
+                        th:if="${l.location != result.location}"
+                        th:text="${l.location}">
+                </option>
+            </select><br/>
+            Change Password: <input value="" type="password"/><br/>
+            Confrim Password: <input value="" type="password"/><br/>
+            <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button">Save</button>
+        </div>
+
     </form>
 </div>
 </html>
