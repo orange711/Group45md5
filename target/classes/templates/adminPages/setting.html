@@ -1,23 +1,52 @@
 <!DOCTYPE html >
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="adminPages/base.html">
-<div layout:fragment="content" class="container" style="max-width: 700px; padding-top: 50px; padding-bottom: 50px; line-height:30px;">
-    <h1>Setting</h1>
-    <form action="#" th:action="@{/setting}" th:object="${result}" method="post">
-        <div th:text="${result.admin_id}"></div>
-        Account: <span th:text="${result.account}"></span><br/>
-        Name:
-            <input th:value="${result.name}"/><br/>
-        Location:
-        <select>
-            <option th:text="${result.location}"></option>
-            <option th:each="l:${result.location_options}"
-                    th:if="${l.location != result.location}"
-                    th:text="${l.location}">
-            </option>
-        </select><br/>
-        Change Password: <input value="" type="password"/><br/>
-        Confrim Password: <input value="" type="password"/><br/>
-        <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button">Save</button>
+<div layout:fragment="content" class="container"
+     style="max-width: 700px; margin-top: 50px; padding-top: 50px;  padding-bottom: 50px; line-height:30px; border: 1px solid black;">
+    <h1 align="center">Setting</h1>
+    <form th:action="@{/vacBook/admin/{admin_id}/setting (admin_id=${result.admin_id})}" th:object="${result}" method="put">
+
+        <table class="table table-striped" style="border: 1px solid black;">
+
+            <tbody style="text-align: center">
+            <tr>
+                <th>Admin account Number: </th>
+                <td><div th:text="${result.admin_id}"></div></td>
+            </tr>
+            <tr>
+                <th>Admin account: </th>
+                <td><span th:text="${result.account}"></span></td>
+            </tr>
+            <tr>
+                <th>Admin name: </th>
+                <td><span th:text="${result.name}"></span></td>
+            </tr>
+            <tr>
+                <th>Admin location: </th>
+                <td>
+                    <select>
+                        <option th:text="${result.location}"></option>
+                        <option th:each="l:${result.location_options}"
+                                th:if="${l.location != result.location}"
+                                th:text="${l.location}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th> Change Password: </th>
+                <td><input value="" type="password"/></td>
+            </tr>
+            <tr>
+                <th> Confirm Password: </th>
+                <td><input value="" type="password"/></td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+
+            <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button">Save</button>
+        </div>
+
     </form>
 </div>
 </html>

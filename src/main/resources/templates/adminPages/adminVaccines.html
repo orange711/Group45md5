@@ -1,0 +1,71 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="adminPages/base.html">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div layout:fragment="content" class="container"
+         style="max-width: 700px; margin-top: 50px; padding-top: 50px;  padding-bottom: 50px; line-height:30px; border: 1px solid black;">
+        <h1 align="center">Vaccine Information</h1>
+
+        <table class="table table-striped" style="border: 1px solid black;">
+            <tbody style="text-align: center">
+
+                <tr >
+                    <th>Vaccine type</th>
+                    <th>Vaccine name</th>
+                    <th>stock</th>
+                    <th>Operation</th>
+                </tr>
+                <tr th:each="l:${adminVaccineList}" style="text-align: center">
+                    <td th:text="${l.getVaccineType()}" />
+                    <td th:text="${l.getVaccineName()}"/>
+                    <td th:text="${l.getVaccineAmount()}"/>
+                    <td style="text-align: center">
+                        <button style="background-color: dimgray" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Edit</button>
+                        <button style="background-color: darkred" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Delete</button>
+<!--                        <button class="" type="submit" id="edit-button">Edit</button>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+<!--        <button style="display: block; margin: 0 auto" class="" type="submit" id="Add-button">Add</button>-->
+
+        <button style=" background-color: mediumseagreen ; display: block; margin: 0 auto"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            Add</button>
+
+
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Modal Heading</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        Modal body..
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>

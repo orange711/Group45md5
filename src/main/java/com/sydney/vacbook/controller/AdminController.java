@@ -81,7 +81,7 @@ public class AdminController {
 
     /**
      * @param admin_id
-     * @param body     body can used to get reject booking request
+     //* @param body     body can used to get reject booking request
      * @return
      */
     @GetMapping("/{admin_id}/bookings")
@@ -113,15 +113,16 @@ public class AdminController {
 
     /**
      * @param admin_id
-     * @param body     body can used to get add, delete, update requests based on the design of figma
+     //* @param body     body can used to get add, delete, update requests based on the design of figma
      * @return
      */
     @GetMapping("/{admin_id}/vaccines")
-    public List<Vaccine> fetchVaccines(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
+    public ModelAndView fetchVaccines(@PathVariable("admin_id") int admin_id/*, @RequestBody Map<String, Object> body*/) {
         //TODO ZHENGCHENG
 
         List<Vaccine> resultSet = vaccineController.getVaccineListByAdminId(admin_id);
-        return resultSet;
+        ModelAndView modelAndView = new ModelAndView( "adminPages/adminVaccines","adminVaccineList", resultSet);
+        return modelAndView;
     }
 
     @GetMapping("/{admin_id}/setting")
