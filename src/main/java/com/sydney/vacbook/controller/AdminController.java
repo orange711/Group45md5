@@ -84,14 +84,38 @@ public class AdminController {
 
     /**
      * @param admin_id
-     * @param body     body can used to get reject booking request
+     //* @param body     body can used to get reject booking request
      * @return
      */
+
+    @GetMapping("/{admin_id}/bookings")
+    public ModelAndView fetchBookings(@PathVariable("admin_id") int admin_id) {
+        Admin admin = iAdminService.getById(admin_id);
+        if (admin != null) {
+            QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
+            List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
+            List<String> vaccineNames = new ArrayList<>();
+            List<Integer> vaccineIds = new ArrayList<>();
+            for (Vaccine vaccine : vaccineList) {
+                vaccineNames.add(vaccine.getVaccineName());
+                vaccineIds.add(vaccine.getVaccineId());
+            }
+            QueryWrapper<Booking> queryWrapper = new QueryWrapper<>();
+            queryWrapper.in("vaccine_id" , vaccineIds);
+            List<Booking> bookingList = iBookingService.list(queryWrapper);
+            ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking" , "bookingList" , bookingList);
+            return modelAndView;
+            //return bookingList;
+        }
+        return null;
+    }
+
     @PostMapping("/{admin_id}/bookings")
     public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
         //TODO JAMES
         return null;
     }
+  
 
     @GetMapping("/{admin_id}/booking/user/{user_id}")
     public ModelAndView fetchBookingUser(@PathVariable("user_id") int user_id) {
@@ -102,15 +126,16 @@ public class AdminController {
 
     /**
      * @param admin_id
-     * @param body     body can used to get add, delete, update requests based on the design of figma
+     //* @param body     body can used to get add, delete, update requests based on the design of figma
      * @return
      */
     @GetMapping("/{admin_id}/vaccines")
-    public List<Vaccine> fetchVaccines(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
+    public ModelAndView fetchVaccines(@PathVariable("admin_id") int admin_id/*, @RequestBody Map<String, Object> body*/) {
         //TODO ZHENGCHENG
 
         List<Vaccine> resultSet = vaccineController.getVaccineListByAdminId(admin_id);
-        return resultSet;
+        ModelAndView modelAndView = new ModelAndView( "adminPages/adminVaccines","adminVaccineList", resultSet);
+        return modelAndView;
     }
 
     @GetMapping("/{admin_id}/setting")
