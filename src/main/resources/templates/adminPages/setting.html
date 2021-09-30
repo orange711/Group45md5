@@ -1,7 +1,7 @@
 <!DOCTYPE html >
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="adminPages/base.html">
 <div layout:fragment="content" class="container"
-     style="max-width: 700px; margin-top: 50px; padding-top: 50px;  padding-bottom: 50px; line-height:30px; border: 1px solid black;">
+     style="max-width: 700px; margin-top: 50px; padding-top: 30px;  padding-bottom: 30px; line-height:30px; border: 1px solid black;">
     <h1 align="center">Setting</h1>
     <form th:action="@{/vacBook/admin/{admin_id}/setting (admin_id=${result.admin_id})}" th:object="${result}" method="put">
 

@@ -85,7 +85,7 @@ public class AdminController {
      * @return
      */
     @GetMapping("/{admin_id}/bookings")
-    public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id) {
+    public ModelAndView fetchBookings(@PathVariable("admin_id") int admin_id) {
         Admin admin = iAdminService.getById(admin_id);
         if(admin!=null){
             QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
@@ -99,7 +99,9 @@ public class AdminController {
             QueryWrapper<Booking> queryWrapper = new QueryWrapper<>();
             queryWrapper.in("vaccine_id",vaccineIds);
             List<Booking> bookingList = iBookingService.list(queryWrapper);
-            return bookingList;
+            ModelAndView modelAndView = new ModelAndView( "adminPages/adminBooking","bookingList", bookingList);
+            return modelAndView;
+            //return bookingList;
         }
         return null;
     }
