@@ -91,7 +91,7 @@ public class AdminController {
     @GetMapping("/{admin_id}/bookings")
     public ModelAndView fetchBookings(@PathVariable("admin_id") int admin_id) {
         Admin admin = iAdminService.getById(admin_id);
-        if(admin!=null){
+        if (admin != null) {
             QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
             List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
             List<String> vaccineNames = new ArrayList<>();
@@ -101,13 +101,16 @@ public class AdminController {
                 vaccineIds.add(vaccine.getVaccineId());
             }
             QueryWrapper<Booking> queryWrapper = new QueryWrapper<>();
-            queryWrapper.in("vaccine_id",vaccineIds);
+            queryWrapper.in("vaccine_id" , vaccineIds);
             List<Booking> bookingList = iBookingService.list(queryWrapper);
-            ModelAndView modelAndView = new ModelAndView( "adminPages/adminBooking","bookingList", bookingList);
+            ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking" , "bookingList" , bookingList);
             return modelAndView;
             //return bookingList;
         }
-  @PostMapping("/{admin_id}/bookings")
+        return null;
+    }
+
+    @PostMapping("/{admin_id}/bookings")
     public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
         //TODO JAMES
         return null;
