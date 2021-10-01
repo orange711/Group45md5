@@ -141,11 +141,28 @@ nav {
 }
 
 /*-- HomePage index.html--*/
+.nav-item a{
+    position: relative;
+    display: inline-block;
+    color: black;
+    overflow: hidden;
+    background: linear-gradient(to right, #FB4C47, #FB4C47 50%, black 50%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    background-position: 100%;
+    transition: background-position 275ms ease;
+}
+.nav-item a:hover{
+    background-position: 0 100%;
 
+}
 .overview-section {
     display: flex;
     padding-top: 100px;
 }
+
 
 .overview-text {
     align-items: center;
@@ -229,6 +246,7 @@ nav {
     margin: 0 auto;
 }
 
+
 input#search-bar {
     margin: 0 auto;
     width: 100%;
@@ -243,6 +261,7 @@ input#search-bar {
 
 .search-bar {
     padding-top: 20px;
+    padding-bottom: 50px;
 }
 
 .search-clinic {
@@ -329,8 +348,9 @@ table th {
     text-decoration: none;
     font-size: 15px;
 }
+
 /*--Subscribe form--*/
-.subscribe-form{
+.subscribe-form {
     align-items: center;
     text-align: center;
     padding-top: 200px;
@@ -363,7 +383,8 @@ input#subscribe-bar {
 .subscribe-bar {
     padding-top: 20px;
 }
-.submit-btn{
+
+.submit-btn {
     position: relative;
     float: right;
     width: 105px;
@@ -371,82 +392,170 @@ input#subscribe-bar {
     top: -45px;
     right: 0px;
 }
-.subscribe-container a{
+
+.subscribe-container a {
     color: #fff;
     padding: 10px 10px;
     text-decoration: none;
     background-color: #FA5652;
     height: 45px;
     -moz-border-radius: 30px;
-    -webkit-border-radius: 30px; 
+    -webkit-border-radius: 30px;
+}
+
+.btn-back a {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #FB4C47;
+    padding: 10px 20px;
+    background: #fff;
+    -moz-border-radius: 30px;
+    -webkit-border-radius: 30px;
+    border-radius: 30px;
+    border: 1px solid #FB4C47;
+    -moz-box-shadow:
+        0px 1px 3px rgba(115, 110, 115, 0.5),
+        inset 0px 0px 1px rgba(255, 255, 255, 0.7);
+    -webkit-box-shadow:
+        0px 1px 3px rgba(115, 110, 115, 0.5),
+        inset 0px 0px 1px rgba(255, 255, 255, 0.7);
+    box-shadow:
+        0px 1px 3px rgba(115, 110, 115, 0.5),
+        inset 0px 0px 1px rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 15px;
+
 }
 
 /*--footer--*/
-.site-footer
-{
-  background-color:#FFF9F9;
-  padding:45px 0 20px;
-  font-size:15px;
-  line-height:24px;
-  color:#737373;
-  padding-top: 150px;
+.site-footer {
+    background-color: #FFF9F9;
+    padding: 45px 0 20px;
+    font-size: 15px;
+    line-height: 24px;
+    color: #737373;
+    padding-top: 150px;
 }
-.site-footer hr
-{
-  border-top-color:#bbb;
-  opacity:0.5
+
+.site-footer hr {
+    border-top-color: #bbb;
+    opacity: 0.5
 }
-.site-footer hr.small
-{
-  margin:20px 0
+
+.site-footer hr.small {
+    margin: 20px 0
 }
-.site-footer h6
-{
-  color:#00402E;
-  font-size:16px;
-  margin-top:5px;
-  letter-spacing:2px;
-  font-family: 'ABeeZee', sans-serif;
+
+.site-footer h6 {
+    color: #00402E;
+    font-size: 16px;
+    margin-top: 5px;
+    letter-spacing: 2px;
+    font-family: 'ABeeZee', sans-serif;
 
 
 }
-.site-footer a
-{
-  color:#737373;
-}
-.footer-links
-{
-  padding-left:0;
-  list-style:none
+
+.site-footer a {
+    color: #737373;
 }
 
-.footer-links a
-{
-  color:#737373
+.footer-links {
+    padding-left: 0;
+    list-style: none
+}
+
+.footer-links a {
+    color: #737373
 }
 
 
-.site-footer .social-icons
-{
-  text-align:right
+.site-footer .social-icons {
+    text-align: right
 }
-.site-footer .social-icons a
-{
-  width:40px;
-  height:40px;
-  line-height:40px;
-  margin-left:6px;
-  margin-right:0;
-  border-radius:100%;
-  background-color:#33353d
+
+.site-footer .social-icons a {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 6px;
+    margin-right: 0;
+    border-radius: 100%;
+    background-color: #33353d
 }
-#loadMore a{
-    float:right ;
+
+#loadMore a {
+    float: right;
     text-decoration: none;
     color: #B3AEAE;
     padding-top: 15px;
 }
 
+/* --Booking edit-- */
+.bookEdit {
+    padding-top: 30px;
+}
 
+.brand span {
+    font-size: 20px;
+}
 
+.brand label {
+    font-size: 20px;
+}
 
+.note {
+    display: inline-block;
+    font-size: 15px;
+    font-style: italic;
+    color: #565454;
+}
+
+.cancel-booking {
+    display: inline;
+    float: right;
+}
+
+.cancel-booking a {
+    color: #F00000;
+    font-size: 18px;
+}
+
+.book-edit-table {
+    padding-top: 50px;
+    font-size: 20px;
+    line-height: 3em;
+}
+
+.edit {
+    display: inline; 
+    padding-right: 20px;
+    vertical-align: center;
+}
+.edit a{
+    font-size: 18px;
+}
+
+/*--confirm booking--*/
+.confirm-booking{
+    align-items: center;
+    text-align: center;
+    padding-top: 20px;
+}
+.confirm-booking-logo img{
+    width: 20%;
+}
+.confirm-booking h6{
+    padding-top: 40px;
+    font-family: 'Red Hat Display', sans-serif;
+
+}
+.book-confirm-table{
+    padding-top: 10px;
+    font-size: 20px;
+    line-height: 3em;
+}
+.book-confirm-table h4{
+    font-family: 'Red Hat Display', sans-serif;
+    font-weight: 900;
+
+}
