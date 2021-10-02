@@ -17,7 +17,7 @@
         <th>Operation</th>
       </tr>
       <tr th:each="l:${bookingList1}" style="text-align: center">
-        <td th:text="${l.getUser()}" />
+        <td th:text="${l.getBookingId()}" />
         <td th:text="${l.getDate()}"/>
         <td th:text="${l.getPeriod()}"/>
         <td th:text="${l.getVaccine()}"/>
