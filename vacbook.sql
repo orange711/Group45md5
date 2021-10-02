@@ -36,7 +36,7 @@ CREATE TABLE `admin`  (
 -- ----------------------------
 -- Records of admin
 -- ----------------------------
-INSERT INTO `admin` VALUES (0, 'hahah2', 'changePassword', 'Lucy', 1);
+INSERT INTO `admin` VALUES (0, 'hahah', 'changePassword', 'Lucy', 1);
 INSERT INTO `admin` VALUES (1, 'zliu3553', '123456', 'zhengcheng', 1);
 INSERT INTO `admin` VALUES (2, 'account1', '123', 'Worde', 2);
 INSERT INTO `admin` VALUES (3, 'account2', '321', 'Kevin', 3);
@@ -53,6 +53,7 @@ CREATE TABLE `booking`  (
   `user_id` int(11) NOT NULL,
   `vaccine_id` int(11) NOT NULL,
   `booking_timezone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `date` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`booking_id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   INDEX `booking_ibfk_1`(`vaccine_id`) USING BTREE,
@@ -63,9 +64,10 @@ CREATE TABLE `booking`  (
 -- ----------------------------
 -- Records of booking
 -- ----------------------------
-INSERT INTO `booking` VALUES (1, 1, 2, '13:00-14:00');
-INSERT INTO `booking` VALUES (2, 2, 2, '13:00-14:00');
-INSERT INTO `booking` VALUES (3, 3, 1, '11:00-12:00');
+INSERT INTO `booking` VALUES (1, 1, 2, '13:00-14:00','2021-09-10');
+INSERT INTO `booking` VALUES (2, 2, 2, '13:00-14:00','2021-09-12');
+INSERT INTO `booking` VALUES (3, 3, 1, '11:00-12:00','2021-09-11');
+INSERT INTO `booking` VALUES (4, 3, 3, '11:00-17:00','2021-09-20');
 
 -- ----------------------------
 -- Table structure for location

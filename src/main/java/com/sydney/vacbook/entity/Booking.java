@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author Group45
@@ -31,10 +31,11 @@ public class Booking implements Serializable {
 
     private String bookingTimezone;
 
-    @TableField(exist = false)
     private String date;
     @TableField(exist = false)
-    private String time;
+    private String vaccine_name;
+    @TableField(exist = false)
+    private String user;
 
 
 }
