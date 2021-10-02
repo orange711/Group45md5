@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 public class BookingVO {
     private static final long serialVersionUID = 1L;
+    private Integer bookingId;
     private String date;
     private String period;
     private String vaccine;
