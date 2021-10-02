@@ -62,6 +62,7 @@ public class BookingController {
             Vaccine vaccine = vaccineService.getById(booking.getVaccineId());
             System.out.println("Vaccine:"+vaccine.getVaccineName());
             if(vaccine!=null){
+                booking.setVaccine_name(vaccine.getVaccineName());
                 Admin admin = adminService.getById(vaccine.getAdminId());
                 if(admin!=null){
                     Location location = locationService.getById(admin.getLocationId());
@@ -73,12 +74,18 @@ public class BookingController {
             User user = userService.getById(booking.getUserId());
             System.out.println("Name:"+user.getUserFirstname()+" "+user.getUserLastname());
         }
-        if(booking.getBookingId()!=null){
-            Booking booking1 = ibookingService.getById(booking.getBookingId());
-            System.out.println("BookingTimezone:"+booking1.getBookingTimezone());
-        }
-        System.out.println("Date & Time:"+booking.getDate()+" "+booking.getTime());
+        ibookingService.save(booking);
+    }
 
+    /**
+     * reject method interface
+     * @param booking
+     * @return
+     */
+    @GetMapping("/reject/{bookingId}")
+    public boolean reject(Booking booking){
+        boolean confirmBooking = ibookingService.removeById(booking);
+        return confirmBooking;
     }
 
     @GetMapping("/confirm")
