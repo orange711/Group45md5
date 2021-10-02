@@ -100,6 +100,7 @@ public class AdminController {
             List<BookingVO> bookingList1 = new ArrayList<>();
             for (Booking booking : bookingList) {
                 BookingVO b = new BookingVO();
+                b.setBookingId(booking.getBookingId());
                 b.setDate(booking.getDate());
                 b.setPeriod(booking.getBookingTimezone());
                 b.setVaccine(vaccineMap.get(booking.getVaccineId()));
