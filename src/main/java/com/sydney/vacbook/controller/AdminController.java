@@ -2,19 +2,13 @@ package com.sydney.vacbook.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.sydney.vacbook.entity.*;
-import com.sydney.vacbook.mapper.AdminMapper;
-import com.sydney.vacbook.mapper.UserMapper;
 import com.sydney.vacbook.service.*;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -22,11 +16,10 @@ import java.util.*;
  * @since 2021-09-15
  */
 
-//@RestController   如果加了这行注释 return 只会返回return里的实际内容、而不会跳转网页
+@RestController
 @Controller
 @RequestMapping("/vacbook/admin")
 public class AdminController {
-
 
     @Autowired
     private IUserService iUserService;
@@ -45,8 +38,8 @@ public class AdminController {
 
     @Autowired
     VaccineController vaccineController;
-    //一个adminList来判断登录合法性 并且存储相关信息
-    List<Admin> listAdmin= new ArrayList<>();
+    //一个adminList来判断登录合法性
+    List<Admin> list = new ArrayList<>();
 
     @GetMapping("{admin_id}/dashboard")
     public ModelAndView fetchDashboard(@PathVariable("admin_id") int admin_id) {
@@ -70,11 +63,11 @@ public class AdminController {
             bookingNum += iBookingService.count(findBookingByVaccineId);
         }
 
-        Location location = iLocationService.getById(listAdmin.get(0).getLocationId());
+        Location location = iLocationService.getById(admin.getLocationId());
 
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("account", listAdmin.get(0).getAdminAccount());
-        result.put("name", listAdmin.get(0).getAdminName());
+        result.put("account", admin.getAdminAccount());
+        result.put("name", admin.getAdminName());
         result.put("location", location.getLocation());
         result.put("vaccines", vaccineNames);
         result.put("booking_num", bookingNum);
@@ -85,39 +78,40 @@ public class AdminController {
 
     /**
      * @param admin_id
-     //* @param body     body can used to get reject booking request
      * @return
      */
-
     @GetMapping("/{admin_id}/bookings")
-    public ModelAndView fetchBookings(@PathVariable("admin_id") int admin_id) {
-
-        Admin admin = iAdminService.getById(admin_id);
-        if (admin != null) {
+    public ModelAndView fetchBookings(@PathVariable("admin_id") Integer admin_id) {
+        if(admin_id!=null){
             QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
+            findVaccineByAdminId.eq("admin_id",admin_id);
             List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
             List<String> vaccineNames = new ArrayList<>();
             List<Integer> vaccineIds = new ArrayList<>();
+            Map<Integer,String> vaccineMap = new HashMap<>();
             for (Vaccine vaccine : vaccineList) {
                 vaccineNames.add(vaccine.getVaccineName());
                 vaccineIds.add(vaccine.getVaccineId());
+                vaccineMap.put(vaccine.getVaccineId(),vaccine.getVaccineName());
             }
             QueryWrapper<Booking> queryWrapper = new QueryWrapper<>();
-            queryWrapper.in("vaccine_id" , vaccineIds);
+            queryWrapper.in("vaccine_id",vaccineIds);
             List<Booking> bookingList = iBookingService.list(queryWrapper);
-            ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking" , "bookingList" , bookingList);
+            List<BookingVO> bookingList1 = new ArrayList<>();
+            for (Booking booking : bookingList) {
+                BookingVO b = new BookingVO();
+                b.setBookingId(booking.getBookingId());
+                b.setDate(booking.getDate());
+                b.setPeriod(booking.getBookingTimezone());
+                b.setVaccine(vaccineMap.get(booking.getVaccineId()));
+                b.setUser(iUserService.getById(booking.getUserId()).getUserFirstname());
+                bookingList1.add(b);
+            }
+            ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking" , "bookingList1" , bookingList1);
             return modelAndView;
-            //return bookingList;
         }
         return null;
     }
-
-    @PostMapping("/{admin_id}/bookings")
-    public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
-        //TODO JAMES
-        return null;
-    }
-  
 
     @GetMapping("/{admin_id}/booking/user/{user_id}")
     public ModelAndView fetchBookingUser(@PathVariable("user_id") int user_id) {
@@ -128,26 +122,25 @@ public class AdminController {
 
     /**
      * @param admin_id
-     //* @param body     body can used to get add, delete, update requests based on the design of figma
+     * @param body     body can used to get add, delete, update requests based on the design of figma
      * @return
      */
     @GetMapping("/{admin_id}/vaccines")
-    public ModelAndView fetchVaccines(@PathVariable("admin_id") int admin_id/*, @RequestBody Map<String, Object> body*/) {
+    public List<Vaccine> fetchVaccines(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
         //TODO ZHENGCHENG
 
-        List<Vaccine> resultSet = vaccineController.getVaccineListByAdminId(listAdmin.get(0).getAdminId());
-        ModelAndView modelAndView = new ModelAndView( "adminPages/adminVaccines","adminVaccineList", resultSet);
-        return modelAndView;
+        List<Vaccine> resultSet = vaccineController.getVaccineListByAdminId(admin_id);
+        return resultSet;
     }
 
     @GetMapping("/{admin_id}/setting")
     public ModelAndView fetchSetting(@PathVariable("admin_id") int admin_id){
         Admin admin = iAdminService.getById(admin_id);
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("admin_id", listAdmin.get(0).getAdminId());
-        result.put("account", listAdmin.get(0).getAdminAccount());
-        result.put("name", listAdmin.get(0).getAdminName());
-        Location location = iLocationService.getById(listAdmin.get(0).getLocationId());
+        result.put("admin_id", admin.getAdminId());
+        result.put("account", admin.getAdminAccount());
+        result.put("name", admin.getAdminName());
+        Location location = iLocationService.getById(admin.getLocationId());
         result.put("location", location.getLocation());
         List<Location> locationList = iLocationService.list();
         result.put("location_options", locationList);
@@ -170,93 +163,66 @@ public class AdminController {
         }
         return false;
     }
-//这个地方改成index了
-    @RequestMapping("/index")
-    public String index(){
-        return "adminPages/adminLogin";
-    }
-//跳转到login  --- 但是现在登录成功的return我有点迷惑 报500错误
-    @RequestMapping("/login")
-    public String login(@RequestParam String account,String password, Map<String, Object> map) {
-        System.out.println("1111111111111111111111111111");
+
+    @PostMapping("/login")
+    public String login(Admin admin, @RequestBody Map<String, Object> map) {
         //TODO WORDE
         QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
-        sectionQueryWrapper.eq("admin_account", account);
-        sectionQueryWrapper.eq("admin_password", password);
-        listAdmin = iAdminService.list(sectionQueryWrapper);
+        sectionQueryWrapper.eq("admin_account", admin.getAdminAccount());
+        sectionQueryWrapper.eq("admin_password", admin.getAdminPassword());
+        list = iAdminService.list(sectionQueryWrapper);
 
-        String str = listAdmin.toString();
+        String str = list.toString();
 
         if (!str.equals("[]")) {
 
-            map.put("adminList", listAdmin.get(0));
+            map.put("adminList", list.get(0));
 //下面写登录后想要获得的更多东西例如获取疫苗
-           // map.put("vaccineList", vaccineController.getVaccineListByAdminId(admin.getAdminId()));
+            map.put("vaccineList", vaccineController.getVaccineListByAdminId(admin.getAdminId()));
 
-            return "adminPages/base";//重定向
+            return "redirect:vacbook/admin/index.html";//重定向
         } else {
 
-            return "adminPages/adminLogin";//重定向
+            return "redirect:vacbook/admin/index.html";//重定向
         }
 
     }
 
-//    @GetMapping("/login")
-//    public ModelAndView getAdminLoginPage(){
-//        ModelAndView modelAndView = new ModelAndView( "adminPages/adminLogin");
-//        return modelAndView;
-//    }
-
-//    @GetMapping("/register")
-//    public ModelAndView getAdminRegisterPage(){
-//        ModelAndView modelAndView = new ModelAndView( "adminPages/adminRegister");
-//        return modelAndView;
-//    }
-
-    @RequestMapping("/registerPage")
-    public String registerPage(){
-        return "adminPages/adminRegister";
-    }
-
-    @RequestMapping("/register")
+    @PostMapping("/register")
     public String register(Admin admin, Map<Object, Object> body) {
-        System.out.println("===============");
+        //TODO WORDE
         boolean newAdmin = iAdminService.save(admin);
         if (newAdmin == false) {
             System.err.println("This account has been registered");
-            return "redirect:index";//重定向
+            return "redirect:/admin/index.html";//重定向
         } else {
             System.out.println("Thanks for join our system");
 
             QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
             sectionQueryWrapper.eq("admin_account", admin.getAdminAccount());
             sectionQueryWrapper.eq("admin_password", admin.getAdminPassword());
-            listAdmin = iAdminService.list(sectionQueryWrapper);
+            list = iAdminService.list(sectionQueryWrapper);
 
-            body.put("adminList", listAdmin.get(0));
+            body.put("adminList", list.get(0));
 
 
-            return "adminPages/base";
+            return "admin";
         }
 
 
     }
-
-    @RequestMapping("/logout")
+    @PostMapping("/gologin")
+    public String gologin(Admin admin, @RequestBody Map<String, Object> map) {
+        return "redirect:vacbook/admin/index.html";// 重定向
+    }
+    @PostMapping("/logout")
     public String  logout(Map<Object, Object> map) {
+        //TODO WORDE
         map.put("adminList","");
-        return "redirect:index";// 重定向
+        return "redirect:vacbook/admin/index.html";// 重定向
 
 
     }
-
-//    取信息
-//    @RequestMapping("/adminList")
-//    public String  listAdmin(Model model) {
-//       model.addAttribute("listAdmin",listAdmin.get(0));
-//       return "admin/list";
-//
-//    }
 
 
 // exercises

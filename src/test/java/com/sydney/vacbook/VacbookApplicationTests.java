@@ -57,7 +57,7 @@ class VacbookApplicationTests {
     void adminAdd(){
 
         Admin admin = new Admin();
-        admin.setAdminAccount("haha");
+        admin.setAdminAccount("haha111");
         admin.setAdminName("Lucy");
         admin.setAdminPassword("123");
         admin.setLocationId(1);
