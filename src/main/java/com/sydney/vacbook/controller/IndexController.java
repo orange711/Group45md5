@@ -13,7 +13,7 @@ public class IndexController {
 
     @GetMapping("vacBook/user/index")
     public String viewHomePage() {
-        return "index";
+        return "userPages/index";
     }
 
     @GetMapping("vacBook/user/login")
@@ -26,9 +26,15 @@ public class IndexController {
         return "userPages/userRegister";
     }
 
+
     @GetMapping("vacBook/user/checkEligibility")
     public String userCheckEligibility() {
         return "userPages/userCheckEligibility";
+    }
+
+    @GetMapping("vacBook/user/checkEligibilityRegister")
+    public String userCheckEligibilityInRegister() {
+        return "userPages/CheckEligibilityInRegister";
     }
 
 
