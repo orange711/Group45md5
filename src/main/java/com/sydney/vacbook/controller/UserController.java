@@ -49,7 +49,7 @@ public class UserController {
     @GetMapping("/{user_id}")
     public ModelAndView fetchUser(@PathVariable("user_id") int user_id){
         User user = iUserService.getById(user_id);
-        ModelAndView modelAndView = new ModelAndView( "userPages/user_profile","result", user);
+        ModelAndView modelAndView = new ModelAndView( "userPages/userEdit","result", user);
         System.out.println(user);
         return  modelAndView;
     }
