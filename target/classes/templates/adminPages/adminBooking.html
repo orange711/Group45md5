@@ -16,14 +16,14 @@
         <th>View User</th>
         <th>Operation</th>
       </tr>
-      <tr th:each="l:${bookingList}" style="text-align: center">
+      <tr th:each="l:${bookingList1}" style="text-align: center">
         <td th:text="${l.getBookingId()}" />
         <td th:text="${l.getDate()}"/>
-        <td th:text="${l.getBookingTimezone()}"/>
-        <td th:text="${l.getVaccineId()}"/>
+        <td th:text="${l.getPeriod()}"/>
+        <td th:text="${l.getVaccine()}"/>
         <td style="text-align: center" >
-          <a th:href="@{/vacbook/admin/1/booking/user/{userId} (userId = ${l.getUserId()})}">
-            <input style="background-color: dimgray" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" th:value="${l.getUserId()}"/>
+          <a th:href="@{/vacbook/admin/1/booking/user/{userId} (userId = ${l.getUser()})}">
+            <input style="background-color: dimgray" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" th:value="${l.getUser()}"/>
           </a>
         </td>
         <td>

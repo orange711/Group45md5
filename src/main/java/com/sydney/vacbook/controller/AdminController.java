@@ -85,29 +85,38 @@ public class AdminController {
 
     /**
      * @param admin_id
-     //* @param body     body can used to get reject booking request
      * @return
      */
-
     @GetMapping("/{admin_id}/bookings")
-    public ModelAndView fetchBookings(@PathVariable("admin_id") int admin_id) {
-
-        Admin admin = iAdminService.getById(admin_id);
-        if (admin != null) {
+    public ModelAndView fetchBookings(@PathVariable("admin_id") Integer admin_id) {
+        //System.out.println("22222222");
+        if(admin_id!=null){
             QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
+            findVaccineByAdminId.eq("admin_id", listAdmin.get(0).getAdminId());
             List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
             List<String> vaccineNames = new ArrayList<>();
             List<Integer> vaccineIds = new ArrayList<>();
+            Map<Integer,String> vaccineMap = new HashMap<>();
             for (Vaccine vaccine : vaccineList) {
                 vaccineNames.add(vaccine.getVaccineName());
                 vaccineIds.add(vaccine.getVaccineId());
+                vaccineMap.put(vaccine.getVaccineId(),vaccine.getVaccineName());
             }
             QueryWrapper<Booking> queryWrapper = new QueryWrapper<>();
-            queryWrapper.in("vaccine_id" , vaccineIds);
+            queryWrapper.in("vaccine_id",vaccineIds);
             List<Booking> bookingList = iBookingService.list(queryWrapper);
-            ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking" , "bookingList" , bookingList);
+            List<BookingVO> bookingList1 = new ArrayList<>();
+            for (Booking booking : bookingList) {
+                BookingVO b = new BookingVO();
+                b.setBookingId(booking.getBookingId());
+                b.setDate(booking.getDate());
+                b.setPeriod(booking.getBookingTimezone());
+                b.setVaccine(vaccineMap.get(booking.getVaccineId()));
+                b.setUser(iUserService.getById(booking.getUserId()).getUserFirstname());
+                bookingList1.add(b);
+            }
+            ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking" , "bookingList1" , bookingList1);
             return modelAndView;
-            //return bookingList;
         }
         return null;
     }
