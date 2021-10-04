@@ -48,10 +48,10 @@ public class AdminController {
     //一个adminList来判断登录合法性 并且存储相关信息
     List<Admin> listAdmin= new ArrayList<>();
 
-    @GetMapping("{admin_id}/dashboard")
-    public ModelAndView fetchDashboard(@PathVariable("admin_id") int admin_id) {
+    @GetMapping("/dashboard")
+    public ModelAndView fetchDashboard() {
+        int admin_id = listAdmin.get(0).getAdminId();
         System.out.print(admin_id);
-        Admin admin = iAdminService.getById(admin_id);
 
         QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
         findVaccineByAdminId.lambda().eq(Vaccine::getAdminId, admin_id);
@@ -83,13 +83,10 @@ public class AdminController {
         return modelAndView;
     }
 
-    /**
-     * @param admin_id
-     * @return
-     */
-    @GetMapping("/{admin_id}/bookings")
-    public ModelAndView fetchBookings(@PathVariable("admin_id") Integer admin_id) {
+    @GetMapping("/bookings")
+    public ModelAndView fetchBookings() {
         //System.out.println("22222222");
+        Integer admin_id = listAdmin.get(0).getAdminId();
         if(admin_id!=null){
             QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
             findVaccineByAdminId.eq("admin_id", listAdmin.get(0).getAdminId());
@@ -121,14 +118,14 @@ public class AdminController {
         return null;
     }
 
-    @PostMapping("/{admin_id}/bookings")
+    @PostMapping("/bookings")
     public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
         //TODO JAMES
         return null;
     }
 
 
-    @GetMapping("/{admin_id}/booking/user/{user_id}")
+    @GetMapping("/booking/user/{user_id}")
     public ModelAndView fetchBookingUser(@PathVariable("user_id") int user_id) {
         User user = iUserService.getById(user_id);
         ModelAndView modelAndView = new ModelAndView( "adminPages/booking_user","result", user);
@@ -136,28 +133,25 @@ public class AdminController {
     }
 
     /**
-     * @param admin_id
-     //* @param body     body can used to get add, delete, update requests based on the design of figma
-     * @return
+     * Vaccine can add, delete, update requests based on the design of figma
      */
-    @GetMapping("/{admin_id}/vaccines")
-    public ModelAndView fetchVaccines(@PathVariable("admin_id") int admin_id/*, @RequestBody Map<String, Object> body*/) {
-        //TODO ZHENGCHENG
-
+    @GetMapping("/vaccines")
+    public ModelAndView fetchVaccines(){
         List<Vaccine> resultSet = vaccineController.getVaccineListByAdminId(listAdmin.get(0).getAdminId());
         ModelAndView modelAndView = new ModelAndView( "adminPages/adminVaccines","adminVaccineList", resultSet);
         return modelAndView;
     }
 
-    @GetMapping("/{admin_id}/setting")
-    public ModelAndView fetchSetting(@PathVariable("admin_id") int admin_id){
-        Admin admin = iAdminService.getById(admin_id);
+    @GetMapping("/setting")
+    public ModelAndView fetchSetting(){
+
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("admin_id", listAdmin.get(0).getAdminId());
         result.put("account", listAdmin.get(0).getAdminAccount());
         result.put("name", listAdmin.get(0).getAdminName());
         Location location = iLocationService.getById(listAdmin.get(0).getLocationId());
-        result.put("location", location.getLocation());
+        result.put("location_name", location.getLocation());
+        result.put("location_id", location.getLocationId());
         List<Location> locationList = iLocationService.list();
         result.put("location_options", locationList);
 
@@ -165,19 +159,22 @@ public class AdminController {
         return modelAndView;
     }
 
-    @PutMapping("/{admin_id}/setting")
-    public boolean udateSetting( @PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
-        //ModelAndView modelAndView = new ModelAndView( "adminPages/setting", new );
-        //if body has content, update admin information
-        System.out.println(body);
-        Admin admin = iAdminService.getById(admin_id);
-        if (!body.isEmpty()) {
-            System.out.println(body);
-            admin.updateByMap(body);
-            iAdminService.saveOrUpdate(admin);
-            return  true;
-        }
-        return false;
+    @PostMapping(value = "/setting")
+    public ModelAndView updateSetting(@RequestParam String name,String password, Integer location) {
+
+        System.out.println("hello");
+        System.out.println(name);
+        System.out.println(password);
+        System.out.println(location);
+
+        Admin admin = listAdmin.get(0);
+        admin.setAdminName(name);
+        admin.setAdminPassword(password);
+        admin.setLocationId(location);
+
+        //admin.updateByMap(body);
+        iAdminService.saveOrUpdate(admin);
+        return this.fetchSetting();
     }
 //这个地方改成index了
     @RequestMapping("/index")
@@ -209,18 +206,6 @@ public class AdminController {
         }
 
     }
-
-//    @GetMapping("/login")
-//    public ModelAndView getAdminLoginPage(){
-//        ModelAndView modelAndView = new ModelAndView( "adminPages/adminLogin");
-//        return modelAndView;
-//    }
-
-//    @GetMapping("/register")
-//    public ModelAndView getAdminRegisterPage(){
-//        ModelAndView modelAndView = new ModelAndView( "adminPages/adminRegister");
-//        return modelAndView;
-//    }
 
     @RequestMapping("/registerPage")
     public String registerPage(){
@@ -255,8 +240,6 @@ public class AdminController {
     public String  logout(Map<Object, Object> map) {
         map.put("adminList","");
         return "redirect:index";// 重定向
-
-
     }
 
 //    取信息

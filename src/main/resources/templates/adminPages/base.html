@@ -23,10 +23,10 @@
 
           <nav style="background-color: lightpink; height: 100vh" id="fh5co-main-menu" >
                 <ul>
-                  <li><a th:href="@{/vacbook/admin/1/dashboard}"><span>Dashboard</span></a></li>
-                  <li><a th:href="@{/vacbook/admin/1/bookings}"><span>Bookings</span></a></li>
-                  <li><a th:href="@{/vacbook/admin/1/vaccines}"><span>Vaccines</span></a></li>
-                  <li><a th:href="@{/vacbook/admin/1/setting}"><span>Setting</span> </a></li>
+                  <li><a th:href="@{/vacbook/admin/dashboard}"><span>Dashboard</span></a></li>
+                  <li><a th:href="@{/vacbook/admin/bookings}"><span>Bookings</span></a></li>
+                  <li><a th:href="@{/vacbook/admin/vaccines}"><span>Vaccines</span></a></li>
+                  <li><a th:href="@{/vacbook/admin/setting}"><span>Setting</span> </a></li>
                 </ul>
             <div class ="logout">
               <a  th:href="@{/vacbook/admin/logout}"><span>Log out</span></a>
@@ -43,7 +43,7 @@
 
     </div>
     <div layout:fragment = "content">
-      admin pages
+        <h1>Welcome to the Vacbook management system !</h1>
     </div>
   </div>
 
