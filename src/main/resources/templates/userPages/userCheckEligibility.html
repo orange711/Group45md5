@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
     </script>
+    <script type="text/javascript" th:src="@{/js/checkbox.js}" ></script>
 </head>
 
 <body>
@@ -100,12 +101,11 @@
         </ul>
         <form style="padding-bottom: 50px; text-align: right; color: red;">
             <div class="checkbox" style="padding-bottom: 20px;">
-            <input type="checkbox" id="eligibility" name="eligibility" value="eligibility" required>
-            <label> I can confirm I am eligible to take the vaccine</label>
-        </div>
-            <a th:href="@{/vacBook/user/index}"type="submit" class="btn btn-danger">Back to Home Page</a>
-            <a th:href="@{/vacBook/user/index}"type="submit" class="btn btn-success">Confirm</a>
-
+                <input type="checkbox" id="eligibility" name="eligibility" value="eligibility" onchange="handleChange()" required >
+                <label> I can confirm I am eligible to take the vaccine</label>
+            </div>
+            <a th:href="@{/vacBook/user/index}" type="submit" class="btn btn-outline-danger">Back to Home Page</a>
+            <a th:href="@{/vacBook/user/index}" type="submit"  class="btn btn-success" id="confirm-button" disabled="true" style="opacity: 0.5;cursor: default">Confirm </a>
         </form>
     </div>
 

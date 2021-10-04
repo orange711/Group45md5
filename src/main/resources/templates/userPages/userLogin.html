@@ -21,11 +21,12 @@
             <a th:href="@{/vacBook/user/index}"><img th:src="@{/img/logo.png}"></a>
         </div>
         <center>
-            <form class="form" th:action="@{/vacBook/user/login}" method = 'post'>
+            <form class="form" th:action="@{/vacBook/user/loginForm}" method="post" >
                 <p>login here As a user</p>
                 <input type="text" name = 'name' placeholder="Username">
                 <input type="password" name = 'password' placeholder="Password">
-                <a class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button" style="text-decoration: none; width: 350px;color:black;font-size: 18px;">Log In</a>
+<!--                <a class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button" style="text-decoration: none; width: 350px;color:black;font-size: 18px;">Log In</a>-->
+                <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button">Log In</button>
                 <a th:href="@{/user/register}" class="shadow p-3 mb-3 bg-body rounded" type="submit"
                     id="login-button" style="text-decoration: none; width: 350px;color:black;font-size: 18px;">Register</a>
                 <div >
