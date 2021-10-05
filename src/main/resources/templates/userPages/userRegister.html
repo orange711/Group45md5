@@ -102,11 +102,11 @@
           <input type="tel" class="form-control" placeholder="Mobile Phone (Start with 0)" maxlength=10 required>
         </div>
         <div class="col-md-6 mb-3" style="padding-top: 25px; text-align: right;">
-          <div class="check" style="display: inline; padding-right: 20px;">
-          <a th:href="@{/vacBook/user/checkEligibilityRegister}" class="link-danger">Check eligibility</a>
+          <div class="check" style="display: inline; padding-right: 30px;">
+            <a th:href="@{/vacBook/user/checkEligibilityRegister}" class="link-danger">Check eligibility</a>
         </div>
-
-          <a href="" type="submit" class="btn btn-success">Confirm</a>
+            <input href="" type="submit" class="btn btn-success" value="Confirm"></input>
+            <a th:href="@{/vacBook/user/index}" type="submit" class="btn btn-danger">Back</a>
         </div>
       </div>
     </form>

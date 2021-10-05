@@ -99,13 +99,13 @@
       Those who have had any other serious adverse events attributed to the first dose of AstraZeneca vaccine.
     </li>
   </ul>
-  <form style="padding-bottom: 50px; text-align: right; color: red;">
+  <form style="padding-bottom: 50px; text-align: right; color: red;" th:action="@{/vacBook/user/checkboxDone}" method="post">
     <div class="checkbox" style="padding-bottom: 20px;">
       <input type="checkbox" id="eligibility" name="eligibility" value="eligibility" onchange="handleChange()" required >
       <label> I can confirm I am eligible to take the vaccine</label>
     </div>
     <a th:href="@{/vacBook/user/index}" type="submit" class="btn btn-outline-danger">Back to Home Page</a>
-    <a th:href="@{/user/register}" type="submit"  class="btn btn-success" id="confirm-button" disabled="true" style="opacity: 0.5;cursor: default">Confirm </a>
+    <input type="submit"  class="btn btn-success" id="confirm-button" disabled="true" value="Confirm" style="opacity: 0.5;cursor: default"> </input>
   </form>
 </div>
 

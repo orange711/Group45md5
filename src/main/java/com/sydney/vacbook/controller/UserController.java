@@ -246,6 +246,13 @@ public class UserController {
 
     }
 
+    @PostMapping ("/checkboxDone")
+    public ModelAndView checkboxDone(){
+        ModelAndView modelAndView = new ModelAndView( "userPages/userRegister");
+        return modelAndView;
+
+    }
+
     @GetMapping("/logout")
     public String logout(Map<Object, Object> map){
         map.put("userid", "");
