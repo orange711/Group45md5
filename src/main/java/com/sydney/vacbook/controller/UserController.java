@@ -4,6 +4,7 @@ package com.sydney.vacbook.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sydney.vacbook.entity.User;
 import com.sydney.vacbook.service.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +23,13 @@ import java.util.Map;
  * @since 2021-09-11
  */
 @RestController
-@RequestMapping("/vacbook/user")
-@Controller
+@RequestMapping("/vacBook/user")
 public class UserController {
     @Autowired
     private IUserService iUserService;
+
+    @Autowired
+    private SendEmailService sendEmailService;
 
     @Autowired
     private IAdminService iAdminService;
@@ -103,20 +106,32 @@ public class UserController {
     /**
      * Auth part
      * TODO WORDE
-     * @param body
+     //* @param body
      * @return
      * ajax
      */
-    @PostMapping("/login")
+//    @PostMapping ("/loginForm")
+//    public String loginForm(User user, @Param("name") String name, @Param("password") String password){
+////        QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
+////        sectionQueryWrapper.eq("user_account", user.getUserAccount());
+////        sectionQueryWrapper.eq("admin_password", user.getUserPassword());
+////        List<User> listUser = iUserService.list(sectionQueryWrapper);
+//        System.out.println(name);
+//        System.out.println(password);
+//        return "ok";
+//    }
+    @PostMapping ("/loginForm")
     public String login(User user, @RequestBody Map<String, Object> body, HttpServletRequest request) {
 
+//        System.out.println(request.getParameter("name"));
+        System.out.println("xxxxxxx");
         user.setUserAccount(request.getParameter("name"));
         user.setUserPassword(request.getParameter("password"));
 
 //		//按用户名密码查询
         QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
         sectionQueryWrapper.eq("user_account", user.getUserAccount());
-        sectionQueryWrapper.eq("admin_password", user.getUserPassword());
+        sectionQueryWrapper.eq("user_password", user.getUserPassword());
         List<User> listUser = iUserService.list(sectionQueryWrapper);
 
         if (!listUser.toString().equals("[]")) {
@@ -215,10 +230,20 @@ public class UserController {
         }
 
 
+    }
 
+    @RequestMapping("/sendEmail")
+    public ModelAndView sendToUserEmail(@RequestParam String email){
+        sendEmailService.sendEmail(email,"HI!","Test email from Vacbook!");
+        ModelAndView modelAndView = new ModelAndView( "userPages/emailConfirmation");
+        return modelAndView;
 
+    }
 
-
+    @PostMapping ("/checkboxDone")
+    public ModelAndView checkboxDone(){
+        ModelAndView modelAndView = new ModelAndView( "userPages/userRegister");
+        return modelAndView;
 
     }
 

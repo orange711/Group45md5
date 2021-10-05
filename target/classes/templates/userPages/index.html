@@ -1349,10 +1349,10 @@
                     <h3>Have Question in mind?</h3>
                     <h3>Let us help you</h3>
                     <div class="subscribe-bar">
-                        <form class="subscribe-container">
-                            <input type="text" id="search-bar" placeholder="email_address@gmail.com">
+                        <form class="subscribe-container" th:action="@{/vacBook/user/sendEmail}" method="post">
+                            <input type="email" id="search-bar" name = "email" placeholder="email_address@gmail.com" required>
 
-                            <a href="#" class="submit-btn">Send</a>
+                            <button type="submit" class="submit-btn">Send</button>
 
                         </form>
                     </div>

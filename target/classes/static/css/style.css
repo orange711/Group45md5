@@ -393,7 +393,7 @@ input#subscribe-bar {
     right: 0px;
 }
 
-.subscribe-container a {
+.subscribe-container button {
     color: #fff;
     padding: 10px 10px;
     text-decoration: none;

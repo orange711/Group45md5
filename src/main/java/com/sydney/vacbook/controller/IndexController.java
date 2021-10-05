@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -24,6 +25,18 @@ public class IndexController {
     @GetMapping("/user/register")
     public String userRegister() {
         return "userPages/userRegister";
+    }
+
+    @PostMapping("vacBook/user/indexCheckboxDone")
+    public ModelAndView indexCheckboxDone(){
+        ModelAndView modelAndView = new ModelAndView( "userPages/index");
+        return modelAndView;
+
+    }
+
+    @GetMapping("/vacBook/user/sendEmailSuccessful")
+    public String userSentEmailSuccess() {
+        return "userPages/emailConfirmation";
     }
 
 
