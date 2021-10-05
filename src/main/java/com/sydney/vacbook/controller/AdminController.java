@@ -10,6 +10,7 @@ import com.sydney.vacbook.service.*;
 import lombok.Getter;
 
 
+import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 /**
@@ -267,6 +269,14 @@ public class AdminController {
 
     @RequestMapping("/register")
     public String register(Admin admin, Map<Object, Object> body) {
+
+        QueryWrapper<Admin> checkQueryWrapper = new QueryWrapper<>();
+        checkQueryWrapper.eq("admin_account", admin.getAdminAccount());
+        if (iAdminService.getOne(checkQueryWrapper)!=null){
+            System.err.println("This account has been registered");
+            return "redirect:registerPage";//重定向
+        }
+
         System.out.println("===============");
         boolean newAdmin = iAdminService.save(admin);
         if (newAdmin == false) {
