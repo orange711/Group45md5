@@ -56,18 +56,14 @@ public class VaccineController {
     }
 
     // get all vaccine according to the adminID
-    @RequestMapping("/{admin_id}/getvaccine")
-
-    public List<Vaccine> getVaccineListByAdminId(@PathVariable("admin_id") int adminId) {
-
+    public List<Vaccine> getVaccineListByAdminId(int adminId) {
         QueryWrapper<Vaccine> sectionQueryWrapper = new QueryWrapper<>();
         sectionQueryWrapper.eq("admin_id", adminId);
         List<Vaccine> getVaccineListByAdminId = iVaccineService.list(sectionQueryWrapper);
         return getVaccineListByAdminId;
-
     }
+
     //del vaccine
-    @GetMapping("/delvaccine")
     public boolean delVaccine(Vaccine vaccine){
         boolean removeVaccineById = iVaccineService.removeById(vaccine.getVaccineId());
         return removeVaccineById;

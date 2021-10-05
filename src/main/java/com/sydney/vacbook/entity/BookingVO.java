@@ -13,4 +13,5 @@ public class BookingVO {
     private String period;
     private String vaccine;
     private String user;
+    private Integer userId;
 }

@@ -2,12 +2,7 @@ package com.sydney.vacbook.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.sydney.vacbook.entity.Admin;
-import com.sydney.vacbook.entity.Location;
 import com.sydney.vacbook.entity.User;
-import com.sydney.vacbook.entity.Vaccine;
-import com.sydney.vacbook.mapper.UserMapper;
 import com.sydney.vacbook.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +43,7 @@ public class UserController {
     @GetMapping("/{user_id}")
     public ModelAndView fetchUser(@PathVariable("user_id") int user_id){
         User user = iUserService.getById(user_id);
-        ModelAndView modelAndView = new ModelAndView( "userPages/userEdit","result", user);
+        ModelAndView modelAndView = new ModelAndView( "userPages/userProfile","result", user);
         System.out.println(user);
         return  modelAndView;
     }

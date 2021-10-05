@@ -21,7 +21,7 @@
     <img th:src ="@{/img/logo.png}">
   </div>
   <center>
-    <form class="form" th:action="@{/vacbook/admin/login}">
+    <form class="form" th:action="@{/vacbook/admin/login}" method="post">
       <p>login here As An admin</p>
       <input type="text" name = "account" class="form-control" placeholder="Username" required>
       <input type="password" name = "password" class="form-control" placeholder="Password" required>
