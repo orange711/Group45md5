@@ -110,6 +110,7 @@ public class AdminController {
                 b.setPeriod(booking.getBookingTimezone());
                 b.setVaccine(vaccineMap.get(booking.getVaccineId()));
                 b.setUser(iUserService.getById(booking.getUserId()).getUserFirstname());
+                b.setUserId(iUserService.getById(booking.getUserId()).getUserId());
                 bookingList1.add(b);
             }
             ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking" , "bookingList1" , bookingList1);
@@ -169,8 +170,11 @@ public class AdminController {
 
         Admin admin = listAdmin.get(0);
         admin.setAdminName(name);
-        admin.setAdminPassword(password);
         admin.setLocationId(location);
+        if(password!= null && password!=" " && !password.isEmpty()){
+            System.out.println(password+".");
+            admin.setAdminPassword(password);
+        }
 
         //admin.updateByMap(body);
         iAdminService.saveOrUpdate(admin);

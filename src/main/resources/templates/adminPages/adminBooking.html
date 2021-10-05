@@ -22,7 +22,7 @@
         <td th:text="${l.getPeriod()}"/>
         <td th:text="${l.getVaccine()}"/>
         <td style="text-align: center" >
-          <a th:href="@{/vacbook/admin/1/booking/user/{userId} (userId = ${l.getUser()})}">
+          <a th:href="@{/vacbook/admin/booking/user/{userId} (userId = ${l.getUserId()})}">
             <input style="background-color: dimgray" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" th:value="${l.getUser()}"/>
           </a>
         </td>
