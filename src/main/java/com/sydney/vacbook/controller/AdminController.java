@@ -8,12 +8,17 @@ import com.sydney.vacbook.mapper.AdminMapper;
 import com.sydney.vacbook.mapper.UserMapper;
 import com.sydney.vacbook.service.*;
 import lombok.Getter;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.*;
 
@@ -46,7 +51,7 @@ public class AdminController {
     @Autowired
     VaccineController vaccineController;
     //一个adminList来判断登录合法性 并且存储相关信息
-    List<Admin> listAdmin= new ArrayList<>();
+    List<Admin> listAdmin = new ArrayList<>();
 
     @GetMapping("/dashboard")
     public ModelAndView fetchDashboard() {
@@ -79,7 +84,7 @@ public class AdminController {
         result.put("vaccines", vaccineNames);
         result.put("booking_num", bookingNum);
         System.out.print(result);
-        ModelAndView modelAndView = new ModelAndView( "adminPages/dashboard","result", result);
+        ModelAndView modelAndView = new ModelAndView("adminPages/dashboard", "result", result);
         return modelAndView;
     }
 
@@ -87,20 +92,20 @@ public class AdminController {
     public ModelAndView fetchBookings() {
         //System.out.println("22222222");
         Integer admin_id = listAdmin.get(0).getAdminId();
-        if(admin_id!=null){
+        if (admin_id != null) {
             QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
             findVaccineByAdminId.eq("admin_id", listAdmin.get(0).getAdminId());
             List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
             List<String> vaccineNames = new ArrayList<>();
             List<Integer> vaccineIds = new ArrayList<>();
-            Map<Integer,String> vaccineMap = new HashMap<>();
+            Map<Integer, String> vaccineMap = new HashMap<>();
             for (Vaccine vaccine : vaccineList) {
                 vaccineNames.add(vaccine.getVaccineName());
                 vaccineIds.add(vaccine.getVaccineId());
-                vaccineMap.put(vaccine.getVaccineId(),vaccine.getVaccineName());
+                vaccineMap.put(vaccine.getVaccineId(), vaccine.getVaccineName());
             }
             QueryWrapper<Booking> queryWrapper = new QueryWrapper<>();
-            queryWrapper.in("vaccine_id",vaccineIds);
+            queryWrapper.in("vaccine_id", vaccineIds);
             List<Booking> bookingList = iBookingService.list(queryWrapper);
             List<BookingVO> bookingList1 = new ArrayList<>();
             for (Booking booking : bookingList) {
@@ -113,7 +118,7 @@ public class AdminController {
                 b.setUserId(iUserService.getById(booking.getUserId()).getUserId());
                 bookingList1.add(b);
             }
-            ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking" , "bookingList1" , bookingList1);
+            ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking", "bookingList1", bookingList1);
             return modelAndView;
         }
         return null;
@@ -126,10 +131,10 @@ public class AdminController {
     }
 
 
-    @GetMapping("/booking/user/{user_id}")
+    @GetMapping("/bookings/user/{user_id}")
     public ModelAndView fetchBookingUser(@PathVariable("user_id") int user_id) {
         User user = iUserService.getById(user_id);
-        ModelAndView modelAndView = new ModelAndView( "adminPages/booking_user","result", user);
+        ModelAndView modelAndView = new ModelAndView("adminPages/booking_user", "result", user);
         return modelAndView;
     }
 
@@ -137,14 +142,64 @@ public class AdminController {
      * Vaccine can add, delete, update requests based on the design of figma
      */
     @GetMapping("/vaccines")
-    public ModelAndView fetchVaccines(){
+    public ModelAndView fetchVaccines() {
         List<Vaccine> resultSet = vaccineController.getVaccineListByAdminId(listAdmin.get(0).getAdminId());
-        ModelAndView modelAndView = new ModelAndView( "adminPages/adminVaccines","adminVaccineList", resultSet);
+        ModelAndView modelAndView = new ModelAndView("adminPages/adminVaccines", "adminVaccineList", resultSet);
         return modelAndView;
     }
 
+    @PostMapping("/vaccines/update")
+    public ModelAndView updateVaccine(@RequestParam Integer stock, Integer update_id) {
+        System.out.println(stock);
+        System.out.println(update_id);
+        if (update_id != null && stock != null) {
+            System.out.println("update vaccine");
+            Vaccine vaccine = iVaccineService.getById(update_id);
+            vaccine.setVaccineAmount(stock);
+            iVaccineService.saveOrUpdate(vaccine);
+            System.out.println("change success");
+        }
+        return fetchVaccines();
+    }
+
+    @PostMapping("/vaccines/delete")
+    public ModelAndView deleteVaccine(@RequestParam Integer delete_id) {
+        System.out.println(delete_id);
+        if(delete_id!=null) {
+            System.out.println("delete vaccine");
+            Vaccine vaccine = iVaccineService.getById(delete_id);
+            vaccineController.delVaccine(vaccine);
+            System.out.println("delete success");
+        }
+        return fetchVaccines();
+    }
+
+    @PostMapping("/vaccines/add")
+    public ModelAndView addVaccine(@RequestParam String name, String type, Integer amount) {
+        if (amount != null && name != null && type != null) {
+            System.out.println("add vaccine");
+            Vaccine vaccine = new Vaccine();
+            vaccine.setVaccineName(name);
+            vaccine.setVaccineType(type);
+            vaccine.setVaccineAmount(amount);
+            vaccine.setVaccineDescription(" ");
+            vaccine.setAdminId(listAdmin.get(0).getAdminId());
+            iVaccineService.save(vaccine);
+            System.out.println("add success");
+        }
+        return fetchVaccines();
+    }
+
+    @PostMapping("/vaccines/{vaccine_id}/delete")
+    public ModelAndView deleteVaccine(@PathVariable int vaccine_id) {
+        System.out.println(vaccine_id);
+        iVaccineService.removeById(vaccine_id);
+        return fetchVaccines();
+    }
+
+
     @GetMapping("/setting")
-    public ModelAndView fetchSetting(){
+    public ModelAndView fetchSetting() {
 
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("admin_id", listAdmin.get(0).getAdminId());
@@ -156,12 +211,12 @@ public class AdminController {
         List<Location> locationList = iLocationService.list();
         result.put("location_options", locationList);
 
-        ModelAndView modelAndView = new ModelAndView( "adminPages/setting","result", result);
+        ModelAndView modelAndView = new ModelAndView("adminPages/setting", "result", result);
         return modelAndView;
     }
 
     @PostMapping(value = "/setting")
-    public ModelAndView updateSetting(@RequestParam String name,String password, Integer location) {
+    public ModelAndView updateSetting(@RequestParam String name, String password, Integer location) {
 
         System.out.println("hello");
         System.out.println(name);
@@ -171,8 +226,8 @@ public class AdminController {
         Admin admin = listAdmin.get(0);
         admin.setAdminName(name);
         admin.setLocationId(location);
-        if(password!= null && password!=" " && !password.isEmpty()){
-            System.out.println(password+".");
+        if (password != null && password != " " && !password.isEmpty()) {
+            System.out.println(password + ".");
             admin.setAdminPassword(password);
         }
 
@@ -180,14 +235,16 @@ public class AdminController {
         iAdminService.saveOrUpdate(admin);
         return this.fetchSetting();
     }
-//这个地方改成index了
+
+    //这个地方改成index了
     @RequestMapping("/index")
-    public String index(){
+    public String index() {
         return "adminPages/adminLogin";
     }
-//跳转到login  --- 但是现在登录成功的return我有点迷惑 报500错误
+
+    //跳转到login  --- 但是现在登录成功的return我有点迷惑 报500错误
     @RequestMapping("/login")
-    public String login(@RequestParam String account,String password, Map<String, Object> map) {
+    public String login(@RequestParam String account, String password, Map<String, Object> map) {
         System.out.println("1111111111111111111111111111");
         //TODO WORDE
         QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
@@ -201,7 +258,7 @@ public class AdminController {
 
             map.put("adminList", listAdmin.get(0));
 //下面写登录后想要获得的更多东西例如获取疫苗
-           // map.put("vaccineList", vaccineController.getVaccineListByAdminId(admin.getAdminId()));
+            // map.put("vaccineList", vaccineController.getVaccineListByAdminId(admin.getAdminId()));
 
             return "adminPages/base";//重定向
         } else {
@@ -212,7 +269,7 @@ public class AdminController {
     }
 
     @RequestMapping("/registerPage")
-    public String registerPage(){
+    public String registerPage() {
         return "adminPages/adminRegister";
     }
 
@@ -241,8 +298,8 @@ public class AdminController {
     }
 
     @RequestMapping("/logout")
-    public String  logout(Map<Object, Object> map) {
-        map.put("adminList","");
+    public String logout(Map<Object, Object> map) {
+        map.put("adminList", "");
         return "redirect:index";// 重定向
     }
 

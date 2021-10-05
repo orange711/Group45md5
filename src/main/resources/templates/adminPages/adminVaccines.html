@@ -10,77 +10,79 @@
     <script type="text/javascript" th:src="@{/js/adminVaccineModel.js}"></script>
 </head>
 <body>
-    <div layout:fragment="content" class="container"
-         style="max-width: 700px; margin-top: 50px; padding-top: 30px;  padding-bottom: 30px; line-height:30px; border: 1px solid black;">
-        <h1 align="center">Vaccine Information</h1>
+<div layout:fragment="content" class="container"
+     style="max-width: 700px; margin-top: 50px; padding-top: 30px;  padding-bottom: 30px; line-height:30px; border: 1px solid black;">
+    <h1 align="center">Vaccine Information</h1>
 
-        <table class="table table-striped" style="border: 1px solid black;">
-            <tbody style="text-align: center">
+    <table class="table table-striped" style="border: 1px solid black;">
+        <tbody style="text-align: center">
+        <tr>
+            <th>Vaccine type</th>
+            <th>Vaccine name</th>
+            <th>stock</th>
+            <th>Operation</th>
+        </tr>
+        <tr th:each="l:${adminVaccineList}" style="text-align: center">
+            <td th:text="${l.getVaccineType()}"></td>
+            <td th:text="${l.getVaccineName()}"></td>
+            <td th:text="${l.getVaccineAmount()}"></td>
+            <td th:id="${l.getVaccineId()}" style="text-align: center">
+                <button th:onclick="| showAmount( ${l.getVaccineAmount()}, ${l.getVaccineId()} )|"
+                        style="background-color: dimgray" type="button" class="btn btn-primary eBtn" data-toggle="modal"
+                        data-target="#editModal">
+                    Edit
+                </button>
+                <button th:onclick="| getDelete( ${l.getVaccineId()} )|" style="background-color: darkred" type="button"
+                        class="btn btn-primary" data-toggle="modal" data-target="#deleteModal">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button style=" background-color: mediumseagreen ; display: block; margin: 0 auto" type="button"
+            class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Add
+    </button>
 
-                <tr >
-                    <th>Vaccine type</th>
-                    <th>Vaccine name</th>
-                    <th>stock</th>
-                    <th>Operation</th>
-                </tr>
-                <tr th:each="l:${adminVaccineList}" style="text-align: center">
-                    <td th:text="${l.getVaccineType()}" />
-                    <td th:text="${l.getVaccineName()}"/>
-                    <td th:text="${l.getVaccineAmount()}"/>
-                    <td style="text-align: center">
-                        <button th:href="${l.getVaccineAmount()}" style="background-color: dimgray" type="button" class="btn btn-primary eBtn" data-toggle="modal" data-target="#editModal">Edit</button>
-                        <button style="background-color: darkred" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal">
-                            Delete</button>
-<!--                        <button class="" type="submit" id="edit-button">Edit</button>-->
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-<!--        <button style="display: block; margin: 0 auto" class="" type="submit" id="Add-button">Add</button>-->
-
-        <button style=" background-color: mediumseagreen ; display: block; margin: 0 auto"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-            Add</button>
-
-
+    <form th:action="@{/vacbook/admin/vaccines/update}" method="post">
+        <input type="hidden" id="update_id" name="update_id"/>
         <!-- edit Modal -->
-        <div class="editForm">
-            <form action="" method="post">
-                <div class="modal" id="editModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
+        <div class="modal" id="editModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Total stock Here</h4>
+                        <button type="button" class="close" data-dismiss="modal">x</button>
+                    </div>
 
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                                <h4 class="modal-title">Edit Total stock Here</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <table class="table table-striped" style="border: 1px solid black;">
+                            <tbody style="text-align: center">
+                            <tr>
+                                <th>New Vaccine stock number</th>
+                            </tr>
+                            <tr>
+                                <th><input type="text" id="stock" name="stock" value="" required/></th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                                <!-- Modal body -->
-                                <div class="modal-body">
-                                    <table class="table table-striped" style="border: 1px solid black;">
-                                        <tbody style="text-align: center">
-                                        <tr>
-                                            <th>New Vaccine stock number</th>
-                                        </tr>
-                                        <tr>
-                                            <th><input type="text" id="stock" name="stock" value = "" required/></th>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                    <input type="submit" class="btn btn-danger" data-dismiss="modal" value="Save"/>
-                                </div>
-
-                        </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button class="btn btn-danger" type="submit" onclick="updateStock()">Save</button>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
+    </form>
 
+    <form th:action="@{/vacbook/admin/vaccines/delete}" method="post">
+        <input type="hidden" id="delete_id" name="delete_id"/>
         <!-- delete Modal -->
         <div class="modal" id="deleteModal">
             <div class="modal-dialog">
@@ -100,14 +102,16 @@
                         <!-- Modal footer -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Back</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                            <button class="btn btn-danger" type="submit">Delete</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+    </form>
 
-        <!-- The Modal -->
+    <form th:action="@{/vacbook/admin/vaccines/add}" method="post">
+        <!-- add Modal -->
         <div class="modal" id="myModal">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -123,16 +127,16 @@
 
                             <table class="table table-striped" style="border: 1px solid black;">
                                 <tbody style="text-align: center">
-                                    <tr>
-                                        <th>New Vaccine type</th>
-                                        <th>New Vaccine name</th>
-                                        <th>New Vaccine stock number</th>
-                                    </tr>
-                                    <tr>
-                                        <th><input  value = "" required/></th>
-                                        <th><input  value = "" required/></th>
-                                        <th><input  value = "" required/></th>
-                                    </tr>
+                                <tr>
+                                    <th>New Vaccine type</th>
+                                    <th>New Vaccine name</th>
+                                    <th>New Vaccine stock number</th>
+                                </tr>
+                                <tr>
+                                    <th><input id="type" name="type" value="" required/></th>
+                                    <th><input id="name" name="name" value="" required/></th>
+                                    <th><input id="amount" name="amount" value="" required/></th>
+                                </tr>
                                 </tbody>
                             </table>
 
@@ -141,14 +145,43 @@
                         <!-- Modal footer -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-danger" data-dismiss="modal">Add</button>
+                            <button class="btn btn-danger" type="submit">Create</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+    </form>
 
+    <script>
+        function showAmount(amount, vaccineId) {
+            console.log(vaccineId);
+            console.log(amount);
+            document.getElementById('stock').value = amount;
+            document.getElementById('update_id').value = vaccineId;
+        }
 
-    </div>
+        function getDelete(vaccineId) {
+            console.log(vaccineId);
+            document.getElementById('delete_id').value = vaccineId;
+        }
+
+        function updateStock() {
+            //Do not delete this comment!  this maybe useful in the future
+
+            // var stock = document.getElementById('stock').value;
+            // var vaccine_id = document.getElementById('vaccine_id').value;
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("POST", "/vacbook/admin/vaccines", true);
+            // xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            // let data = 'stock='+ stock+ '&vaccine_id='+ vaccine_id;
+            // console.log(encodeURI(data));
+            // console.log(data);
+            // xhr.send(data);
+            // window.location.reload();
+        }
+    </script>
+
+</div>
 </body>
 </html>
