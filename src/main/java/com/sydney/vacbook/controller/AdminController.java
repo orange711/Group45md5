@@ -190,14 +190,6 @@ public class AdminController {
         return fetchVaccines();
     }
 
-    @PostMapping("/vaccines/{vaccine_id}/delete")
-    public ModelAndView deleteVaccine(@PathVariable int vaccine_id) {
-        System.out.println(vaccine_id);
-        iVaccineService.removeById(vaccine_id);
-        return fetchVaccines();
-    }
-
-
     @GetMapping("/setting")
     public ModelAndView fetchSetting() {
 
