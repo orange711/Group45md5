@@ -26,6 +26,11 @@ public class IndexController {
         return "userPages/userRegister";
     }
 
+    @GetMapping("/vacBook/user/sendEmailSuccessful")
+    public String userSentEmailSuccess() {
+        return "userPages/emailConfirmation";
+    }
+
 
     @GetMapping("vacBook/user/checkEligibility")
     public String userCheckEligibility() {

@@ -9,6 +9,7 @@ import com.sydney.vacbook.entity.User;
 import com.sydney.vacbook.entity.Vaccine;
 import com.sydney.vacbook.mapper.UserMapper;
 import com.sydney.vacbook.service.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +29,13 @@ import java.util.Map;
  * @since 2021-09-11
  */
 @RestController
-@RequestMapping("/vacbook/user")
+@RequestMapping("/vacBook/user")
 public class UserController {
     @Autowired
     private IUserService iUserService;
+
+    @Autowired
+    private SendEmailService sendEmailService;
 
     @Autowired
     private IAdminService iAdminService;
@@ -112,56 +116,63 @@ public class UserController {
      * @return
      * ajax
      */
-    @PostMapping ("/loginForm")
-    public String loginForm(){
-        return "ok";
-    }
 //    @PostMapping ("/loginForm")
-//    public String login(User user, @RequestBody Map<String, Object> body, HttpServletRequest request) {
-//
-//        System.out.println("hhhhhh");
-//        user.setUserAccount(request.getParameter("name"));
-//        user.setUserPassword(request.getParameter("password"));
-//
-////		//按用户名密码查询
-//        QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
-//        sectionQueryWrapper.eq("user_account", user.getUserAccount());
-//        sectionQueryWrapper.eq("admin_password", user.getUserPassword());
-//        List<User> listUser = iUserService.list(sectionQueryWrapper);
-//
-//        if (!listUser.toString().equals("[]")) {
-//
-//            int userid = listUser.get(0).getUserId();
-//            String account = listUser.get(0).getUserAccount();
-//            String password = listUser.get(0).getUserPassword();
-//            String email = listUser.get(0).getEmail();
-//            String userLastName = listUser.get(0).getUserLastname();
-//            String userFirstName = listUser.get(0).getUserFirstname();
-//            String address = listUser.get(0).getAddress();
-//            int age =  listUser.get(0).getAge();
-//            String phoneNumber = listUser.get(0).getPhoneNumber();
-//            String question = listUser.get(0).getUserQuestion();
-//            String userSafeKey = listUser.get(0).getUserSafeKey();
-//
-//
-//
-//            body.put("userid", userid);
-//            body.put("username", account);
-//            body.put("password", password);
-//            body.put("email", email);
-//            body.put("userFirstName",userFirstName);
-//            body.put("address",address);
-//            body.put("age",age);
-//            body.put("phoneNumber",phoneNumber);
-//            body.put("question",question);
-//            body.put("userSafeKey",userSafeKey);
-//
-//            return "OK";
-//        } else {
-//
-//            return "NO";
-//        }
+//    public String loginForm(User user, @Param("name") String name, @Param("password") String password){
+////        QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
+////        sectionQueryWrapper.eq("user_account", user.getUserAccount());
+////        sectionQueryWrapper.eq("admin_password", user.getUserPassword());
+////        List<User> listUser = iUserService.list(sectionQueryWrapper);
+//        System.out.println(name);
+//        System.out.println(password);
+//        return "ok";
 //    }
+    @PostMapping ("/loginForm")
+    public String login(User user, @RequestBody Map<String, Object> body, HttpServletRequest request) {
+
+//        System.out.println(request.getParameter("name"));
+        System.out.println("xxxxxxx");
+        user.setUserAccount(request.getParameter("name"));
+        user.setUserPassword(request.getParameter("password"));
+
+//		//按用户名密码查询
+        QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
+        sectionQueryWrapper.eq("user_account", user.getUserAccount());
+        sectionQueryWrapper.eq("user_password", user.getUserPassword());
+        List<User> listUser = iUserService.list(sectionQueryWrapper);
+
+        if (!listUser.toString().equals("[]")) {
+
+            int userid = listUser.get(0).getUserId();
+            String account = listUser.get(0).getUserAccount();
+            String password = listUser.get(0).getUserPassword();
+            String email = listUser.get(0).getEmail();
+            String userLastName = listUser.get(0).getUserLastname();
+            String userFirstName = listUser.get(0).getUserFirstname();
+            String address = listUser.get(0).getAddress();
+            int age =  listUser.get(0).getAge();
+            String phoneNumber = listUser.get(0).getPhoneNumber();
+            String question = listUser.get(0).getUserQuestion();
+            String userSafeKey = listUser.get(0).getUserSafeKey();
+
+
+
+            body.put("userid", userid);
+            body.put("username", account);
+            body.put("password", password);
+            body.put("email", email);
+            body.put("userFirstName",userFirstName);
+            body.put("address",address);
+            body.put("age",age);
+            body.put("phoneNumber",phoneNumber);
+            body.put("question",question);
+            body.put("userSafeKey",userSafeKey);
+
+            return "OK";
+        } else {
+
+            return "NO";
+        }
+    }
 
     @GetMapping("/register")
     public String register(User user,@RequestBody Map<String, Object> body,HttpServletRequest request){
@@ -225,10 +236,13 @@ public class UserController {
         }
 
 
+    }
 
-
-
-
+    @RequestMapping("/sendEmail")
+    public ModelAndView sendToUserEmail(@RequestParam String email){
+        sendEmailService.sendEmail(email,"HI!","Test email from Vacbook!");
+        ModelAndView modelAndView = new ModelAndView( "userPages/emailConfirmation");
+        return modelAndView;
 
     }
 
