@@ -3,14 +3,14 @@
 <div layout:fragment="content" class="container"
      style="max-width: 700px; margin-top: 50px; padding-top: 30px;  padding-bottom: 30px; line-height:30px; border: 1px solid black;">
     <h1 align="center">Setting</h1>
-    <form th:action="@{/vacBook/admin/{admin_id}/setting (admin_id=${result.admin_id})}" th:object="${result}" method="put">
+    <form th:action="@{/vacbook/admin/setting}" method="post">
 
         <table class="table table-striped" style="border: 1px solid black;">
 
             <tbody style="text-align: center">
             <tr>
                 <th>Admin account Number: </th>
-                <td><div th:text="${result.admin_id}"></div></td>
+                <td><div th:text="${result.admin_id}" ></div></td>
             </tr>
             <tr>
                 <th>Admin account: </th>
@@ -18,35 +18,58 @@
             </tr>
             <tr>
                 <th>Admin name: </th>
-                <td><span th:text="${result.name}"></span></td>
+                <td><input th:value="${result.name}" name="name"/></td>
             </tr>
             <tr>
                 <th>Admin location: </th>
                 <td>
-                    <select>
-                        <option th:text="${result.location}"></option>
+                    <select  id="selectList" onchange="obtain()">
+                        <option th:text="${result.location_name}" th:id = "${result.location_id}"></option>
                         <option th:each="l:${result.location_options}"
-                                th:if="${l.location != result.location}"
-                                th:text="${l.location}">
+                                th:if="${l.location != result.location_name}"
+                                th:text="${l.location}"
+                                th:id = "${l.getLocationId()}"
+                               >
                         </option>
                     </select>
+
                 </td>
             </tr>
             <tr>
                 <th> Change Password: </th>
-                <td><input value="" type="password"/></td>
+                <td><input id="changePassword" type="password"/></td>
             </tr>
             <tr>
                 <th> Confirm Password: </th>
-                <td><input value="" type="password"/></td>
+                <td><input id="confirmPassword" type="password" name = "password"/></td>
             </tr>
+            <td><input id="option" th:value="${result.location_id}" name="location" style="display: none;"/></td>
             </tbody>
         </table>
         <div>
-
-            <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button">Save</button>
+            <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button"  onclick="return check()">Save</button>
         </div>
-
     </form>
+    <script>
+        function obtain(){
+            let mylist = document.getElementById("selectList");
+            const optionId = mylist.options[mylist.selectedIndex].id;
+            console.log(optionId);
+            document.getElementById( optionId).name = "location";
+            document.getElementById("option").value = optionId;
+        }
+        function check(){
+            let change = document.getElementById("confirmPassword").value;
+            let confirm = document.getElementById("changePassword").value;
+            console.log( change);
+            console.log(confirm);
+            if(confirm !== change){
+                alert("the confirm password is not as sames as the change password")
+                return false;
+            }
+            return true;
+        }
+    </script>
+
 </div>
 </html>
