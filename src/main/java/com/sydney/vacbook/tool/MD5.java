@@ -1,4 +1,4 @@
-package com.sydney.vacbook.Tool;
+package com.sydney.vacbook.tool;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
