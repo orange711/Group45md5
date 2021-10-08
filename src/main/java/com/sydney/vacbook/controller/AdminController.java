@@ -24,6 +24,8 @@ import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
+import static com.sydney.vacbook.Tool.MD5.code;
+
 /**
  * @author shuonan wang
  * @since 2021-09-15
@@ -241,9 +243,10 @@ public class AdminController {
     public String login(@RequestParam String account, String password, Map<String, Object> map) {
         System.out.println("1111111111111111111111111111");
         //TODO WORDE
+        String MD5Password = code(password);
         QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
         sectionQueryWrapper.eq("admin_account", account);
-        sectionQueryWrapper.eq("admin_password", password);
+        sectionQueryWrapper.eq("admin_password", MD5Password);
         listAdmin = iAdminService.list(sectionQueryWrapper);
 
         String str = listAdmin.toString();
@@ -270,6 +273,8 @@ public class AdminController {
     @RequestMapping("/register")
     public String register(Admin admin, Map<Object, Object> body) {
 
+        String MD5Password = code(admin.getAdminPassword());
+        admin.setAdminPassword(MD5Password);
         QueryWrapper<Admin> checkQueryWrapper = new QueryWrapper<>();
         checkQueryWrapper.eq("admin_account", admin.getAdminAccount());
         if (iAdminService.getOne(checkQueryWrapper)!=null){
