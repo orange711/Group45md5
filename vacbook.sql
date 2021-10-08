@@ -11,7 +11,7 @@
  Target Server Version : 50734
  File Encoding         : 65001
 
- Date: 11/09/2021 13:47:03
+ Date: 08/10/2021 15:53:20
 */
 
 SET NAMES utf8mb4;
@@ -24,25 +24,28 @@ DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin`  (
   `admin_id` int(11) NOT NULL AUTO_INCREMENT,
   `admin_account` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `admin_password` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `admin_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `admin_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `location_id` int(11) NOT NULL,
   PRIMARY KEY (`admin_id`) USING BTREE,
   UNIQUE INDEX `admin_account`(`admin_account`) USING BTREE,
   INDEX `location_id`(`location_id`) USING BTREE,
   CONSTRAINT `location_id` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin
 -- ----------------------------
-INSERT INTO `admin` VALUES (0, 'hahah', 'changePassword', 'Lucy', 1);
 INSERT INTO `admin` VALUES (1, 'zliu3553', '123456', 'zhengcheng', 1);
 INSERT INTO `admin` VALUES (2, 'account1', '123', 'Worde', 2);
 INSERT INTO `admin` VALUES (3, 'account2', '321', 'Kevin', 3);
 INSERT INTO `admin` VALUES (4, 'account3', '111111', 'Renee', 4);
 INSERT INTO `admin` VALUES (5, 'account4', '222222', 'James', 5);
 INSERT INTO `admin` VALUES (6, 'account5', '333333', 'Noname', 6);
+INSERT INTO `admin` VALUES (7, 'hahah', 'changePassword', 'Lucy', 1);
+INSERT INTO `admin` VALUES (8, '123', '123456', 'asd', 1);
+INSERT INTO `admin` VALUES (9, '12322', '123', 'sadf', 2);
+INSERT INTO `admin` VALUES (14, 'test1', '202cb962ac59075b964b07152d234b70', 'test1', 1);
 
 -- ----------------------------
 -- Table structure for booking
@@ -59,15 +62,15 @@ CREATE TABLE `booking`  (
   INDEX `booking_ibfk_1`(`vaccine_id`) USING BTREE,
   CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`vaccine_id`) REFERENCES `vaccine` (`vaccine_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of booking
 -- ----------------------------
-INSERT INTO `booking` VALUES (1, 1, 2, '13:00-14:00','2021-09-10');
-INSERT INTO `booking` VALUES (2, 2, 2, '13:00-14:00','2021-09-12');
-INSERT INTO `booking` VALUES (3, 3, 1, '11:00-12:00','2021-09-11');
-INSERT INTO `booking` VALUES (4, 3, 3, '11:00-17:00','2021-09-20');
+INSERT INTO `booking` VALUES (1, 1, 2, '13:00-14:00', '2021-09-10');
+INSERT INTO `booking` VALUES (2, 2, 2, '13:00-14:00', '2021-09-12');
+INSERT INTO `booking` VALUES (3, 3, 1, '11:00-12:00', '2021-09-11');
+INSERT INTO `booking` VALUES (4, 3, 3, '11:00-17:00', '2021-09-20');
 
 -- ----------------------------
 -- Table structure for location
@@ -77,7 +80,7 @@ CREATE TABLE `location`  (
   `location_id` int(11) NOT NULL AUTO_INCREMENT,
   `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`location_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of location
@@ -102,14 +105,14 @@ CREATE TABLE `user`  (
   `gender` varchar(7) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `age` int(3) NOT NULL,
-  `user_password` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `user_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `user_account` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `user_question` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `user_safe_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `user_account`(`user_account`) USING BTREE,
   INDEX `age`(`age`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
@@ -134,19 +137,19 @@ CREATE TABLE `vaccine`  (
   PRIMARY KEY (`vaccine_id`) USING BTREE,
   INDEX `admin_id1`(`admin_id`) USING BTREE,
   CONSTRAINT `admin_id1` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of vaccine
 -- ----------------------------
 INSERT INTO `vaccine` VALUES (1, 'mRNA', 'Pfizer', '666', 1, 300);
 INSERT INTO `vaccine` VALUES (2, 'mRNA', 'AZ', '666', 1, 222);
-INSERT INTO `vaccine` VALUES (3, 'mRNA', 'AZ', '666', 2, 222);
+INSERT INTO `vaccine` VALUES (3, 'mRNA', 'AZ', '666', 2, 223);
 INSERT INTO `vaccine` VALUES (4, 'mRNA', 'AZ', '666', 3, 111);
 INSERT INTO `vaccine` VALUES (5, 'mRNA', 'Pfizer', '666', 3, 11111);
+INSERT INTO `vaccine` VALUES (17, '213', '21312', ' ', 2, 312321);
+INSERT INTO `vaccine` VALUES (18, '213123', '123123', ' ', 2, 12312);
+INSERT INTO `vaccine` VALUES (19, '421412', '214', ' ', 2, 123);
+INSERT INTO `vaccine` VALUES (20, '2', '3', ' ', 2, 4);
 
 SET FOREIGN_KEY_CHECKS = 1;
-
-
-
-

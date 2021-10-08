@@ -8,6 +8,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript" th:src="@{/js/adminVaccineModel.js}"></script>
+    <!--   layer import-->
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
 </head>
 <body>
 <div layout:fragment="content" class="container"
@@ -27,12 +29,13 @@
             <td th:text="${l.getVaccineName()}"></td>
             <td th:text="${l.getVaccineAmount()}"></td>
             <td th:id="${l.getVaccineId()}" style="text-align: center">
-                <button th:onclick="| showAmount( ${l.getVaccineAmount()}, ${l.getVaccineId()} )|"
+                <button th:onclick="| vaccine_update( ${l.getVaccineAmount()}, ${l.getVaccineId()} )|"
                         style="background-color: dimgray" type="button" class="btn btn-primary eBtn" data-toggle="modal"
-                        data-target="#editModal">
+                        >
                     Edit
                 </button>
-                <button th:onclick="| getDelete( ${l.getVaccineId()} )|" style="background-color: darkred" type="button"
+                <button th:onclick="| vaccine_del(${l.getVaccineId()})|" style="background-color: darkred" type="button"
+
                         class="btn btn-primary" data-toggle="modal" data-target="#deleteModal">
                     Delete
                 </button>
@@ -40,8 +43,10 @@
         </tr>
         </tbody>
     </table>
-    <button style=" background-color: mediumseagreen ; display: block; margin: 0 auto" type="button"
-            class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+
+    <button th:onclick="|vaccine_add()|" style=" background-color: mediumseagreen ; display: block; margin: 0 auto" type="button"
+            class="btn btn-primary" data-toggle="modal" >
+
         Add
     </button>
 
@@ -49,6 +54,7 @@
         <input type="hidden" id="update_id" name="update_id"/>
         <!-- edit Modal -->
         <div class="modal" id="editModal">
+
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- Modal Header -->
@@ -56,6 +62,14 @@
                         <h4 class="modal-title">Edit Total stock Here</h4>
                         <button type="button" class="close" data-dismiss="modal">x</button>
                     </div>
+
+
+<!--                         <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Back</button>
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </div>
+                    </form> -->
 
                     <!-- Modal body -->
                     <div class="modal-body">
@@ -81,34 +95,65 @@
         </div>
     </form>
 
-    <form th:action="@{/vacbook/admin/vaccines/delete}" method="post">
-        <input type="hidden" id="delete_id" name="delete_id"/>
-        <!-- delete Modal -->
-        <div class="modal" id="deleteModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
 
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Delete Vaccine Warning!</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <form action="" method="post">
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                            Are you sure you want to delete this Vaccine in stock?
-                        </div>
 
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Back</button>
-                            <button class="btn btn-danger" type="submit">Delete</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </form>
+    <!--    <form th:action="@{/vacbook/admin/vaccines/delete}" method="post">-->
+    <!--        <input type="hidden" id="delete_id" name="delete_id"/>-->
+    <!--        &lt;!&ndash; delete Modal &ndash;&gt;-->
+    <!--        <div class="modal" id="deleteModal">-->
+    <!--            <div class="modal-dialog">-->
+    <!--                <div class="modal-content">-->
+
+    <!--                    &lt;!&ndash; Modal Header &ndash;&gt;-->
+    <!--                    <div class="modal-header">-->
+    <!--                        <h4 class="modal-title">Delete Vaccine Warning!</h4>-->
+    <!--                        <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+    <!--                    </div>-->
+    <!--                    <form action="" method="post">-->
+    <!--                        &lt;!&ndash; Modal body &ndash;&gt;-->
+    <!--                        <div class="modal-body">-->
+    <!--                            Are you sure you want to delete this Vaccine in stock?-->
+    <!--                        </div>-->
+
+    <!--                        &lt;!&ndash; Modal footer &ndash;&gt;-->
+    <!--                        <div class="modal-footer">-->
+    <!--                            <button type="button" class="btn btn-danger" data-dismiss="modal">Back</button>-->
+    <!--                            <button class="btn btn-danger" type="submit" onclick="vaccineDel()">Delete</button>-->
+    <!--                        </div>-->
+    <!--                    </form>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </form>-->
+    <!--    <form  method="post">-->
+    <!--        <input type="hidden" id="delete_id" name="delete_id"/>-->
+    <!--        &lt;!&ndash; delete Modal &ndash;&gt;-->
+    <!--        <div class="modal" id="deleteModal">-->
+    <!--            <div class="modal-dialog">-->
+    <!--                <div class="modal-content">-->
+
+    <!--                    &lt;!&ndash; Modal Header &ndash;&gt;-->
+    <!--                    <div class="modal-header">-->
+    <!--                        <h4 class="modal-title">Delete Vaccine Warning!</h4>-->
+    <!--                        <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+    <!--                    </div>-->
+    <!--                    <form action="" method="post">-->
+    <!--                        &lt;!&ndash; Modal body &ndash;&gt;-->
+    <!--                        <div class="modal-body">-->
+    <!--                            Are you sure you want to delete this Vaccine in stock?-->
+    <!--                        </div>-->
+
+    <!--                        &lt;!&ndash; Modal footer &ndash;&gt;-->
+    <!--                        <div class="modal-footer">-->
+    <!--                            <button type="button" class="btn btn-danger" data-dismiss="modal">Back</button>-->
+    <!--                            <button class="btn btn-danger" type="submit" onclick="vaccineDel()">Delete</button>-->
+    <!--                        </div>-->
+    <!--                    </form>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </form>-->
+
 
     <form th:action="@{/vacbook/admin/vaccines/add}" method="post">
         <!-- add Modal -->
@@ -180,6 +225,99 @@
             // xhr.send(data);
             // window.location.reload();
         }
+
+
+        function vaccine_del(delete_id) {
+            layer.confirm('Are you sure you want to delete this Vaccine in stock?', {
+                btn: ["Confirm", "Cancel"],
+                icon: 2,
+                title: "Delete Vaccine Warning!"
+            }, function () {
+                //点击确后关闭提示框
+                layer.closeAll('dialog');
+                vaccineDel(delete_id);
+            });
+        }
+
+        function vaccineDel(delete_id) {
+            //调ajax
+            var data = {
+                "delete_id": delete_id,
+            }
+            var msg = data.msg;
+            $.ajax({
+                url: "/vacbook/admin/vaccines/delete/",
+                data: data,
+                type: "post",
+                dataType: "json",
+
+
+            });
+            layer.msg('The vaccine has been deleted !')
+        }
+
+        function vaccine_add() {
+
+            layer.prompt({btn: ["Confirm", "Cancel"],title: 'Please input new vaccine type', formType: 3}, function (type, index) {
+
+                layer.close(index);
+                layer.prompt({btn: ["Confirm", "Cancel"],title: 'Please input new vaccine name', formType: 3}, function (vaccineName, index) {
+                    layer.close(index);
+                    layer.prompt({btn: ["Confirm", "Cancel"],title: 'Please input new vaccine stock', formType: 3}, function (stock, index) {
+                        layer.close(index);
+                        layer.msg('Add success' + '<br>New vaccine type：' + type + '<br>New vaccine name：' + vaccineName + '<br>New vaccine stock：' + stock);
+
+                        var data = {
+                            // name, String type, Integer amount
+                            "type": type,
+                            "name": vaccineName,
+                            "amount": stock,
+                        }
+
+                        $.ajax({
+                            url: "/vacbook/admin/vaccines/add",
+                            data: data,
+                            type: "post",
+                            dataType: "json",
+
+
+                        });
+
+                    });
+                });
+
+            });
+
+
+        }
+
+        function vaccine_update(vaccine_amount,update_id) {
+            //Integer stock, Integer update_id
+            layer.prompt({placeholder:vaccine_amount,btn: ["Confirm", "Cancel"],title: 'Please input new vaccine stock', formType: 3}, function (stock, index) {
+                //这里貌似要修改layer，js的源代码才能显示vaccine_amount 麻了
+                layer.close(index);
+                        layer.msg('Update success' + '<br>New vaccine stock：' + stock);
+
+                        var data = {
+                            // name, String type, Integer amount
+                            "update_id": update_id,
+                            "stock": stock,
+                        }
+
+                        $.ajax({
+                            url: "/vacbook/admin/vaccines/update",
+                            data: data,
+                            type: "post",
+                            dataType: "json",
+
+
+                        });
+
+                    });
+
+        }
+
+
     </script>
 
 </div>
