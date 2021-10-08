@@ -88,7 +88,13 @@ public class AdminController {
         if (admin_id != null) {
             QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
             findVaccineByAdminId.eq("admin_id", listAdmin.get(0).getAdminId());
+
             List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
+            if(vaccineList.isEmpty()){
+                System.out.println("There is no booking Here");
+                ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking");
+                return modelAndView;
+            }
             List<String> vaccineNames = new ArrayList<>();
             List<Integer> vaccineIds = new ArrayList<>();
             Map<Integer, String> vaccineMap = new HashMap<>();
@@ -255,8 +261,12 @@ public class AdminController {
     }
 
     @RequestMapping("/registerPage")
-    public String registerPage() {
-        return "adminPages/adminRegister";
+    public ModelAndView registerPage() {
+        Map<String, Object> result = new LinkedHashMap<>();
+        List<Location> locationList = iLocationService.list();
+        result.put("location_options", locationList);
+        ModelAndView modelAndView = new ModelAndView("adminPages/adminRegister", "result", result);
+        return modelAndView;
     }
 
     @RequestMapping("/register")

@@ -82,4 +82,7 @@ body{
     border-color:rgb(204,204,204);
     border-radius: 0.4rem;
 }
+.form-control{
+    -webkit-appearance: none;
+}
 
