@@ -2,16 +2,21 @@ package com.sydney.vacbook.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.sydney.vacbook.entity.Admin;
 import com.sydney.vacbook.entity.User;
 import com.sydney.vacbook.service.*;
 import com.sydney.vacbook.service.impl.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.sydney.vacbook.tool.MD5.code;
 
 /**
  * <p>
@@ -21,7 +26,7 @@ import java.util.Map;
  * @author Group45
  * @since 2021-09-11
  */
-@RestController
+@Controller
 @RequestMapping("/vacBook/user")
 public class UserController {
     @Autowired
@@ -41,6 +46,10 @@ public class UserController {
 
     @Autowired
     private ILocationService iLocationService;
+
+
+//    新增userlist
+    List<User> listUser = new ArrayList<>();
 
     @GetMapping("/{user_id}")
     public ModelAndView fetchUser(@PathVariable("user_id") int user_id){
@@ -121,18 +130,22 @@ public class UserController {
 //    }
 
     @PostMapping ("/loginForm")
-    public String login(User user, @RequestBody Map<String, Object> body, HttpServletRequest request) {
+    public String login(String userAccount,String userPassword,  Map<String, Object> body) {
 
 //        System.out.println(request.getParameter("name"));
-        System.out.println("xxxxxxx");
-        user.setUserAccount(request.getParameter("name"));
-        user.setUserPassword(request.getParameter("password"));
+        System.out.println(userAccount+".,.."+userPassword);
+//        user.setUserAccount(request.getParameter("name"));
+//        user.setUserPassword(request.getParameter("password"));
+
+        String userPasswordMD5 = code(userPassword);
 
 //		//按用户名密码查询
         QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
-        sectionQueryWrapper.eq("user_account", user.getUserAccount());
-        sectionQueryWrapper.eq("user_password", user.getUserPassword());
-        List<User> listUser = iUserService.list(sectionQueryWrapper);
+        sectionQueryWrapper.eq("user_account", userAccount);
+        sectionQueryWrapper.eq("user_password", userPasswordMD5);
+        listUser = iUserService.list(sectionQueryWrapper);
+
+
 
         if (!listUser.toString().equals("[]")) {
 
@@ -160,34 +173,51 @@ public class UserController {
             body.put("question",question);
             body.put("userSafeKey",userSafeKey);
 
-            return "OK";
-        } else {
 
-            return "NO";
+            System.out.println("Welcome to our system!");
+//            listUser.add()
+
+            return "redirect:index";
+        } else {
+            System.err.println("Some errors");
+            return "redirect:login";
         }
     }
 
-    @GetMapping("/register")
-    public String register(User user,@RequestBody Map<String, Object> body,HttpServletRequest request){
+        @RequestMapping("/register")
+    public String register(User user, Map<String, Object> body){
 
-        user.setUserPassword(request.getParameter("password"));
-        user.setUserAccount(request.getParameter("account"));
-        user.setUserSafeKey(request.getParameter("safeKey"));
-        user.setAddress(request.getParameter("address"));
-        user.setAge(request.getIntHeader("age"));//could be some problems
-        user.setGender(request.getParameter("gender"));
-        user.setUserFirstname(request.getParameter("first"));
-        user.setUserLastname(request.getParameter("last"));
-        user.setUserQuestion(request.getParameter("question"));
-        user.setPhoneNumber(request.getParameter("phone"));
-        user.setEmail(request.getParameter("email"));
+        System.out.println(user);
+
+//        user.setUserPassword(request.getParameter("password"));
+//        user.setUserAccount(request.getParameter("account"));
+//        user.setUserSafeKey(request.getParameter("safeKey"));
+//        user.setAddress(request.getParameter("address"));
+//        user.setAge(request.getIntHeader("age"));//could be some problems
+//        user.setGender(request.getParameter("gender"));
+//        user.setUserFirstname(request.getParameter("first"));
+//        user.setUserLastname(request.getParameter("last"));
+//        user.setUserQuestion(request.getParameter("question"));
+//        user.setPhoneNumber(request.getParameter("phone"));
+//        user.setEmail(request.getParameter("email"));
+
+        String passwordMD5 = code(user.getUserPassword());
+        user.setUserPassword(passwordMD5);
+        QueryWrapper<User> checkQueryWrapper = new QueryWrapper<>();
+        checkQueryWrapper.eq("user_account", user.getUserAccount());
+        checkQueryWrapper.eq("phone_number", user.getPhoneNumber());
+        checkQueryWrapper.eq("email", user.getEmail());
+        if (iUserService.getOne(checkQueryWrapper)!=null){
+            System.err.println("This account has been registered或者电话或者email被注册");
+            return "redirect:registerPage";//重定向
+        }
 
 
         boolean newUser = iUserService.save(user);
 
         if (newUser == false){
             System.err.println("This account has been ...");
-            return "NO";
+            return "redirect:registerPage";
         }
         else{
             System.out.println("Hi!");
@@ -196,7 +226,7 @@ public class UserController {
             QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
             sectionQueryWrapper.eq("user_account", user.getUserAccount());
             sectionQueryWrapper.eq("admin_password", user.getUserPassword());
-            List<User> listUser = iUserService.list(sectionQueryWrapper);
+            listUser = iUserService.list(sectionQueryWrapper);
 
 
             int userid = listUser.get(0).getUserId();
@@ -218,13 +248,14 @@ public class UserController {
             body.put("password", password);
             body.put("email", email);
             body.put("userFirstName",userFirstName);
+            body.put("userLastName",userLastName);
             body.put("address",address);
             body.put("age",age);
             body.put("phoneNumber",phoneNumber);
             body.put("question",question);
             body.put("userSafeKey",userSafeKey);
 
-            return "OK";
+            return "redirect:index";
 
         }
 
@@ -250,7 +281,7 @@ public class UserController {
     public String logout(Map<Object, Object> map){
         map.put("userid", "");
         map.put("username", "");
-        return "redirect:/index.jsp";// 重定向
+        return "redirect:index";// 重定向
     }
 
 

@@ -25,12 +25,12 @@
         <center>
             <form class="form" th:action="@{/vacBook/user/loginForm}" method="post" >
                 <p>login here As a user</p>
-                <input type="text" id = 'name' placeholder="Username">
-                <input type="password" id = 'password' placeholder="Password">
+                <input type="text" name = 'userAccount' placeholder="Username">
+                <input type="password" name = 'userPassword' placeholder="Password">
 <!--                <a class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button" style="text-decoration: none; width: 350px;color:black;font-size: 18px;">Log In</a>-->
                 <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button">Log In</button>
                 <a th:href="@{/user/register}" class="shadow p-3 mb-3 bg-body rounded" type="submit"
-                    id="login-button" style="text-decoration: none; width: 350px;color:black;font-size: 18px;">Register</a>
+                    id="register-button" style="text-decoration: none; width: 350px;color:black;font-size: 18px;">Register</a>
                 <div >
                 <a th:href="@{/vacBook/user/index}" type="submit" class="btn btn-outline-danger">Back to Home Page</a>
                 <a href="" type="submit" class="btn btn-light">Forget Password</a>
