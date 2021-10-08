@@ -4,9 +4,8 @@ package com.sydney.vacbook.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sydney.vacbook.entity.User;
 import com.sydney.vacbook.service.*;
-import org.apache.ibatis.annotations.Param;
+import com.sydney.vacbook.service.impl.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -120,6 +119,7 @@ public class UserController {
 //        System.out.println(password);
 //        return "ok";
 //    }
+
     @PostMapping ("/loginForm")
     public String login(User user, @RequestBody Map<String, Object> body, HttpServletRequest request) {
 
@@ -147,7 +147,6 @@ public class UserController {
             String phoneNumber = listUser.get(0).getPhoneNumber();
             String question = listUser.get(0).getUserQuestion();
             String userSafeKey = listUser.get(0).getUserSafeKey();
-
 
 
             body.put("userid", userid);
@@ -253,7 +252,6 @@ public class UserController {
         map.put("username", "");
         return "redirect:/index.jsp";// 重定向
     }
-
 
 
 }

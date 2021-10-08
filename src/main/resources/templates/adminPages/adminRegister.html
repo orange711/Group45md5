@@ -24,7 +24,7 @@
 <body>
 <div class="wrapper-register">
     <div class="logo">
-        <a href="log-in.html"><img id="logo-register" th:src ="@{/img/logo.png}"></a>
+        <a href="log-in.html"><img id="logo-register" th:src ="@{/img/logo-admin.png}"></a>
     </div>
 </div>
 <!--Form starts here-->
@@ -38,14 +38,21 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label>Location ID:</label>
-                <input type="text" name="locationId" class="form-control" placeholder="Location ID" required>
+                <select class="form-control" name="locationId" required>
+                    <option value=""> Select a location in dropdown menu</option>
+                    <option th:each="l:${result.location_options}"
+                            th:text="${l.location}"
+                            th:value = "${l.getLocationId()}" >
+                    </option>
+                </select>
+<!--                <input type="text" name="locationId" class="form-control" placeholder="Location ID" required>-->
             </div>
         </div>
         <!--row 2-->
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label>Last name:</label>
-                <input type="text"  class="form-control" placeholder="Last name" >
+                <label>Account:</label>
+                <input type="text" name="adminAccount" class="form-control" placeholder="Enter Your Account Number" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label>Password:</label>
@@ -56,8 +63,7 @@
         <!--row 3-->
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label>Account:</label>
-                <input type="text" name="adminAccount" class="form-control" placeholder="Account" required>
+
             </div>
             <div class="col-md-6 mb-3">
                 <label>Confirm your password:</label>
@@ -73,6 +79,7 @@
         <div class="row">
 
             <div class="col-md-6 mb-3" style="padding-top: 25px; text-align: right;">
+                <a th:href="@{/vacbook/admin/index}" type="submit" class="btn btn-danger">Back</a>
                 <button  type="submit" class="btn btn-success">Save</button>
             </div>
         </div>
@@ -84,7 +91,8 @@
 </div>
 <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvL0oAUZCGxOvATeo595zapc1fyEVhoC0&libraries=places&callback=initAutocomplete"
-        async defer></script>
+        async defer>
+</script>
 </body>
 
 </html>
