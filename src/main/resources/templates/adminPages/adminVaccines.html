@@ -260,6 +260,7 @@
                             "name": vaccineName,
                             "amount": stock,
                         }
+                        // $(".layui-layer-content").append("<br/><input type=\"text\" id= \"zxr\" class=\"layui-input\" placeholder=\"输入注销人\"/>");
 
                         $.ajax({
                             url: "/vacbook/admin/vaccines/add",
@@ -280,7 +281,7 @@
 
         function vaccine_update(vaccine_amount,update_id) {
             //Integer stock, Integer update_id
-            layer.prompt({placeholder:vaccine_amount,btn: ["Confirm", "Cancel"],title: 'Please input new vaccine stock', formType: 3}, function (stock, index) {
+            layer.prompt({value:vaccine_amount,btn: ["Confirm", "Cancel"],title: 'Please input new vaccine stock', formType: 3}, function (stock, index) {
                 //这里貌似要修改layer，js的源代码才能显示vaccine_amount 麻了
                 layer.close(index);
                         layer.msg('Update success' + '<br>New vaccine stock：' + stock);
