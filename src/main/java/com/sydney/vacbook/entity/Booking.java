@@ -24,7 +24,10 @@ public class Booking implements Serializable {
 
     @TableId(value = "booking_id", type = IdType.AUTO)
     private Integer bookingId;
-
+    @TableField(exist = false)
+    private String period;
+    @TableField(exist = false)
+    private String vaccine;
     private Integer userId;
 
     private Integer vaccineId;

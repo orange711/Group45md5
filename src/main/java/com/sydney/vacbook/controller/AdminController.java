@@ -106,9 +106,9 @@ public class AdminController {
             QueryWrapper<Booking> queryWrapper = new QueryWrapper<>();
             queryWrapper.in("vaccine_id", vaccineIds);
             List<Booking> bookingList = iBookingService.list(queryWrapper);
-            List<BookingVO> bookingList1 = new ArrayList<>();
+            List<Booking> bookingList1 = new ArrayList<>();
             for (Booking booking : bookingList) {
-                BookingVO b = new BookingVO();
+                Booking b = new Booking();
                 b.setBookingId(booking.getBookingId());
                 b.setDate(booking.getDate());
                 b.setPeriod(booking.getBookingTimezone());
