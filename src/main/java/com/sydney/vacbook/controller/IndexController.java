@@ -1,5 +1,12 @@
 package com.sydney.vacbook.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.sydney.vacbook.entity.Admin;
+import com.sydney.vacbook.entity.Location;
+import com.sydney.vacbook.entity.Vaccine;
+import com.sydney.vacbook.service.IAdminService;
+import com.sydney.vacbook.service.IVaccineService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,14 +14,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @Controller
 public class IndexController {
 
+    @Autowired
+    private IAdminService iAdminService;
+
+    @Autowired
+    private IVaccineService iVaccineService;
 
     @GetMapping("vacBook/user/index")
     public String viewHomePage() {
         return "userPages/index";
+    }
+
+    @GetMapping("vacBook/user/index/booking")
+    public ModelAndView userBooking() {
+        List<Admin> adminList = iAdminService.list();
+        List<Vaccine> vaccineList = iVaccineService.list();
+        ModelAndView modelAndView = new ModelAndView("userPages/indexBooking","providers",adminList);
+        modelAndView.addObject("vaccineList",vaccineList);
+        return modelAndView;
     }
 
     @GetMapping("vacBook/user/login")
