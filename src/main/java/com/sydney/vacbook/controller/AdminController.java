@@ -214,12 +214,15 @@ public class AdminController {
         System.out.println(password);
         System.out.println(location);
 
+
         Admin admin = listAdmin.get(0);
         admin.setAdminName(name);
         admin.setLocationId(location);
         if (password != null && password != " " && !password.isEmpty()) {
+            String passwordMD5 = code(password);
+//            setting password protect
             System.out.println(password + ".");
-            admin.setAdminPassword(password);
+            admin.setAdminPassword(passwordMD5);
         }
 
         //admin.updateByMap(body);
