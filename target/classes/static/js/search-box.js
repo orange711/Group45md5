@@ -11,11 +11,20 @@ function search_box() {
       td = tr[i].getElementsByTagName("td")[0];
       if (td) {
         txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
+
+            //    .includes();   // this is case sensitive
+          if(txtValue.replace(/\s+/g,'').toUpperCase().includes(filter)){
+              tr[i].style.display="";
+          }else{
+              tr[i].style.display = "none";
+
+          }
+
+        // if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        //   tr[i].style.display = "";
+        // } else {
+        //   tr[i].style.display = "none";
+        // }
       }
     }
   }
