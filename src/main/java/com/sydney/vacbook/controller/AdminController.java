@@ -220,7 +220,7 @@ public class AdminController {
         admin.setLocationId(location);
         if (password != null && password != " " && !password.isEmpty()) {
             String passwordMD5 = code(password);
-//            setting password protect
+//            setting password protect1
             System.out.println(password + ".");
             admin.setAdminPassword(passwordMD5);
         }
