@@ -3,6 +3,7 @@ package com.sydney.vacbook.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sydney.vacbook.entity.Admin;
+import com.sydney.vacbook.entity.Location;
 import com.sydney.vacbook.entity.User;
 import com.sydney.vacbook.service.*;
 import com.sydney.vacbook.service.impl.SendEmailService;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -128,9 +131,18 @@ public class UserController {
 //        System.out.println(password);
 //        return "ok";
 //    }
+//    存放user list
+    @RequestMapping("/userList")
+    public ModelAndView userList(){
+
+
+        ModelAndView modelAndView = new ModelAndView("userPages/index", "userList", listUser);
+        return modelAndView;
+    }
+
 
     @PostMapping ("/loginForm")
-    public String login(String userAccount,String userPassword,  Map<String, Object> body) {
+    public String login(HttpServletRequest request,String userAccount,String userPassword,  Map<String, Object> body) {
 
 //        System.out.println(request.getParameter("name"));
         System.out.println(userAccount+".,.."+userPassword);
@@ -145,9 +157,18 @@ public class UserController {
         sectionQueryWrapper.eq("user_password", userPasswordMD5);
         listUser = iUserService.list(sectionQueryWrapper);
 
+//        String str = listUser.toString();
 
 
         if (!listUser.toString().equals("[]")) {
+
+//            Session 存储
+            //第一步：获取session
+            HttpSession session = request.getSession();
+            //第二步：将想要保存到数据存入session中
+            session.setAttribute("userName",userAccount);
+            session.setAttribute("password",userPasswordMD5);
+            //这样就完成了用户名和密码保存到session的操作
 
             int userid = listUser.get(0).getUserId();
             String account = listUser.get(0).getUserAccount();
@@ -173,8 +194,11 @@ public class UserController {
             body.put("question",question);
             body.put("userSafeKey",userSafeKey);
 
+        
+
 
             System.out.println("Welcome to our system!");
+            System.out.println(listUser.get(0));
 //            listUser.add()
 
             return "redirect:index";
