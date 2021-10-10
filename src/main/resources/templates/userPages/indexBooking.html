@@ -43,13 +43,13 @@
                             </div>
                         </select>
                     </td>
-                    <td data-label="Date">
+                    <td id="date" data-label="Date">
                         <input type="date" class="form-control" placeholder="Date of birth" required>
                     </td>
-                    <td data-label="Time">
+                    <td id="time" data-label="Time">
                         <input type="time" class="form-control" placeholder="" required>
                     </td>
-                    <td data-label="submit">
+                    <td data-label="submit" >
                         <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
                              aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
@@ -169,7 +169,7 @@
                         <div class="book-btn">
                             <!--book按钮 弹窗-->
                             <a class="btn" data-bs-toggle="modal" href="#exampleModalToggle"
-                               role="button">Book</a>
+                               role="button" onclick="check()">Book</a>
                             <!--book按钮 跳转页面-->
                             <!-- <a class="btn" href="./book.html"
                                 role="button">Book</a> -->
@@ -185,6 +185,20 @@
         </div>
 
     </div>
+    <script>
+        function check(){
+            console.log("null");
+            let popup = document.getElementById("exampleModalToggle")
+            let date = document.getElementById("date").value
+            let time = document.getElementById("time").value
+            console.log(date)
+            console.log(time)
+            if(date == null || time == null){
+                alert("Please choose your prefer vaccine and booking time")
+            }
+
+        }
+    </script>
 </div>
 
 </html>
