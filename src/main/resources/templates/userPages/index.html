@@ -122,7 +122,8 @@
     </style>
 </head>
 
-<body>
+<body onload="session()">
+<span id="session" th:value="${session}"></span>
     <div class="container">
         <nav class="navbar navbar-expand-md navbar-dark">
             <div class="container-fluid">
@@ -228,7 +229,15 @@
             });
         </script>
     </div>
-       
+   <script>
+       function session(){
+           console.log("adasd");
+           let session = sessionStorage.getItem('userName');
+           console.log(session)
+           let data = document.getElementById('session').value;
+           console.log(data);
+       }
+   </script>
 </body>
 
 </html>
@@ -236,4 +245,5 @@
     $(function (){
         $(".indexBooking").load("userPage/indexBooking.html")
     });
+
 </script>

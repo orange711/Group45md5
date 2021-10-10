@@ -143,33 +143,16 @@ public class UserController {
 
     @PostMapping ("/loginForm")
     public String login(HttpServletRequest request,String userAccount,String userPassword,  Map<String, Object> body) {
-
-//        System.out.println(request.getParameter("name"));
         System.out.println(userAccount+".,.."+userPassword);
-//        user.setUserAccount(request.getParameter("name"));
-//        user.setUserPassword(request.getParameter("password"));
-
         String userPasswordMD5 = code(userPassword);
 
-//		//按用户名密码查询
+		//按用户名密码查询
         QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
         sectionQueryWrapper.eq("user_account", userAccount);
         sectionQueryWrapper.eq("user_password", userPasswordMD5);
         listUser = iUserService.list(sectionQueryWrapper);
 
-//        String str = listUser.toString();
-
-
         if (!listUser.toString().equals("[]")) {
-
-//            Session 存储
-            //第一步：获取session
-            HttpSession session = request.getSession();
-            //第二步：将想要保存到数据存入session中
-            session.setAttribute("userName",userAccount);
-            session.setAttribute("password",userPasswordMD5);
-            //这样就完成了用户名和密码保存到session的操作
-
             int userid = listUser.get(0).getUserId();
             String account = listUser.get(0).getUserAccount();
             String password = listUser.get(0).getUserPassword();
@@ -182,26 +165,19 @@ public class UserController {
             String question = listUser.get(0).getUserQuestion();
             String userSafeKey = listUser.get(0).getUserSafeKey();
 
-
-            body.put("userid", userid);
-            body.put("username", account);
-            body.put("password", password);
-            body.put("email", email);
-            body.put("userFirstName",userFirstName);
-            body.put("address",address);
-            body.put("age",age);
-            body.put("phoneNumber",phoneNumber);
-            body.put("question",question);
-            body.put("userSafeKey",userSafeKey);
-
-        
-
-
             System.out.println("Welcome to our system!");
             System.out.println(listUser.get(0));
-//            listUser.add()
 
-            return "redirect:index";
+            //Session 存储
+            //第一步：获取session
+            HttpSession session = request.getSession();
+            //第二步：将想要保存到数据存入session中
+            session.setAttribute("userName",userAccount);
+            session.setAttribute("password",userPasswordMD5);
+            //这样就完成了用户名和密码保存到session的操作
+            System.out.println(session.getAttribute("userName"));
+
+            return "redirect:index/booking";
         } else {
             System.err.println("Some errors");
             return "redirect:login";
