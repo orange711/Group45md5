@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sydney.vacbook.entity.Admin;
 import com.sydney.vacbook.entity.Location;
 import com.sydney.vacbook.entity.User;
+import com.sydney.vacbook.entity.Vaccine;
 import com.sydney.vacbook.service.*;
 import com.sydney.vacbook.service.impl.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,97 +115,57 @@ public class UserController {
         //return main
     }
 
-    /**
-     * Auth part
-     * TODO WORDE
-     //* @param body
-     * @return
-     * ajax
-     */
-//    @PostMapping ("/loginForm")
-//    public String loginForm(User user, @Param("name") String name, @Param("password") String password){
-////        QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
-////        sectionQueryWrapper.eq("user_account", user.getUserAccount());
-////        sectionQueryWrapper.eq("admin_password", user.getUserPassword());
-////        List<User> listUser = iUserService.list(sectionQueryWrapper);
-//        System.out.println(name);
-//        System.out.println(password);
-//        return "ok";
-//    }
+
 //    存放user list
     @RequestMapping("/userList")
     public ModelAndView userList(){
-
-
         ModelAndView modelAndView = new ModelAndView("userPages/index", "userList", listUser);
+        return modelAndView;
+    }
+
+    @GetMapping("/index/booking")
+    public ModelAndView userBooking() {
+        User user = listUser.get(0);
+        List<Admin> adminList = iAdminService.list();
+        List<Vaccine> vaccineList = iVaccineService.list();
+        ModelAndView modelAndView = new ModelAndView("userPages/indexBooking","providers",adminList);
+        modelAndView.addObject("vaccineList",vaccineList);
+        modelAndView.addObject("user_name", user.getUserLastname());
+        modelAndView.addObject("user_id", user.getUserId());
         return modelAndView;
     }
 
 
     @PostMapping ("/loginForm")
-    public String login(HttpServletRequest request,String userAccount,String userPassword,  Map<String, Object> body) {
-
-//        System.out.println(request.getParameter("name"));
+    public ModelAndView login(HttpServletRequest request,String userAccount,String userPassword,  Map<String, Object> body) {
         System.out.println(userAccount+".,.."+userPassword);
-//        user.setUserAccount(request.getParameter("name"));
-//        user.setUserPassword(request.getParameter("password"));
-
         String userPasswordMD5 = code(userPassword);
 
-//		//按用户名密码查询
+		//按用户名密码查询
         QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
         sectionQueryWrapper.eq("user_account", userAccount);
         sectionQueryWrapper.eq("user_password", userPasswordMD5);
         listUser = iUserService.list(sectionQueryWrapper);
 
-//        String str = listUser.toString();
-
-
         if (!listUser.toString().equals("[]")) {
-
-//            Session 存储
-            //第一步：获取session
-            HttpSession session = request.getSession();
-            //第二步：将想要保存到数据存入session中
-            session.setAttribute("userName",userAccount);
-            session.setAttribute("password",userPasswordMD5);
-            //这样就完成了用户名和密码保存到session的操作
-
-            int userid = listUser.get(0).getUserId();
-            String account = listUser.get(0).getUserAccount();
-            String password = listUser.get(0).getUserPassword();
-            String email = listUser.get(0).getEmail();
-            String userLastName = listUser.get(0).getUserLastname();
-            String userFirstName = listUser.get(0).getUserFirstname();
-            String address = listUser.get(0).getAddress();
-            int age =  listUser.get(0).getAge();
-            String phoneNumber = listUser.get(0).getPhoneNumber();
-            String question = listUser.get(0).getUserQuestion();
-            String userSafeKey = listUser.get(0).getUserSafeKey();
-
-
-            body.put("userid", userid);
-            body.put("username", account);
-            body.put("password", password);
-            body.put("email", email);
-            body.put("userFirstName",userFirstName);
-            body.put("address",address);
-            body.put("age",age);
-            body.put("phoneNumber",phoneNumber);
-            body.put("question",question);
-            body.put("userSafeKey",userSafeKey);
-
-        
-
-
             System.out.println("Welcome to our system!");
             System.out.println(listUser.get(0));
-//            listUser.add()
 
-            return "redirect:index";
+//            //Session 存储
+//            //第一步：获取session
+//            HttpSession session = request.getSession();
+//            //第二步：将想要保存到数据存入session中
+//            session.setAttribute("userName",userAccount);
+//            session.setAttribute("password",userPasswordMD5);
+//            //这样就完成了用户名和密码保存到session的操作
+//            System.out.println(session.getAttribute("userName"));
+
+            ModelAndView success = new ModelAndView("redirect:index/booking");
+            return success;
         } else {
             System.err.println("Some errors");
-            return "redirect:login";
+            ModelAndView fail = new ModelAndView("redirect:login");
+            return fail;
         }
     }
 
