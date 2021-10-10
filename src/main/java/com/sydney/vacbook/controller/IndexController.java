@@ -8,10 +8,7 @@ import com.sydney.vacbook.service.IAdminService;
 import com.sydney.vacbook.service.IVaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -32,15 +29,6 @@ public class IndexController {
     @GetMapping("vacBook/user/index")
     public String viewHomePage() {
         return "userPages/index";
-    }
-
-    @GetMapping("vacBook/user/index/booking")
-    public ModelAndView userBooking() {
-        List<Admin> adminList = iAdminService.list();
-        List<Vaccine> vaccineList = iVaccineService.list();
-        ModelAndView modelAndView = new ModelAndView("userPages/indexBooking","providers",adminList);
-        modelAndView.addObject("vaccineList",vaccineList);
-        return modelAndView;
     }
 
     @GetMapping("vacBook/user/login")

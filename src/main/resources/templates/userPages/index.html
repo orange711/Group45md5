@@ -122,9 +122,28 @@
     </style>
 </head>
 
-<body onload="session()">
-<span id="session" th:value="${session}"></span>
-    <div class="container">
+<body>
+<script th:inline="javascript">
+    var user_id = [[${user_id}]];
+    var user_name = [[${user_name}]];
+    window.onload = function() {
+        sessionStorage.clear();
+        if(user_name != null){
+            console.log("user login");
+            console.log(user_id);
+            console.log(user_name);
+            sessionStorage.setItem('user_name', user_name);
+            sessionStorage.setItem('user_id', user_id);
+            let option = document.getElementById("login");
+            console.log(option);
+            let profileURL = 'href=/vacBook/user/' + user_id
+            console.log(profileURL)
+            let element = "<a class=\"nav-link\" style=\"color: black\" "+ profileURL + ">" + user_name + "</a>";
+            option.innerHTML = element
+        }
+    };
+</script>
+    <div class="container" >
         <nav class="navbar navbar-expand-md navbar-dark">
             <div class="container-fluid">
                 <div class="homepage-logo">
@@ -144,8 +163,8 @@
                             <a class="nav-link" data-page="book" style="color: black;" href="" data-bs-target="#myModal"
                                 data-bs-toggle="modal">Book</a>
                         </li>
-                        <li class="nav-item">
-                            <!-- <a class="nav-link" style="color: black;" href="userProfile.html">{Username}</a> -->
+                        <li id="login" class="nav-item">
+<!--                             <a class="nav-link" style="color: black;" th: th:href=@{/vacBook/user/login}"></a> -->
                             <a class="nav-link" style="color: black;" th:href="@{/vacBook/user/login}">Sign in / Register</a>
                         </li>
                     </ul>
@@ -193,18 +212,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
                         <a><img th:src="@{/img/logo-footer.png}"width="120px"></a>
-
                     </div>
-
-                    <!-- <div class="col-xs-6 col-md-3">
-                      
-
-                    </div>
-
-                    <div class="col-xs-6 col-md-3">
-                      
-
-                    </div> -->
                 </div>
                 <hr>
             </div>
@@ -214,8 +222,6 @@
                         <p class="copyright-text">Copyright &copy; 2021 All Rights Reserved by VacBook
                         </p>
                     </div>
-
-
                 </div>
             </div>
         </footer>
@@ -229,15 +235,6 @@
             });
         </script>
     </div>
-   <script>
-       function session(){
-           console.log("adasd");
-           let session = sessionStorage.getItem('userName');
-           console.log(session)
-           let data = document.getElementById('session').value;
-           console.log(data);
-       }
-   </script>
 </body>
 
 </html>
