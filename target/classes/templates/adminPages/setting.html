@@ -1,9 +1,14 @@
 <!DOCTYPE html >
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="adminPages/base.html">
+<head>
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <script type="text/javascript" th:src="@{/js/settingAlter.js}"></script>
+</head>>
+
 <div layout:fragment="content" class="container"
      style="max-width: 700px; margin-top: 50px; padding-top: 30px;  padding-bottom: 30px; line-height:30px; border: 1px solid black;">
     <h1 align="center">Setting</h1>
-    <form th:action="@{/vacbook/admin/setting}" method="post">
+
 
         <table class="table table-striped" style="border: 1px solid black;">
 
@@ -18,7 +23,7 @@
             </tr>
             <tr>
                 <th>Admin name: </th>
-                <td><input th:value="${result.name}" name="name"/></td>
+                <td><input th:value="${result.name}" id="name" name="name"/></td>
             </tr>
             <tr>
                 <th>Admin location: </th>
@@ -49,27 +54,8 @@
         <div>
             <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button"  onclick="return check()">Save</button>
         </div>
-    </form>
-    <script>
-        function obtain(){
-            let mylist = document.getElementById("selectList");
-            const optionId = mylist.options[mylist.selectedIndex].id;
-            console.log(optionId);
-            document.getElementById( optionId).name = "location";
-            document.getElementById("option").value = optionId;
-        }
-        function check(){
-            let change = document.getElementById("confirmPassword").value;
-            let confirm = document.getElementById("changePassword").value;
-            console.log( change);
-            console.log(confirm);
-            if(confirm !== change){
-                alert("the confirm password is not as sames as the change password")
-                return false;
-            }
-            return true;
-        }
-    </script>
+
+
 
 </div>
 </html>

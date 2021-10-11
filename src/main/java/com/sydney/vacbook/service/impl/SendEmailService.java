@@ -16,6 +16,5 @@ public class SendEmailService {
         msg.setText(body);
 
         javaMailSender.send(msg);
-        System.out.println("sent email...");
     }
 }

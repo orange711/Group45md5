@@ -5,9 +5,13 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.sydney.vacbook.entity.*;
 import com.sydney.vacbook.mapper.BookingMapper;
 import com.sydney.vacbook.service.*;
+import com.sydney.vacbook.service.impl.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * <p>
@@ -33,6 +37,10 @@ public class BookingController {
     private IAdminService adminService;
     @Autowired
     private ILocationService locationService;
+    @Autowired
+    private SendEmailService sendEmailService;
+
+    private JavaMailSender javaMailSender;
 
 //    理论上insert不需要的ID的 数据库里已经设置的ID自增 test里测试似乎也不需要ID
 //    框架里写的是动态sql
@@ -99,6 +107,37 @@ public class BookingController {
     public boolean editBooking(Booking booking){
         boolean editBooking = ibookingService.updateById(booking);
         return editBooking;
+    }
+
+    @RequestMapping("/sendRejectEmail")
+    public void sendRejectEmailToUser(@RequestParam Integer booking_id){
+        // get reject booking list
+        Booking booking = ibookingService.getById(booking_id);
+
+        // get reject user info by booking list
+        User user = userService.getById(booking.getUserId());
+
+        //get vaccine name by booking list's vaccine ID
+        Vaccine vaccine = vaccineService.getById(booking.getVaccineId());
+        String vaccineName = vaccine.getVaccineName();
+
+        //set email param
+        String toEmail = user.getEmail();
+        String topic = "Cancel Booking message from vacBook!";
+        String msg = "Dear "+ user.getUserFirstname() +":\n"+
+                "Sorry Your Booking has been reject!\n"+
+                "Below are your booking details:\n\n"+
+                "Booking user first name:       "+ user.getUserFirstname()+"\n"+
+                "Booking user last name:        "+ user.getUserLastname()+"\n"+
+                "Booking Date:                      "+ booking.getDate()+"\n"+
+                "Booking period:                    "+ booking.getBookingTimezone()+"\n"+
+                "Booked vaccine name:          "+ vaccineName+"\n\n"+
+                "Finally, I once again apologize for canceling your vaccine appointment for some uncontrollable reasons.\n\n" +
+                " You can log in to our VacBook system again to select a vaccine appointment for another time period.\n\n " +
+                "If you have any questions about the above information, please don't hesitate to contact us: yanyukang29@gmail.com";
+
+        sendEmailService.sendEmail(toEmail,msg,topic);
+        System.out.println("sent reject email success!");
     }
 
 
