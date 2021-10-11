@@ -250,6 +250,7 @@ public class UserController {
     @RequestMapping("/sendEmail")
     public ModelAndView sendToUserEmail(@RequestParam String email){
         sendEmailService.sendEmail(email,"HI!","Test email from Vacbook!");
+        System.out.println("sent reject email success!");
         ModelAndView modelAndView = new ModelAndView( "userPages/emailConfirmation");
         return modelAndView;
 
