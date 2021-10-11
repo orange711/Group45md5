@@ -8,6 +8,7 @@ import com.sydney.vacbook.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -140,6 +141,15 @@ public class AdminController {
     /**
      * Vaccine can add, delete, update requests based on the design of figma
      */
+    @RequestMapping ("/vaccines/refresh")
+    public String fetchVaccinesRefresh(Model model) {
+        List<Vaccine> resultSet = vaccineController.getVaccineListByAdminId(listAdmin.get(0).getAdminId());
+        model.addAttribute("adminVaccineList",resultSet);
+        return "adminPages/adminVaccines::vac_container";
+    }
+    /**
+     * Vaccine can add, delete, update requests based on the design of figma
+     */
     @GetMapping("/vaccines")
     public ModelAndView fetchVaccines() {
         List<Vaccine> resultSet = vaccineController.getVaccineListByAdminId(listAdmin.get(0).getAdminId());
@@ -148,7 +158,7 @@ public class AdminController {
     }
 
     @PostMapping("/vaccines/update")
-    public ModelAndView updateVaccine(@RequestParam Integer stock, Integer update_id) {
+    public String updateVaccine(@RequestParam Integer stock, Integer update_id,Model model) {
         System.out.println(stock);
         System.out.println(update_id);
         if (update_id != null && stock != null) {
@@ -158,11 +168,11 @@ public class AdminController {
             iVaccineService.saveOrUpdate(vaccine);
             System.out.println("change success");
         }
-        return fetchVaccines();
+        return fetchVaccinesRefresh(model);
     }
 
     @PostMapping("/vaccines/delete")
-    public ModelAndView deleteVaccine(@RequestParam Integer delete_id) {
+    public String deleteVaccine(@RequestParam Integer delete_id,Model model) {
         System.out.println(delete_id);
         if(delete_id!=null) {
             System.out.println("delete vaccine");
@@ -170,11 +180,11 @@ public class AdminController {
             vaccineController.delVaccine(vaccine);
             System.out.println("delete success");
         }
-        return fetchVaccines();
+        return fetchVaccinesRefresh(model);
     }
 
     @PostMapping("/vaccines/add")
-    public ModelAndView addVaccine(@RequestParam String name, String type, Integer amount) {
+    public String addVaccine(@RequestParam String name, String type, Integer amount,Model model) {
         if (amount != null && name != null && type != null) {
             System.out.println("add vaccine");
             Vaccine vaccine = new Vaccine();
@@ -186,7 +196,7 @@ public class AdminController {
             iVaccineService.save(vaccine);
             System.out.println("add success");
         }
-        return fetchVaccines();
+        return fetchVaccinesRefresh(model);
     }
 
     @GetMapping("/setting")

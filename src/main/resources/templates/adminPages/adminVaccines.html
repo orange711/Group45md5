@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.0/jquery.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript" th:src="@{/js/adminVaccineModel.js}"></script>
@@ -16,7 +17,7 @@
      style="max-width: 700px; margin-top: 50px; padding-top: 30px;  padding-bottom: 30px; line-height:30px; border: 1px solid black;">
     <h1 align="center">Vaccine Information</h1>
 
-    <table class="table table-striped" style="border: 1px solid black;">
+    <table th:fragment="vac_container" th:id="id_vac_container" class="table table-striped" style="border: 1px solid black;">
         <tbody style="text-align: center">
         <tr>
             <th>Vaccine type</th>
@@ -31,7 +32,7 @@
             <td th:id="${l.getVaccineId()}" style="text-align: center">
                 <button th:onclick="| vaccine_update( ${l.getVaccineAmount()}, ${l.getVaccineId()} )|"
                         style="background-color: dimgray" type="button" class="btn btn-primary eBtn" data-toggle="modal"
-                        >
+                >
                     Edit
                 </button>
                 <button th:onclick="| vaccine_del(${l.getVaccineId()})|" style="background-color: darkred" type="button"
@@ -47,7 +48,8 @@
         Add
     </button>
 
-    <form th:action="@{/vacbook/admin/vaccines/update}" method="post">
+    <!--    <form th:action="@{/vacbook/admin/vaccines/update}" method="post">-->
+    <form>
         <input type="hidden" id="update_id" name="update_id"/>
         <!-- edit Modal -->
         <div class="modal" id="editModal">
@@ -76,7 +78,7 @@
                     <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button class="btn btn-danger" type="submit" onclick="updateStock()">Save</button>
+                        <button class="btn btn-danger" type="submit" onclick="vaccine_update()">Save</button>
                     </div>
                 </div>
             </div>
@@ -236,15 +238,15 @@
                 url: "/vacbook/admin/vaccines/delete/",
                 data: data,
                 type: "post",
-                dataType: "json",
-
+                success:function (data){
+                    $("#id_vac_container").html(data); //根据id去查找元素，再利用.html用data将原来的值进行替换
+                }
 
             });
             layer.msg('The vaccine has been deleted !')
         }
 
         function vaccine_add() {
-
             layer.prompt({btn: ["Confirm", "Cancel"],title: 'Please input new vaccine type', formType: 3}, function (type, index) {
 
                 layer.close(index);
@@ -252,7 +254,7 @@
                     layer.close(index);
                     layer.prompt({btn: ["Confirm", "Cancel"],title: 'Please input new vaccine stock', formType: 3}, function (stock, index) {
                         layer.close(index);
-                        layer.msg('Add success' + '<br>New vaccine type：' + type + '<br>New vaccine name：' + vaccineName + '<br>New vaccine stock：' + stock);
+                        layer.msg('Add success' + '<br>New vaccine type：' + type + '<br>New vaccine name：' + vaccineName + '<br>New vaccine stock1：' + stock);
 
                         var data = {
                             // name, String type, Integer amount
@@ -266,8 +268,9 @@
                             url: "/vacbook/admin/vaccines/add",
                             data: data,
                             type: "post",
-                            dataType: "json",
-
+                            success:function (data){
+                                $("#id_vac_container").html(data); //根据id去查找元素，再利用.html用data将原来的值进行替换
+                            }
 
                         });
 
@@ -280,28 +283,28 @@
         }
 
         function vaccine_update(vaccine_amount,update_id) {
+            console.log('dd') //test
             //Integer stock, Integer update_id
             layer.prompt({value:vaccine_amount,btn: ["Confirm", "Cancel"],title: 'Please input new vaccine stock', formType: 3}, function (stock, index) {
                 //这里貌似要修改layer，js的源代码才能显示vaccine_amount 麻了
                 layer.close(index);
-                        layer.msg('Update success' + '<br>New vaccine stock：' + stock);
+                layer.msg('Update success' + '<br>New vaccine stock2：' + stock);
 
-                        var data = {
-                            // name, String type, Integer amount
-                            "update_id": update_id,
-                            "stock": stock,
-                        }
+                var data = {
+                    // name, String type, Integer amount
+                    "update_id": update_id,
+                    "stock": stock,
+                }
+                $.ajax({
+                    url: "/vacbook/admin/vaccines/update",
+                    data: data,
+                    type: "POST",
+                    success:function (data){
+                        $("#id_vac_container").html(data);//根据id去查找元素，再利用.html用data将原来的值进行替换
+                    }
+                });
 
-                        $.ajax({
-                            url: "/vacbook/admin/vaccines/update",
-                            data: data,
-                            type: "post",
-                            dataType: "json",
-
-
-                        });
-
-                    });
+            });
 
         }
 
