@@ -17,7 +17,6 @@ function search_box() {
               tr[i].style.display="";
           }else{
               tr[i].style.display = "none";
-
           }
 
         // if (txtValue.toUpperCase().indexOf(filter) > -1) {
