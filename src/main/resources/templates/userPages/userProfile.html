@@ -26,13 +26,14 @@
 </head>
 
 <body>
+
 <div class="wrapper-register">
     <div class=" logo" style="display: inline;">
-        <a href="index.html"><img id="logo-register" h:src="@{/img/logo.png}"></a>
+        <a th:href="@{/vacBook/user/index/booking}"><img id="logo-register" th:src="@{/img/logo.png}"></a>
     </div>
 </div>
 <div class="book-btn" style="text-align: center;padding-top: 20px;">
-    <a class="btn" href="booking-edit.html" role="button">My Booking</a>
+    <a class="btn" th:href="@{/vacbook/booking/user/{id}(id = ${result.getUserId})}" role="button">My Booking</a>
 </div>
 <!--Form starts here-->
 <div class="container" style="padding-top: 30px;">
@@ -124,9 +125,10 @@
             <!-- <div class="check" style="display: inline; padding-right: 20px;">
                 <a  class="link-danger" onclick="ClearFields();">Edit</a>
             </div> -->
-
+            <a th:href="@{/vacBook/user/index/booking}" type="submit" class="btn btn-outline-danger">Back to Home Page</a>
             <button id = "submit" type="submit" class="btn btn-success">Save</button>
         </div>
+
     </div>
 </div>
 

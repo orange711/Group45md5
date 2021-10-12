@@ -1,6 +1,7 @@
 package com.sydney.vacbook.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.sydney.vacbook.entity.*;
 import com.sydney.vacbook.mapper.BookingMapper;
@@ -12,6 +13,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -107,6 +112,42 @@ public class BookingController {
     public boolean editBooking(Booking booking){
         boolean editBooking = ibookingService.updateById(booking);
         return editBooking;
+    }
+
+    @GetMapping("/user/{id}")
+    public ModelAndView getUserBookingInfo(@PathVariable("id") int id){
+        //find Booking info by userID
+        QueryWrapper<Booking> findBookingByUserId = new QueryWrapper<>();
+        findBookingByUserId.lambda().eq(Booking::getUserId, id);
+        List<Booking> bookingList = ibookingService.list(findBookingByUserId);
+
+        //get vaccine name by id
+        Integer vaccineId = bookingList.get(0).getVaccineId();
+        Vaccine vaccine = vaccineService.getById(vaccineId);
+
+        //get user name by id
+        Integer userId = bookingList.get(0).getUserId();
+        User user = userService.getById(userId);
+
+        //get Booking date and time
+        String date = bookingList.get(0).getDate();
+        String time = bookingList.get(0).getBookingTimezone();
+
+        //get Location name
+        Integer locationId = bookingList.get(0).getBookingId();
+        Location location = locationService.getById(locationId);
+
+        // new map to front end
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("Vaccine", vaccine.getVaccineName());
+        result.put("firstName", user.getUserFirstname());
+        result.put("lastName", user.getUserLastname());
+        result.put("date", date);
+        result.put("time", time);
+        result.put("location", location.getLocation());
+
+        ModelAndView modelAndView = new ModelAndView( "userPages/booking-edit","bookingInfo",result);
+        return modelAndView;
     }
 
     @RequestMapping("/sendRejectEmail")
