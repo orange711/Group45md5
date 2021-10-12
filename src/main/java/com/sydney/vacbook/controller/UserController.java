@@ -55,25 +55,29 @@ public class UserController {
 //    新增userlist
     List<User> listUser = new ArrayList<>();
 
-    @GetMapping("/{user_id}")
-    public ModelAndView fetchUser(@PathVariable("user_id") int user_id){
-        User user = iUserService.getById(user_id);
+    @GetMapping("/profile")
+    public ModelAndView fetchUser(){
+        User user = listUser.get(0);
         ModelAndView modelAndView = new ModelAndView( "userPages/userProfile","result", user);
         System.out.println(user);
         return  modelAndView;
     }
 
-    @PutMapping("/{user_id}")
-    public boolean updateUser(@PathVariable("user_id") int user_id, @RequestBody Map<String, Object> body) {
-        User user = iUserService.getById(user_id);
-        // if body has content, update user information
-        if (!body.isEmpty()) {
-            System.out.println(body);
-            user.updateByMap(body);
-            iUserService.saveOrUpdate(user);
-            return true;
-        }
-        return false;
+    @PutMapping("/profile")
+    public ModelAndView updateUser(@RequestParam String first, String last, Integer age, String account, String password, String email, String gender, String phone, String address, String answer) {
+        User user = listUser.get(0);
+        user.setUserFirstname(first);
+        user.setUserLastname(last);
+        user.setGender(gender);
+        user.setEmail(email);
+        user.setPhoneNumber(phone);
+        user.setAddress(address);
+        user.setUserAccount(account);
+        user.setUserPassword(password);
+        user.setUserSafeKey(answer);
+        user.setAge(age);
+        iUserService.saveOrUpdate(user);
+        return fetchUser();
     }
 
     /**
