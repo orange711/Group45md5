@@ -8,145 +8,178 @@
     <title>Edit your information</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
     </script>
-
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
     <script type="text/javascript" th:src="@{/js/auto-complete.js}"></script>
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvL0oAUZCGxOvATeo595zapc1fyEVhoC0&libraries=places&callback=initAutocomplete"
-        async defer></script>
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvL0oAUZCGxOvATeo595zapc1fyEVhoC0&libraries=places&callback=initAutocomplete"
+            async defer></script>
 </head>
 
 <body>
-    <div class="wrapper-register">
-        <div class=" logo" style="display: inline;">
-            <a href="index.html"><img id="logo-register" h:src="@{/img/logo.png}"></a>
+<div class="wrapper-register">
+    <div class=" logo" style="display: inline;">
+        <a href="index.html"><img id="logo-register" h:src="@{/img/logo.png}"></a>
+    </div>
+</div>
+<div class="book-btn" style="text-align: center;padding-top: 20px;">
+    <a class="btn" href="booking-edit.html" role="button">My Booking</a>
+</div>
+<!--Form starts here-->
+<div class="container" style="padding-top: 30px;">
+    <!--row 1-->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>First name:</label>
+            <input type="text" class="form-control" onfocus="this.value=''" id="textfield1"
+                   th:value="${result.userFirstname}" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>age:</label>
+            <input type="number" class="form-control" onfocus="this.value=''" id="textfield2"
+                   th:value="${result.age}" required>
         </div>
     </div>
-    <div class="book-btn" style="text-align: center;padding-top: 20px;">
-        <a class="btn" href="booking-edit.html" role="button">My Booking</a>
-    </div>
-    <!--Form starts here-->
-    <div class="container" style="padding-top: 30px;">
-        <form class="form-register ">
-            <!--row 1-->
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>First name:</label>
-                    <input type="text" class="form-control" onfocus="this.value=''" id="textfield1"
-                        th:value="${result.userFirstname}" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Date of birth:</label>
-                    <input type="date" class="form-control" onfocus="this.value=''" id="textfield2" value="1998-02-23"
-                        required>
-                </div>
-            </div>
-            <!--row 2-->
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>Last name:</label>
-                    <input type="text" class="form-control" id="textfield3" onfocus="this.value=''"
-                        th:value="${result.userLastname}" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Password:</label>
-                    <input type="password" class="form-control" id="txtPassword" onfocus="this.value=''"
-                        th:value="${result.userPassword}" required>
-                </div>
-            </div>
-
-            <!--row 3-->
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>Username:</label>
-                    <input type="text" class="form-control" id="textfield5" onfocus="this.value=''"
-                        th:value="${result.userAccount}" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Confirm your password:</label>
-                    <input type="password" class="form-control" id="txtComfirmPassword" onfocus="this.value=''"
-                        th:value="${result.userPassword}" required>
-                </div>
-            </div>
-
-            <!--row 4-->
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>Email address:</label>
-                    <input type="email" class="form-control" id="textfield7" onfocus="this.value=''"
-                        th:value="${result.email}" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>What's your mother's last name?</label>
-                    <input type="text" class="form-control" id="textfield8" onfocus="this.value=''"
-                        th:value="${result.userSafeKey}" required>
-                </div>
-            </div>
-
-            <!--row 5-->
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>Address:</label>
-                    <div id="textfield9">
-                        <input id="autocomplete" th:value="${result.address}" onFocus="geolocate(); this.value=''"
-                            type="text" class="form-control ">
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Gender:</label>
-                    <select name="gender" id="gender" style="width: 100%; height: 33px;">
-                        <option value="Select">Select your option</option>
-                        <option value="Female">Female</option>
-                        <option value="Male">Male</option>
-                        <option value="Prefer not to say">Prefer not to say</option>
-                    </select>
-                </div>
-            </div>
-
-            <!--row 6-->
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>Mobile Phone:</label>
-                    <input type="tel" id="textfield10" class="form-control" th:value="${result.phoneNumber}"
-                        maxlength=10 required>
-                </div>
-                <div class="col-md-6 mb-3" style="padding-top: 25px; text-align: right;">
-                    <!-- <div class="check" style="display: inline; padding-right: 20px;">
-                        <a  class="link-danger" onclick="ClearFields();">Edit</a>
-                    </div> -->
-
-                    <button type="submit" class="btn btn-success">Save</button>
-                </div>
-            </div>
-        </form>
+    <!--row 2-->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Last name:</label>
+            <input type="text" class="form-control" id="textfield3" onfocus="this.value=''"
+                   th:value="${result.userLastname}" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>Password:</label>
+            <input type="password" class="form-control" id="txtPassword" onfocus="this.value=''"
+                   th:value="${result.userPassword}" required>
+        </div>
     </div>
 
-
-
+    <!--row 3-->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Username:</label>
+            <input type="text" class="form-control" id="textfield5" onfocus="this.value=''"
+                   th:value="${result.userAccount}" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>Confirm your password:</label>
+            <input type="password" class="form-control" id="txtComfirmPassword" onfocus="this.value=''"
+                   th:value="${result.userPassword}" required>
+        </div>
     </div>
 
-    <script>
-        $(function () {
-            $("#submit").click(function () {
-                var password = $("#txtPassword").val();
-                var confirmPassword = $("#txtConfirmPassword").val();
-                if (password != confirmPassword) {
-                    alert("Passwords do not match.");
-                    return false;
+    <!--row 4-->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Email address:</label>
+            <input type="email" class="form-control" id="textfield7" onfocus="this.value=''"
+                   th:value="${result.email}" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>What's your mother's last name?</label>
+            <input type="text" class="form-control" id="textfield8" onfocus="this.value=''"
+                   th:value="${result.userSafeKey}" required>
+        </div>
+    </div>
+
+    <!--row 5-->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Address:</label>
+            <div id="textfield9">
+                <input id="autocomplete" th:value="${result.address}" onFocus="geolocate(); this.value=''"
+                       type="text" class="form-control ">
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>Gender:</label>
+            <select name="gender" id="gender" style="width: 100%; height: 33px;">
+                <option th:text="${result.gender}"></option>
+                <option th:if="${result.gender} != 'Female'" value="Female">Female</option>
+                <option th:if="${result.gender} != 'Male'" value="Male">Male</option>
+                <option th:if="${result.gender} != 'Prefer not to say'" value="Prefer not to say">Prefer not to say
+                </option>
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <!--row 6-->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Mobile Phone:</label>
+            <input type="tel" id="textfield10" class="form-control" th:value="${result.phoneNumber}"
+                   maxlength=10 required>
+        </div>
+        <div class="col-md-6 mb-3" style="padding-top: 25px; text-align: right;">
+            <!-- <div class="check" style="display: inline; padding-right: 20px;">
+                <a  class="link-danger" onclick="ClearFields();">Edit</a>
+            </div> -->
+
+            <button id = "submit" type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+<script>
+    $(function () {
+        $("#submit").click(function () {
+            console.log("gggg")
+            var password = $("#txtPassword").val();
+            var confirmPassword = $("#txtConfirmPassword").val();
+            var first = $("#textfield1").val();
+            var age = $("#textfield2").val();
+            var last = $("#textfield3").val();
+            var account = $("#textfield5").val();
+            var email = $("#textfield7").val();
+            var answer = $("#textfield8").val();
+            var address = $("#autocomplete").val();
+            var gender = $("#gender").val();
+            var phone = $("#textfield10").val();
+            console.log(address)
+            console.log(password)
+            console.log(confirmPassword)
+            if (confirmPassword!="" && confirmPassword != null && password != confirmPassword) {
+                alert("Passwords do not match.");
+                return false;
+            }else{
+                var data = {
+                    "first": first,
+                    "last":last,
+                    "age": age,
+                    "email": email,
+                    "gender": gender,
+                    "phone": phone,
+                    "address": address,
+                    "account": account,
+                    "password": password,
+                    "answer": answer,
                 }
-                return true;
-            });
+                var msg = data.msg;
+                $.ajax({
+                    url: "/vacBook/user/profile",
+                    data: data,
+                    type: "put",
+                    dataType: "json",
+                });
+                layer.msg("change successfully!")
+            }
+            return true;
         });
-    </script>
+    });
+</script>
 </body>
 
 </html>

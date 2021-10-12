@@ -31,10 +31,8 @@ function check(){
             data: data,
             type: "post",
             dataType: "json",
-
-
         });
-        layer.msg("The password has been changed")
+        layer.msg("change successfully")
 
         return true;
     }
