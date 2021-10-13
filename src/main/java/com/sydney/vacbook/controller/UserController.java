@@ -73,7 +73,12 @@ public class UserController {
         user.setPhoneNumber(phone);
         user.setAddress(address);
         user.setUserAccount(account);
-        user.setUserPassword(password);
+        if (password != null && password != " " && !password.isEmpty()) {
+            String passwordMD5 = code(password);
+            System.out.println(password + ".");
+            user.setUserPassword(passwordMD5);
+        }
+
         user.setUserSafeKey(answer);
         user.setAge(age);
         iUserService.saveOrUpdate(user);

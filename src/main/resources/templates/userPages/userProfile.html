@@ -73,7 +73,7 @@
         </div>
         <div class="col-md-6 mb-3">
             <label>Confirm your password:</label>
-            <input type="password" class="form-control" id="txtComfirmPassword" onfocus="this.value=''"
+            <input type="password" class="form-control" id="txtConfirmPassword" onfocus="this.value=''"
                    th:value="${result.userPassword}" required>
         </div>
     </div>
@@ -138,7 +138,6 @@
 <script>
     $(function () {
         $("#submit").click(function () {
-            console.log("gggg")
             var password = $("#txtPassword").val();
             var confirmPassword = $("#txtConfirmPassword").val();
             var first = $("#textfield1").val();
@@ -150,10 +149,8 @@
             var address = $("#autocomplete").val();
             var gender = $("#gender").val();
             var phone = $("#textfield10").val();
-            console.log(address)
-            console.log(password)
-            console.log(confirmPassword)
-            if (confirmPassword!="" && confirmPassword != null && password != confirmPassword) {
+            if (confirmPassword!=" " && confirmPassword != null && password != confirmPassword) {
+                console.log("Passwords do not match.")
                 alert("Passwords do not match.");
                 return false;
             }else{
