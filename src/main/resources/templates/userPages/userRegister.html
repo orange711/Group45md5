@@ -231,14 +231,21 @@
                 url: "/vacBook/user/register/",
                 data: data,
                 type: "post",
-                dataType: "json",
+                dataType: "text",
+
+
 
                 success: function(data){
-                        
-                        setTimeout(go, 500);   // 0.5秒后页面跳转
+                    var code = data.code;
+                    console.log(code);
+                    console.log(data.status+"2");
+                    layer.msg("Congratulations on your registration, jump in one second." );
+                    setTimeout(function(){//两秒后跳转
+                        location.href = "index";
+                    },2000);
                 },
                 error : function() {
-
+                    console.log(data.status+"1");
                     layer.msg("Your account or email or phone has been registered！",{icon: 5});
                 }
 
