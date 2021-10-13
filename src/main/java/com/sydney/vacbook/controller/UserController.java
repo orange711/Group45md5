@@ -26,7 +26,7 @@ import static com.sydney.vacbook.tool.MD5.code;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author Group45
@@ -57,15 +57,15 @@ public class UserController {
     private ILocationService iLocationService;
 
 
-//    新增userlist
+    //    新增userlist
     List<User> listUser = new ArrayList<>();
 
     @GetMapping("/profile")
-    public ModelAndView fetchUser(){
+    public ModelAndView fetchUser() {
         User user = listUser.get(0);
-        ModelAndView modelAndView = new ModelAndView( "userPages/userProfile","result", user);
+        ModelAndView modelAndView = new ModelAndView("userPages/userProfile", "result", user);
         System.out.println(user);
-        return  modelAndView;
+        return modelAndView;
     }
 
     @PutMapping("/profile")
@@ -94,7 +94,7 @@ public class UserController {
      * send account and receive user to get question
      */
     @GetMapping("/get_user_by_account")
-    public User getUserByAccount(@RequestParam("user_account") String user_account){//@RequestBody Map<String, Object> body){
+    public User getUserByAccount(@RequestParam("user_account") String user_account) {//@RequestBody Map<String, Object> body){
         //String user_account = body.get("user_account").toString();
         System.out.println(user_account);
         QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
@@ -122,7 +122,7 @@ public class UserController {
 //    }
 
     @PostMapping("/changePassword")
-    public void changePassword(User user, @RequestBody Map<String, Object> body){
+    public void changePassword(User user, @RequestBody Map<String, Object> body) {
         String changePassword = body.get("changePassword").toString();
         user.setUserPassword(changePassword);
         iUserService.saveOrUpdate(user);
@@ -130,9 +130,9 @@ public class UserController {
     }
 
 
-//    存放user list
+    //    存放user list
     @RequestMapping("/userList")
-    public ModelAndView userList(){
+    public ModelAndView userList() {
         ModelAndView modelAndView = new ModelAndView("userPages/index", "userList", listUser);
         return modelAndView;
     }
@@ -142,20 +142,20 @@ public class UserController {
         User user = listUser.get(0);
         List<Admin> adminList = iAdminService.list();
         List<Vaccine> vaccineList = iVaccineService.list();
-        ModelAndView modelAndView = new ModelAndView("userPages/indexBooking","providers",adminList);
-        modelAndView.addObject("vaccineList",vaccineList);
+        ModelAndView modelAndView = new ModelAndView("userPages/indexBooking", "providers", adminList);
+        modelAndView.addObject("vaccineList", vaccineList);
         modelAndView.addObject("user_name", user.getUserLastname());
         modelAndView.addObject("user_id", user.getUserId());
         return modelAndView;
     }
 
 
-    @PostMapping ("/loginForm")
-    public ModelAndView login(HttpServletRequest request,String userAccount,String userPassword,  Map<String, Object> body) {
-        System.out.println(userAccount+".,.."+userPassword);
+    @PostMapping("/loginForm")
+    public ModelAndView login(HttpServletRequest request, String userAccount, String userPassword, Map<String, Object> body) {
+        System.out.println(userAccount + ".,.." + userPassword);
         String userPasswordMD5 = code(userPassword);
 
-		//按用户名密码查询
+        //按用户名密码查询
         QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
         sectionQueryWrapper.eq("user_account", userAccount);
         sectionQueryWrapper.eq("user_password", userPasswordMD5);
@@ -183,8 +183,8 @@ public class UserController {
         }
     }
 
-        @RequestMapping("/register")
-    public String register(User user, Map<String, Object> body){
+    @RequestMapping("/register")
+    public String register(User user, Map<String, Object> body) {
 
         System.out.println(user);
 
@@ -202,29 +202,42 @@ public class UserController {
 
         String passwordMD5 = code(user.getUserPassword());
         user.setUserPassword(passwordMD5);
-        QueryWrapper<User> checkQueryWrapper = new QueryWrapper<>();
-        checkQueryWrapper.eq("user_account", user.getUserAccount());
-        checkQueryWrapper.eq("phone_number", user.getPhoneNumber());
-        checkQueryWrapper.eq("email", user.getEmail());
-        if (iUserService.getOne(checkQueryWrapper)!=null){
-            System.err.println("This account has been registered或者电话或者email被注册");
+        QueryWrapper<User> checkQueryWrapper1 = new QueryWrapper<>();
+        checkQueryWrapper1.eq("user_account", user.getUserAccount());
+
+
+        if (iUserService.getOne(checkQueryWrapper1) != null) {
+            System.err.println("This account has been registered");
+            return "redirect:registerPage";//重定向
+        }
+        QueryWrapper<User> checkQueryWrapper2 = new QueryWrapper<>();
+        checkQueryWrapper2.eq("phone_number", user.getPhoneNumber());
+
+        if (iUserService.getOne(checkQueryWrapper2) != null) {
+            System.err.println("This phone has been registered");
+            return "redirect:registerPage";//重定向
+        }
+        QueryWrapper<User> checkQueryWrapper3 = new QueryWrapper<>();
+        checkQueryWrapper3.eq("email", user.getEmail());
+
+        if (iUserService.getOne(checkQueryWrapper3) != null) {
+            System.err.println("This email has been registered");
             return "redirect:registerPage";//重定向
         }
 
 
         boolean newUser = iUserService.save(user);
 
-        if (newUser == false){
+        if (newUser == false) {
             System.err.println("This account has been ...");
             return "redirect:registerPage";
-        }
-        else{
+        } else {
             System.out.println("Hi!");
 
 
             QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
             sectionQueryWrapper.eq("user_account", user.getUserAccount());
-            sectionQueryWrapper.eq("admin_password", user.getUserPassword());
+//            sectionQueryWrapper.eq("admin_password", user.getUserPassword());
             listUser = iUserService.list(sectionQueryWrapper);
 
 
@@ -235,50 +248,54 @@ public class UserController {
             String userLastName = listUser.get(0).getUserLastname();
             String userFirstName = listUser.get(0).getUserFirstname();
             String address = listUser.get(0).getAddress();
-            int age =  listUser.get(0).getAge();
+            int age = listUser.get(0).getAge();
             String phoneNumber = listUser.get(0).getPhoneNumber();
             String question = listUser.get(0).getUserQuestion();
             String userSafeKey = listUser.get(0).getUserSafeKey();
-
 
 
             body.put("userid", userid);
             body.put("username", account);
             body.put("password", password);
             body.put("email", email);
-            body.put("userFirstName",userFirstName);
-            body.put("userLastName",userLastName);
-            body.put("address",address);
-            body.put("age",age);
-            body.put("phoneNumber",phoneNumber);
-            body.put("question",question);
-            body.put("userSafeKey",userSafeKey);
+            body.put("userFirstName", userFirstName);
+            body.put("userLastName", userLastName);
+            body.put("address", address);
+            body.put("age", age);
+            body.put("phoneNumber", phoneNumber);
+            body.put("question", question);
+            body.put("userSafeKey", userSafeKey);
 
-            return "redirect:index";
+            return "index";
 
         }
 
 
     }
+//    @RequestMapping("/register/index")
+//    public String index(){
+//        return "redirect:index";
+//    }
 
     @RequestMapping("/sendEmail")
     public ModelAndView sendToUserEmail(@RequestParam String email) throws MessagingException {
-        sendEmailService.sendHtmlEmail(email,"HI!","Subscription email from VacBook!");
+        sendEmailService.sendHtmlEmail(email, "HI!", "Subscription email from VacBook!");
         System.out.println("sent subscription email success!");
-        ModelAndView modelAndView = new ModelAndView( "userPages/emailConfirmation");
+        ModelAndView modelAndView = new ModelAndView("userPages/emailConfirmation");
         return modelAndView;
 
     }
 
-    @PostMapping ("/checkboxDone")
-    public ModelAndView checkboxDone(){
-        ModelAndView modelAndView = new ModelAndView( "userPages/userRegister");
+
+    @PostMapping("/checkboxDone")
+    public ModelAndView checkboxDone() {
+        ModelAndView modelAndView = new ModelAndView("userPages/userRegister");
         return modelAndView;
 
     }
 
     @GetMapping("/logout")
-    public String logout(Map<Object, Object> map){
+    public String logout(Map<Object, Object> map) {
         map.put("userid", "");
         map.put("username", "");
         return "redirect:index";// 重定向

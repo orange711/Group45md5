@@ -36,9 +36,14 @@ public class IndexController {
         return "userPages/userLogin";
     }
 
-    @GetMapping("/user/register")
+    @GetMapping("vacBook/user/register")
     public String userRegister() {
         return "userPages/userRegister";
+    }
+
+    @GetMapping("vacBook/user/register/index")
+    public String success() {
+        return "userPages/index";
     }
 
     @PostMapping("vacBook/user/indexCheckboxDone")
