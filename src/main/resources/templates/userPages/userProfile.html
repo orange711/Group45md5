@@ -149,7 +149,13 @@
             var address = $("#autocomplete").val();
             var gender = $("#gender").val();
             var phone = $("#textfield10").val();
-            if (confirmPassword!=" " && confirmPassword != null && password != confirmPassword) {
+            // console.log(email+ "casa")
+            // if(password == null || confirmPassword == null || first == null || age == null || last ==null || account == null || email == null
+            //     || answer==null|| address == null || gender ==null || phone==null){
+            //     alert(" Please fill all content");
+            //     return false;
+            // }
+            if (confirmPassword!=" " && confirmPassword != null && password != confirmPassword ) {
                 console.log("Passwords do not match.")
                 alert("Passwords do not match.");
                 return false;

@@ -2,7 +2,7 @@
  * js for the adminBookingModel
  */
 function del_booking(btn,id) {
-    layer.confirm('Are you sure you want to delete this Booking now ?', {
+    layer.confirm('Are you sure you want to delete this Booking now <br> And send reminder email?', {
         btn: ["Confirm", "Cancel"],
         icon: 2,
         title: "Delete Booking Warning!"
@@ -24,7 +24,7 @@ function del_booking(btn,id) {
                 if(result){
 
                     $(btn).parent().parent().remove()
-                    layer.msg('The booking has been deleted!'
+                    layer.msg('The booking has been deleted!<br>'
                         +"And reminder email has been sent successfully")
                 }
             },
