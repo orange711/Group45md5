@@ -47,6 +47,11 @@ public class AdminController {
     //一个adminList来判断登录合法性 并且存储相关信息
     List<Admin> listAdmin = new ArrayList<>();
 
+    @RequestMapping("/base")
+    public String toBase(){
+        return "adminPages/base";
+    }
+
     @GetMapping("/dashboard")
     public ModelAndView fetchDashboard() {
         int admin_id = listAdmin.get(0).getAdminId();
@@ -268,7 +273,7 @@ public class AdminController {
             return "adminPages/base";//重定向
         } else {
 
-            return "adminPages/adminLogin";//重定向
+            return "No";//重定向
         }
 
     }
