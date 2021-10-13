@@ -19,6 +19,9 @@
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
 
     </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="text/javascript" th:src="@{/js/load-more.js}" ></script>
     <script type="text/javascript" th:src="@{/js/search-box.js}"></script>
     <style>
@@ -135,12 +138,21 @@
             sessionStorage.setItem('user_name', user_name);
             sessionStorage.setItem('user_id', user_id);
             let option = document.getElementById("login");
+            let option1 = document.getElementById("logout");
             console.log(option);
             let profileURL = 'href=/vacBook/user/profile'
+            let profileURL1 = 'href=/vacBook/user/logout'
             console.log(profileURL)
             let element = "<a class=\"nav-link\" style=\"color: black\" "+ profileURL + ">Hi, " + user_name + "</a>";
+            let element1 = "<a class=\"nav-link\" style=\"color: black\" "+ profileURL1 + ">Logout"+"</a>";
             option.innerHTML = element
+            option1.innerHTML = element1
         }
+
+
+
+
+
     };
 </script>
     <div class="container" >
@@ -166,6 +178,9 @@
                         <li id="login" class="nav-item">
 <!--                             <a class="nav-link" style="color: black;" th: th:href=@{/vacBook/user/login}"></a> -->
                             <a class="nav-link" style="color: black;" th:href="@{/vacBook/user/login}">Sign in / Register</a>
+                        </li>
+                        <li id="logout" class="nav-item">
+
                         </li>
                     </ul>
                 </div>
