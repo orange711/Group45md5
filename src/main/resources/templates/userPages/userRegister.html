@@ -156,6 +156,10 @@
             layer.msg("Age can't be empty");
             return false;
         }
+        if (age<=0||age>120) {
+            layer.msg("Age is wrong.");
+            return false;
+        }
 
         if (lastName.trim() == null || lastName == "") {
 
@@ -195,7 +199,7 @@
             return false;
         }
 
-        if (gender == "select" || gender == "") {
+        if (gender == "Select" || gender == "") {
             layer.msg("Please select your gender!")
             return false;
         }
@@ -203,6 +207,11 @@
 
         if (phone.trim() == null || phone == "") {
             layer.msg("phone can't be empty");
+            return false;
+        }
+
+        if(phone>999999999|| !isNaN(phone)){
+            layer.msg("You phone number is wrong");
             return false;
         }
 
