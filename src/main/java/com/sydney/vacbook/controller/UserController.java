@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.TemplateEngine;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -38,6 +40,9 @@ public class UserController {
 
     @Autowired
     private SendEmailService sendEmailService;
+
+    @Autowired
+    private TemplateEngine templateEngine;
 
     @Autowired
     private IAdminService iAdminService;
@@ -252,9 +257,9 @@ public class UserController {
     }
 
     @RequestMapping("/sendEmail")
-    public ModelAndView sendToUserEmail(@RequestParam String email){
-        sendEmailService.sendEmail(email,"HI!","Test email from Vacbook!");
-        System.out.println("sent reject email success!");
+    public ModelAndView sendToUserEmail(@RequestParam String email) throws MessagingException {
+        sendEmailService.sendHtmlEmail(email,"HI!","Subscription email from VacBook!");
+        System.out.println("sent subscription email success!");
         ModelAndView modelAndView = new ModelAndView( "userPages/emailConfirmation");
         return modelAndView;
 
