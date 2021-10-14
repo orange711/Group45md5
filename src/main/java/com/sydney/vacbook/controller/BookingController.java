@@ -68,6 +68,23 @@ public class BookingController {
         boolean bookingUpdate = ibookingService.updateById(booking);
         return bookingUpdate;
     }
+    @PostMapping(value = "/update")
+    public ModelAndView updateSetting(@RequestParam String date, String time,Integer userID) {
+
+//        System.out.println("Here is update booking");
+        // here can be updated by user in myBooking page
+        QueryWrapper<Booking> findBookingByUserId = new QueryWrapper<>();
+        findBookingByUserId.lambda().eq(Booking::getUserId, userID);
+        List<Booking> bookingList = ibookingService.list(findBookingByUserId);
+        Booking booking = bookingList.get(0);
+        //set new date and time
+        booking.setDate(date);
+        booking.setBookingTimezone(time);
+        System.out.println(booking);
+        ibookingService.saveOrUpdate(booking);
+        return this.getUserBookingInfo(userID);
+    }
+
     //检查用户是否已经booking了
     @GetMapping("/check")
     public boolean bookingCheck(Integer userId){

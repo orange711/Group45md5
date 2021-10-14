@@ -19,7 +19,7 @@ function cal_booking(btn,id,userId) {
         $.ajax({
             url: "/vacbook/booking/reject/"+id,
             type: "get",
-            beforeSend : sendRejectEmail(id),
+            beforeSend : sendCancelEmail(id),
             success:function (result){
                 if(result){
                     window.location.href = userId;
@@ -30,7 +30,7 @@ function cal_booking(btn,id,userId) {
     });
 }
 
-function sendRejectEmail(id){
+function sendCancelEmail(id){
     var data = {
         "booking_id": id,
     }
@@ -40,5 +40,28 @@ function sendRejectEmail(id){
         type: "post",
         dataType: "json",
     });
+
+}
+
+function saveMyBooking(){
+    let userID = document.getElementById("userID").value;
+    let date = document.getElementById("date").value;
+    let time = document.getElementById("time").value;
+    console.log(date);
+    console.log(time);
+        var data = {
+            "date": date,
+            "time":time,
+            "userID":userID,
+        }
+        $.ajax({
+            url: "/vacbook/booking/update/",
+            data: data,
+            type: "post",
+            dataType: "json",
+        });
+        layer.msg("change successfully")
+
+        return true;
 
 }
