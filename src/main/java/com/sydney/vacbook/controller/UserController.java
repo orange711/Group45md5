@@ -305,7 +305,7 @@ public class UserController {
     public String logout(Map<Object, Object> map) {
         map.put("userid", "");
         map.put("username", "");
-        return "redirect:index";// 重定向
+        return "redirect:login";// 重定向
     }
 
 
