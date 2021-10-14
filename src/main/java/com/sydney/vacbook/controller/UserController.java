@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.sydney.vacbook.tool.MD5.code;
 
@@ -140,10 +141,16 @@ public class UserController {
     @GetMapping("/index/booking")
     public ModelAndView userBooking() {
         User user = listUser.get(0);
-        List<Admin> adminList = iAdminService.list();
         List<Vaccine> vaccineList = iVaccineService.list();
+        //根据vaccineList获取所有的adminId
+        List<Integer> adminIdList = vaccineList.stream().map(Vaccine::getAdminId).collect(Collectors.toList());
+        //查询adminId对应的管理员
+        List<Admin> adminList = iAdminService.list(new QueryWrapper<Admin>().in("admin_id",adminIdList));
         ModelAndView modelAndView = new ModelAndView("userPages/indexBooking", "providers", adminList);
         modelAndView.addObject("vaccineList", vaccineList);
+        modelAndView.addObject("firstName", user.getUserFirstname());
+        modelAndView.addObject("lastName", user.getUserLastname());
+        modelAndView.addObject("user_name", user.getUserLastname());
         modelAndView.addObject("user_name", user.getUserLastname());
         modelAndView.addObject("user_id", user.getUserId());
         return modelAndView;

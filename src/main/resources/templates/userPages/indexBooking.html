@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="userPages/index.html">
-
+<head>
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+</head>
 <div  layout:fragment="indexBooking" class="book-section page" id="book" style="min-height: 400px;">
     <div class="container">
         <div class="heading">
@@ -10,14 +12,14 @@
         <div class="search-bar" >
             <form class="search-container">
                 <input type="text" id="search-bar" onkeyup="search_box()" name="search" placeholder="Search for specific clinic">
-
+                <input type="hidden" id="userId" name="userId" th:value="${user_id}">
                 <!-- <a onkeyup="search_box()"><img class="search-icon"
                         src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"></a> -->
                 <!-- <a href="#" class="search-clinic">Search by clinic</a>
                 <a href="#" class="search-location">Search by location</a> -->
             </form>
         </div>
-        <div class="book-table">
+        <div class="book-table" th:fragment="booking_container" th:id="id_booking_container" >
             <table id="myTable">
                 <thead>
                 <tr>
@@ -30,9 +32,9 @@
                 </thead>
 
                 <tr th:each="l:${providers}" class="moreTable blogBox" style="display:none;">
-                    <td th:text="${l.getAdminName()}" data-label="Provider"></td>
+                    <td th:text="${l.getAdminName()}" th:name="provider" data-label="Provider"></td>
                     <td data-label="Brand">
-                        <select name="gender" id="gender" style="width: 80%; height: 33px; text-align: center;" required>
+                        <select name="brand" id="brand" style="width: 80%; height: 33px; text-align: center;" required>
                             <option value="">Select your option</option>
                             <div th:each="v:${vaccineList}"
                                  th:if="${l.getAdminId() == v.getAdminId()}">
@@ -44,159 +46,217 @@
                         </select>
                     </td>
                     <td id="date" data-label="Date">
-                        <input type="date" class="form-control" placeholder="Date of birth" required>
+                        <input type="date" name="date" class="form-control" placeholder="Date of birth" required>
                     </td>
                     <td id="time" data-label="Time">
-                        <input type="time" class="form-control" placeholder="" required>
+                        <input type="time" name="time" class="form-control" placeholder="" required>
                     </td>
                     <td data-label="submit" >
-                        <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
-                             aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalToggleLabel">CONFIRM YOUR
-                                            BOOKING</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row g-3 align-items-center">
-                                            <div class="col-auto">
-                                                <label for="inputPassword6"
-                                                       class="col-form-label">Vaccine:</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <span>{vaccine-brand}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row g-3 align-items-center">
-                                            <div class="col-auto">
-                                                <label for="inputPassword6" class="col-form-label">Name:</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <span>{firstName}</span>+<span>{lastName}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row g-3 align-items-center">
-                                            <div class="col-auto">
-                                                <label for="inputPassword6" class="col-form-label">Date &
-                                                    Time:</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <span>{date}</span>+<span>{time}</span>
-                                            </div>
-                                        </div>
-                                        <div class="row g-3 align-items-center">
-                                            <div class="col-auto">
-                                                <label for="inputPassword6"
-                                                       class="col-form-label">Provider:</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <span>{location}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-success" data-bs-target="#exampleModalToggle2"
-                                                data-bs-toggle="modal" data-bs-dismiss="modal">Confirm</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="exampleModalToggle2" aria-hidden="true"
-                             aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalToggleLabel2">Thanks for your
-                                            booking</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p style="text-align: left;">Thanks for your booking, your booking is
-                                            now confirmed. You will
-                                            receive a confirmation email soon. </p>
-                                        <div class="book-info" style="text-align: left;">
-                                            <p style=" font-family: 'Red Hat Display', sans-serif;
-                                                   font-weight: 700;">Your booking information is:</p>
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label for="inputPassword6"
-                                                           class="col-form-label">Vaccine:</label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <span>{vaccine-brand}</span>
-                                                </div>
-                                            </div>
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label for="inputPassword6"
-                                                           class="col-form-label">Name:</label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <span>{firstName}</span>+<span>{lastName}</span>
-                                                </div>
-                                            </div>
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label for="inputPassword6" class="col-form-label">Date &
-                                                        Time:</label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <span>{date}</span>+<span>{time}</span>
-                                                </div>
-                                            </div>
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label for="inputPassword6"
-                                                           class="col-form-label">Provider:</label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <span>{location}</span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer btn-back">
-                                        <a href="index.html">Back to the home page</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="book-btn">
                             <!--book按钮 弹窗-->
-                            <a class="btn" data-bs-toggle="modal" href="#exampleModalToggle"
-                               role="button" onclick="check()">Book</a>
+                            <!--                            <a class="btn" data-bs-toggle="modal" id="show" href="#exampleModalToggle"-->
+                            <!--                               role="button" th:onclick="| check( ${lStat.index})|">Book</a>-->
+                            <a class="btn" role="button" th:onclick="| check( ${lStat.index})|">Book</a>
                             <!--book按钮 跳转页面-->
                             <!-- <a class="btn" href="./book.html"
                                 role="button">Book</a> -->
                         </div>
                     </td>
                 </tr>
-
-
             </table>
             <div id="loadMore">
                 <a href="#">Next Page</a>
             </div>
-        </div>
+            <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
+                 aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel">CONFIRM YOUR
+                                BOOKING</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="confirm_content" >
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label for="inputPassword6"
+                                           class="col-form-label">Vaccine:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <span id="confirm_brand">{vaccine-brand}</span>
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label for="inputPassword6" class="col-form-label">Name:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <span id="confirm_name" th:text="${firstName}+' '+${lastName}">{firstName}+{lastName}</span>
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label for="inputPassword6" class="col-form-label">Date &
+                                        Time:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <span id="confirm_date">{date} + {time}</span>
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label for="inputPassword6"
+                                           class="col-form-label">Provider:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <span id="confirm_provider">{provider}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" data-bs-target="#exampleModalToggle2"
+                                    data-bs-toggle="modal" data-bs-dismiss="modal" onclick="saveBooking()">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModalToggle2" aria-hidden="true"
+                 aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalToggleLabel2">Thanks for your booking</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="book-info">
+                            <p style="text-align: left;">Thanks for your booking, your booking is
+                                now confirmed. You will
+                                receive a confirmation email soon. </p>
+                            <div class="book-info" style="text-align: left;">
+                                <p style=" font-family: 'Red Hat Display', sans-serif;
+                                                   font-weight: 700;">Your booking information is:</p>
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label for="inputPassword6"
+                                               class="col-form-label">Vaccine:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span id="confirm_brand1">{vaccine-brand}</span>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label for="inputPassword6"
+                                               class="col-form-label">Name:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span id="confirm_name1" th:text="${firstName}+' '+${lastName}">{firstName}+{lastName}</span>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label for="inputPassword6" class="col-form-label">Date &
+                                            Time:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span id="confirm_date1">{date} + {time}</span>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label for="inputPassword6"
+                                               class="col-form-label">Provider:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span id="confirm_provider1">{}</span>
+                                    </div>
+                                </div>
 
+                            </div>
+                        </div>
+                        <div class="modal-footer btn-back">
+                            <a role="button" data-bs-dismiss="modal" aria-label="Close">Back to the home page</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
-        function check(){
-            console.log("null");
-            let popup = document.getElementById("exampleModalToggle")
-            let date = document.getElementById("date").value
-            let time = document.getElementById("time").value
-            console.log(date)
-            console.log(time)
-            if(date == null || time == null){
-                alert("Please choose your prefer vaccine and booking time")
-            }
-
+        //初始化booking相关参数
+        var userId = '';
+        var vaccineId = '';
+        var bookingTimezone = '';
+        var date = '';
+        /**
+         *
+         * @param t 列表的下标值
+         */
+        function check(t){
+            userId = $("#userId").val();
+            let provider = $($("td[name='provider']")[t]).text();
+            let brand = $($("select[name='brand'] option:selected")[t]).text();
+            vaccineId = $($("select[name='brand'] option:selected")[t]).val();
+            date = $($("input[name='date']")[t]).val();
+            bookingTimezone = $($("input[name='time']")[t]).val();
+            $("#confirm_provider").text(provider);
+            $("#confirm_brand").text(brand);
+            $("#confirm_date").text(date+' '+bookingTimezone);
+            $("#confirm_provider1").text(provider);
+            $("#confirm_brand1").text(brand);
+            $("#confirm_date1").text(date+' '+bookingTimezone);
+            let tt = $("#confirm_content").html();
+            layer.open({
+                type: 0 , //选择默认Layer 0（信息框，默认）
+                title: 'CONFIRM YOUR BOOKING',
+                shade: 0.4,
+                content: tt , //获取DOM元素
+                btn: ['Confirm', 'Cancel'], //按钮组
+                scrollbar: false , //屏蔽浏览器滚动条
+                yes: function(index){    //点击确定回调
+                    layer.close(index);
+                    saveBooking();     //调用保存方法
+                },
+                btn2: function(){      // 点击Cancel回调
+                    layer.closeAll();
+                }
+            })
+            // }
+        }
+        function saveBooking(){
+            var data = {"userId":userId,"vaccineId":vaccineId,"date":date,"bookingTimezone":bookingTimezone};
+            $.ajax({
+                url: "/vacbook/booking/fetch/",
+                data: data,
+                type: "post",
+                success:function (data){
+                    if(data==true){
+                        let tt = $("#book-info").html(); //用于弹窗的代码部分
+                        layer.open({
+                            type: 0 ,  //选择默认Layer 0（信息框，默认）
+                            title: 'Thanks for your booking',   //标题
+                            shade: 0.4,
+                            content: tt ,
+                            btn: ['Back to the home page'], //按钮设置
+                            scrollbar: false ,
+                            yes: function(index){  //点击确定回调
+                                layer.close(index);
+                            }
+                        })
+                    }else {
+                        layer.confirm('Sorry, you have already booked the vaccine and cannot book again:)', {
+                            btn: ["OK!"],
+                            icon: 2,
+                            title: "Booking confirm!"
+                        }, function () {
+                            //点击确后关闭提示框
+                            layer.closeAll('dialog');
+                        });
+                    }
+                }
+            });
         }
     </script>
 </div>

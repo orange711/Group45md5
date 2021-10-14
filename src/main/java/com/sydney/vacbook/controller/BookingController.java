@@ -68,9 +68,24 @@ public class BookingController {
         boolean bookingUpdate = ibookingService.updateById(booking);
         return bookingUpdate;
     }
+    //检查用户是否已经booking了
+    @GetMapping("/check")
+    public boolean bookingCheck(Integer userId){
+        Booking booking = ibookingService.getOne(new QueryWrapper<Booking>().eq("user_id", userId));
+        if(booking==null){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
     //取到用户所选择的数据
     @PostMapping("/fetch")
-    public void fetchBooking(@RequestBody Booking booking){
+    public boolean fetchBooking(Booking booking){
+        Booking b = ibookingService.getOne(new QueryWrapper<Booking>().eq("user_id",booking.getUserId()));
+        if(b!=null){
+            return false;
+        }
         if(booking.getVaccineId()!=null){
             Vaccine vaccine = vaccineService.getById(booking.getVaccineId());
             System.out.println("Vaccine:"+vaccine.getVaccineName());
@@ -88,6 +103,7 @@ public class BookingController {
             System.out.println("Name:"+user.getUserFirstname()+" "+user.getUserLastname());
         }
         ibookingService.save(booking);
+        return true;
     }
 
     /**
