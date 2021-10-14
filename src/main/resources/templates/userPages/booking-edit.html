@@ -106,7 +106,7 @@
                 <div class="row">
                     <div class="col">
                         <label style="font-weight: 700;">Date:</label>
-                        <input type="date" class="form-control" onfocus="this.value=''"style="margin-left:90px; display: inline-block; width: 200px;" th:value="${bookingInfo.date}" required>
+                        <input id="date" type="date" class="form-control" onfocus="this.value=''"style="margin-left:90px; display: inline-block; width: 200px;" th:value="${bookingInfo.date}" required>
                     </div>
                     <div class="col">
 
@@ -115,7 +115,8 @@
                 <div class="row">
                     <div class="col">
                         <label style="font-weight: 700;">Time:</label>
-                        <input type="time" class="form-control" onfocus="this.value=''"style="margin-left:90px; display: inline-block; width: 200px;" th:value="${bookingInfo.time}" required>
+                        <input id="userID" type="hidden" th:value="${bookingInfo.userId}">
+                        <input id="time" type="time" class="form-control" onfocus="this.value=''"style="margin-left:90px; display: inline-block; width: 200px;" th:value="${bookingInfo.time}" required>
                     </div>
                     <div class="col">
 
@@ -137,7 +138,7 @@
                 <a href="#" class="link-danger">Edit</a>
             </div> -->
             <a th:href="@{/vacBook/user/profile}" type="submit" class="btn btn-outline-danger">Back to Profile Page</a>
-            <button type="submit" class="btn btn-success">Save</button>
+            <button type="submit" class="btn btn-success" onclick="return saveMyBooking()">Save</button>
         </div>
     </div>
 
