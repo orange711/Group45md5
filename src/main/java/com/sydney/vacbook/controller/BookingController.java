@@ -136,7 +136,13 @@ public class BookingController {
         QueryWrapper<Booking> findBookingByUserId = new QueryWrapper<>();
         findBookingByUserId.lambda().eq(Booking::getUserId, id);
         List<Booking> bookingList = ibookingService.list(findBookingByUserId);
+        if(bookingList.size()==0){
 
+            ModelAndView modelAndView = new ModelAndView( "userPages/booking-edit","result",false);
+            return modelAndView;
+        }
+
+        Integer bookingId = bookingList.get(0).getBookingId();
         //get vaccine name by id
         Integer vaccineId = bookingList.get(0).getVaccineId();
         Vaccine vaccine = vaccineService.getById(vaccineId);
@@ -150,11 +156,13 @@ public class BookingController {
         String time = bookingList.get(0).getBookingTimezone();
 
         //get Location name
-        Integer locationId = bookingList.get(0).getBookingId();
-        Location location = locationService.getById(locationId);
+        Admin admin = adminService.getById(vaccine.getAdminId());
+        Location location = locationService.getById(admin.getLocationId());
 
         // new map to front end
         Map<String, Object> result = new LinkedHashMap<>();
+        result.put("bookingId",bookingId);
+        result.put("userId",userId);
         result.put("Vaccine", vaccine.getVaccineName());
         result.put("firstName", user.getUserFirstname());
         result.put("lastName", user.getUserLastname());
@@ -163,6 +171,7 @@ public class BookingController {
         result.put("location", location.getLocation());
 
         ModelAndView modelAndView = new ModelAndView( "userPages/booking-edit","bookingInfo",result);
+        modelAndView.addObject("result",true);
         return modelAndView;
     }
 
@@ -180,7 +189,7 @@ public class BookingController {
 
         //set email param
         String toEmail = user.getEmail();
-        String topic = "Cancel Booking message from vacBook!";
+        String topic = "Reject Booking message from vacBook!";
         String msg = "Dear "+ user.getUserFirstname() +":\n"+
                 "Sorry Your Booking has been reject!\n"+
                 "Below are your booking details:\n\n"+
@@ -195,6 +204,35 @@ public class BookingController {
 
         sendEmailService.sendEmail(toEmail,msg,topic);
         System.out.println("sent reject email success!");
+    }
+
+    @RequestMapping("/sendCancelEmail")
+    public void sendCancelEmailToUser(@RequestParam Integer booking_id){
+        // get reject booking list
+        Booking booking = ibookingService.getById(booking_id);
+
+        // get reject user info by booking list
+        User user = userService.getById(booking.getUserId());
+
+        //get vaccine name by booking list's vaccine ID
+        Vaccine vaccine = vaccineService.getById(booking.getVaccineId());
+        String vaccineName = vaccine.getVaccineName();
+
+        //set email param
+        String toEmail = user.getEmail();
+        String topic = "Cancel Booking message from vacBook!";
+        String msg = "Dear "+ user.getUserFirstname() +":\n"+
+                "Your Booking has been canceled by yourself!\n"+
+                "Below are your booking details:\n\n"+
+                "Booking user first name:       "+ user.getUserFirstname()+"\n"+
+                "Booking user last name:        "+ user.getUserLastname()+"\n"+
+                "Booking Date:                      "+ booking.getDate()+"\n"+
+                "Booking period:                    "+ booking.getBookingTimezone()+"\n"+
+                "Booked vaccine name:          "+ vaccineName+"\n\n"+
+                "If you have any questions about the above information, please don't hesitate to contact us: yanyukang29@gmail.com";
+
+        sendEmailService.sendEmail(toEmail,msg,topic);
+        System.out.println("sent cancel email success!");
     }
 
 

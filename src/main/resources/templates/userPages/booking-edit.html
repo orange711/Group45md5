@@ -20,9 +20,27 @@
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
 
     </script>
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <script type="text/javascript" th:src="@{/js/userMyBooking.js}"></script>
+    <script th:inline="javascript" >
+        var bookingInfo = [[${result}]];
+        window.onload = function(){
+            console.log("user login");
+            console.log(bookingInfo);
+            if(bookingInfo == true){
+                document.getElementById('noBooking').style.display = 'none';
+            }
+            else {
+                document.getElementById('hasBooking').style.display = 'none';
+            }
+
+        }
+    </script>
+
 </head>
 
 <body>
+
     <div class="container">
     <nav class="navbar navbar-expand-md navbar-dark">
         <div class="container-fluid">
@@ -37,88 +55,83 @@
         </div>
     </nav>
 </div>
-    <div class="container bookEdit">
-        
-        <div class="note">
-            <p>Note: You only can edit your date and time for your booking, if you want to change the clinics and Vaccine brand, please
-                cancel your booking.</p>
-        </div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-danger cancel-booking" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Cancel my booking
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Cancel my booking</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <strong>Warning!</strong>
-                        <p>Are you sure you want to cancel this booking?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <a type="button" class="btn btn-warning" href="./index.html">Confirm</a>
-                    </div>
-                </div>
+    <div class="container bookEdit" th:id="id_bookEdit_container">
+        <div id = "noBooking">
+            <div  class="note">
+                <p style="color: red">Current you do not have any booking. Please book your vaccine in Booking page! Thank you!</p>
+            </div>
+            <div style="float: right">
+                <a th:href="@{/vacBook/user/profile}" type="submit" class="btn btn-outline-danger">Back to Profile Page</a>
+                <a th:href="@{/vacBook/user/index/booking}" type="butt" class="btn btn-success">Book your Vaccine Here</a>
             </div>
         </div>
-        <div class="container book-edit-table">
-            <div class="row" >
-                <div class="col" >
-                    <label style="font-weight: 700;">Vaccine:</label>
-                    <div class="col-auto"style="margin-left:70px; display: inline-block">
-                        <span th:text="${bookingInfo.Vaccine}"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label style="font-weight: 700;">First Name:</label>
-                    <div class="col-auto" style="margin-left:40px; display: inline-block">
-                        <span th:text="${bookingInfo.firstName}"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label style="font-weight: 700;">Last Name:</label>
-                    <div class="col-auto" style="margin-left:45px; display: inline-block">
-                        <span th:text="${bookingInfo.lastName}"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label style="font-weight: 700;">Date:</label>
-                    <input type="date" class="form-control" onfocus="this.value=''"style="margin-left:90px; display: inline-block; width: 200px;" th:value="${bookingInfo.date}" required>
-                </div>
-                <div class="col">
 
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label style="font-weight: 700;">Time:</label>
-                    <input type="time" class="form-control" onfocus="this.value=''"style="margin-left:90px; display: inline-block; width: 200px;" th:value="${bookingInfo.time}" required>
-                </div>
-                <div class="col">
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <label style="font-weight: 700;">Location:</label>
-                    <div class="col-auto" style="margin-left:60px; display: inline-block">
-                    <span th:text="${bookingInfo.location}"></span>
-                </div>
-                </div>
+        <div id = "hasBooking" th:if="${bookingInfo!= null}">
+            <div class="note">
+                <p>Note: You only can edit your date and time for your booking, if you want to change the clinics and Vaccine brand, please
+                    cancel your booking.</p>
             </div>
 
-        </div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger cancel-booking" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    th:onclick="cal_booking(this,[[${bookingInfo.bookingId}]],[[${bookingInfo.userId}]])">
+                Cancel my booking
+            </button>
+
+            <div class="container book-edit-table" >
+                <div class="row" >
+                    <div class="col" >
+                        <label style="font-weight: 700;">Vaccine:</label>
+                        <div class="col-auto"style="margin-left:70px; display: inline-block">
+                            <span th:text="${bookingInfo.Vaccine}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label style="font-weight: 700;">First Name:</label>
+                        <div class="col-auto" style="margin-left:40px; display: inline-block">
+                            <span th:text="${bookingInfo.firstName}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label style="font-weight: 700;">Last Name:</label>
+                        <div class="col-auto" style="margin-left:45px; display: inline-block">
+                            <span th:text="${bookingInfo.lastName}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label style="font-weight: 700;">Date:</label>
+                        <input type="date" class="form-control" onfocus="this.value=''"style="margin-left:90px; display: inline-block; width: 200px;" th:value="${bookingInfo.date}" required>
+                    </div>
+                    <div class="col">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label style="font-weight: 700;">Time:</label>
+                        <input type="time" class="form-control" onfocus="this.value=''"style="margin-left:90px; display: inline-block; width: 200px;" th:value="${bookingInfo.time}" required>
+                    </div>
+                    <div class="col">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label style="font-weight: 700;">Location:</label>
+                        <div class="col-auto" style="margin-left:60px; display: inline-block">
+                        <span th:text="${bookingInfo.location}"></span>
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+
         <div class="" style="padding-top: 25px; text-align: right;">
             <!-- <div class="edit">
                 <a href="#" class="link-danger">Edit</a>
@@ -126,6 +139,7 @@
             <a th:href="@{/vacBook/user/profile}" type="submit" class="btn btn-outline-danger">Back to Profile Page</a>
             <button type="submit" class="btn btn-success">Save</button>
         </div>
+    </div>
 
 
 
