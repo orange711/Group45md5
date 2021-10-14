@@ -60,7 +60,7 @@
         <div class="col-md-6 mb-3">
             <label>Password:</label>
             <input type="password" class="form-control" id="txtPassword" onfocus="this.value=''"
-                   th:value="${result.userPassword}" required>
+                   required>
         </div>
     </div>
 
@@ -74,7 +74,7 @@
         <div class="col-md-6 mb-3">
             <label>Confirm your password:</label>
             <input type="password" class="form-control" id="txtConfirmPassword" onfocus="this.value=''"
-                   th:value="${result.userPassword}" required>
+                    required>
         </div>
     </div>
 
@@ -155,9 +155,78 @@
             //     alert(" Please fill all content");
             //     return false;
             // }
+
+            if (password != confirmPassword) {
+                layer.msg("Different password.");
+                return false;
+            }
+
+            if (first.trim() == null || first == "") {
+                layer.msg("First name can't be empty");
+                return false;
+            }
+
+            if (age == null || age == "") {
+                layer.msg("Age can't be empty");
+                return false;
+            }
+            if (age<=0||age>120) {
+                layer.msg("Age is wrong.");
+                return false;
+            }
+
+            if (last.trim() == null || last == "") {
+
+                layer.msg("Last name can't be empty");
+                return false;
+            }
+
+
+
+            if (password == null || password == "") {
+                layer.msg("Password can't be empty");
+                return false;
+            }
+
+            if (account== null || account== "") {
+                layer.msg("Account can't be empty");
+                return false;
+            }
+
+            if (confirmPassword == null || confirmPassword == "") {
+                layer.msg("Password confirm can't be empty");
+                return false;
+            }
+
+            if (email.trim() == null || email == "") {
+                layer.msg("email can't be empty");
+                return false;
+            }
+
+
+            if ( address == "") {
+                layer.msg("Please select your address!")
+                return false;
+            }
+
+            if (gender == "Select" || gender == "") {
+                layer.msg("Please select your gender!")
+                return false;
+            }
+
+
+            if (phone.trim() == null || phone == "") {
+                layer.msg("phone can't be empty");
+                return false;
+            }
+
+            if(phone>9999999999){
+                layer.msg("You phone number is wrong");
+                return false;
+            }
+
+
             if (confirmPassword!=" " && confirmPassword != null && password != confirmPassword ) {
-                console.log("Passwords do not match.")
-                alert("Passwords do not match.");
                 return false;
             }else{
                 var data = {
@@ -177,9 +246,23 @@
                     url: "/vacBook/user/profile",
                     data: data,
                     type: "put",
-                    dataType: "json",
+                    dataType: "text",
+
+                    success: function(data){
+                        var code = data.code;
+                        console.log(code);
+                        console.log(data.status+"2");
+                        layer.msg("Change successfully!" );
+                        setTimeout(function(){//两秒后跳转
+                            location.href = "index";
+                        },2000);
+                    },
+                    error : function() {
+                        console.log(data.status+"1");
+                        layer.msg("Your email or phone has been registered！",{icon: 5});
+                    }
                 });
-                layer.msg("change successfully!")
+                //layer.msg("change successfully!")
             }
             return true;
         });
