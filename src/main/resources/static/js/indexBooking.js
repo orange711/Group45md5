@@ -32,12 +32,24 @@ function check(t){
         yes: function(index){    //点击确定回调
             layer.close(index);
             saveBooking();     //调用保存方法
+            reduceVaccine(vaccineId);
         },
         btn2: function(){      // 点击Cancel回调
             layer.closeAll();
         }
     })
     // }
+}
+function reduceVaccine(vaccineId){
+    var data = {
+        "vaccineId": vaccineId,
+    };
+    $.ajax({
+        url: "/vacbook/vaccine/reduceVaccine",
+        data: data,
+        type: "post",
+        dataType: "json",
+    });
 }
 function saveBooking(){
     var data = {"userId":userId,"vaccineId":vaccineId,"date":date,"bookingTimezone":bookingTimezone};

@@ -14,10 +14,6 @@
             <form class="search-container">
                 <input type="text" id="search-bar" onkeyup="search_box()" name="search" placeholder="Search for specific clinic">
                 <input type="hidden" id="userId" name="userId" th:value="${user_id}">
-                <!-- <a onkeyup="search_box()"><img class="search-icon"
-                        src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"></a> -->
-                <!-- <a href="#" class="search-clinic">Search by clinic</a>
-                <a href="#" class="search-location">Search by location</a> -->
             </form>
         </div>
         <div class="book-table" th:fragment="booking_container" th:id="id_booking_container" >

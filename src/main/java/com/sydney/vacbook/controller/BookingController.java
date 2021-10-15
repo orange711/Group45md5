@@ -256,10 +256,10 @@ public class BookingController {
     public void sendConfirmEmailToUser(@RequestParam Integer userId, Integer vaccineId, String date, String bookingTimezone){
 
 
-        // get reject user info by booking list
+        // get user id
         User user = userService.getById(userId);
 
-        //get vaccine name by booking list's vaccine ID
+        //get vaccine name by user ID
         Vaccine vaccine = vaccineService.getById(vaccineId);
         String vaccineName = vaccine.getVaccineName();
 
