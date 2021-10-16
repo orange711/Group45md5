@@ -1,39 +1,35 @@
-//页面的跳转
-function go(){
-    window.location.href="http://localhost:8080/vacBook/user/1";
-}
-//登录验证
-$("#login").submit(function(){
+function login() {
     //获取用户名和密码
-    const name = $("#name").val();//输入的用户名
+    const name = $("#account").val();//输入的用户名
     const password = $("#password").val();//输入的密码
-
+    console.log(name);
+    console.log(password)
+    var data = {userAccount: name, userPassword: password}
     //调ajax
     $.ajax({
-        url:"http://localhost:8080/vacBook/user/login",
-        data:{name:name,password:password},
-        type:"POST",
-        dataType:"text",
-        success: function(data){
-            if(data.trim()=="OK")//要加上去空格，防止内容里面有空格引起错误。
-            {
-                const str = "login success";
-                /* 显示提示信息 */
-                document.getElementById("login-button").innerHTML = str;
-                setTimeout(go, 500);//0.5秒后页面跳转
+        url: "http://localhost:8080/vacBook/user/login",
+        data: data,
+        type: "POST",
+        dataType: "text",
+        success: function (data) {
+            if(data === true){
+                console.log(data + "200");
+                layer.msg("Login success!" );
+                setTimeout(function () {//两秒后跳转
+                    location.href = "index/booking";
+                }, 2000);
+            }else{
+                console.log(data + "240");
+                layer.msg("Your account or password is wrong！",{icon: 5});
+                return false;
             }
-            else
-            {
-                const str = "用户名或密码错误！";
-                /* 显示提示信息 */
-                document.getElementById("login-button").innerHTML = str;
-            }
+        },
+        error: function () {
+            location.href = "login";
         }
     });
-
-    document.getElementById("loginExit").innerHTML = "";
-    return false;
-});
+    return true;
+}
 
 // //注册验证
 // $("#register").submit(function() {

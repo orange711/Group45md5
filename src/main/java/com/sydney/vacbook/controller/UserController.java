@@ -122,12 +122,11 @@ public class UserController {
 //        return true;
 //    }
 
-    @PostMapping("/changePassword")
-    public void changePassword(User user, @RequestBody Map<String, Object> body) {
-        String changePassword = body.get("changePassword").toString();
+    @RequestMapping("/changePassword")
+    public String changePassword(User user, String changePassword){
         user.setUserPassword(changePassword);
         iUserService.saveOrUpdate(user);
-        //return main
+        return "redirect:index";// 重定向
     }
 
 
@@ -141,6 +140,7 @@ public class UserController {
     @GetMapping("/index/booking")
     public ModelAndView userBooking() {
         User user = listUser.get(0);
+        System.out.println(listUser.get(0));
         List<Vaccine> vaccineList = iVaccineService.list();
         //根据vaccineList获取所有的adminId
         List<Integer> adminIdList = vaccineList.stream().map(Vaccine::getAdminId).collect(Collectors.toList());
@@ -157,8 +157,9 @@ public class UserController {
     }
 
 
-    @PostMapping("/loginForm")
-    public ModelAndView login(HttpServletRequest request, String userAccount, String userPassword, Map<String, Object> body) {
+    @PostMapping("/login")
+    @ResponseBody
+    public Boolean login(HttpServletRequest request, String userAccount, String userPassword, Map<String, Object> body) {
         System.out.println(userAccount + ".,.." + userPassword);
         String userPasswordMD5 = code(userPassword);
 
@@ -171,22 +172,10 @@ public class UserController {
         if (!listUser.toString().equals("[]")) {
             System.out.println("Welcome to our system!");
             System.out.println(listUser.get(0));
-
-//            //Session 存储
-//            //第一步：获取session
-//            HttpSession session = request.getSession();
-//            //第二步：将想要保存到数据存入session中
-//            session.setAttribute("userName",userAccount);
-//            session.setAttribute("password",userPasswordMD5);
-//            //这样就完成了用户名和密码保存到session的操作
-//            System.out.println(session.getAttribute("userName"));
-
-            ModelAndView success = new ModelAndView("redirect:index/booking");
-            return success;
+            return true;
         } else {
             System.err.println("Some errors");
-            ModelAndView fail = new ModelAndView("redirect:login");
-            return fail;
+            return false;
         }
     }
 
@@ -194,24 +183,10 @@ public class UserController {
     public String register(User user, Map<String, Object> body) {
 
         System.out.println(user);
-
-//        user.setUserPassword(request.getParameter("password"));
-//        user.setUserAccount(request.getParameter("account"));
-//        user.setUserSafeKey(request.getParameter("safeKey"));
-//        user.setAddress(request.getParameter("address"));
-//        user.setAge(request.getIntHeader("age"));//could be some problems
-//        user.setGender(request.getParameter("gender"));
-//        user.setUserFirstname(request.getParameter("first"));
-//        user.setUserLastname(request.getParameter("last"));
-//        user.setUserQuestion(request.getParameter("question"));
-//        user.setPhoneNumber(request.getParameter("phone"));
-//        user.setEmail(request.getParameter("email"));
-
         String passwordMD5 = code(user.getUserPassword());
         user.setUserPassword(passwordMD5);
         QueryWrapper<User> checkQueryWrapper1 = new QueryWrapper<>();
         checkQueryWrapper1.eq("user_account", user.getUserAccount());
-
 
         if (iUserService.getOne(checkQueryWrapper1) != null) {
             System.err.println("This account has been registered");
@@ -241,12 +216,10 @@ public class UserController {
         } else {
             System.out.println("Hi!");
 
-
             QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
             sectionQueryWrapper.eq("user_account", user.getUserAccount());
 //            sectionQueryWrapper.eq("admin_password", user.getUserPassword());
             listUser = iUserService.list(sectionQueryWrapper);
-
 
             int userid = listUser.get(0).getUserId();
             String account = listUser.get(0).getUserAccount();
@@ -279,10 +252,6 @@ public class UserController {
 
 
     }
-//    @RequestMapping("/register/index")
-//    public String index(){
-//        return "redirect:index";
-//    }
 
     @RequestMapping("/sendEmail")
     public ModelAndView sendToUserEmail(@RequestParam String email) throws MessagingException {

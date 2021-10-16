@@ -254,26 +254,18 @@ public class AdminController {
     //跳转到login  --- 但是现在登录成功的return我有点迷惑 报500错误
     @RequestMapping("/login")
     public String login(@RequestParam String account, String password, Map<String, Object> map) {
-        System.out.println("1111111111111111111111111111");
-        //TODO WORDE
+
         String MD5Password = code(password);
         QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
         sectionQueryWrapper.eq("admin_account", account);
         sectionQueryWrapper.eq("admin_password", MD5Password);
         listAdmin = iAdminService.list(sectionQueryWrapper);
-
         String str = listAdmin.toString();
-
         if (!str.equals("[]")) {
-
             map.put("adminList", listAdmin.get(0));
-//下面写登录后想要获得的更多东西例如获取疫苗
-            // map.put("vaccineList", vaccineController.getVaccineListByAdminId(admin.getAdminId()));
-
             return "adminPages/base";//重定向
         } else {
-
-            return "No";//重定向
+            return "no";//重定向
         }
 
     }

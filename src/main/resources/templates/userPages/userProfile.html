@@ -149,12 +149,6 @@
             var address = $("#autocomplete").val();
             var gender = $("#gender").val();
             var phone = $("#textfield10").val();
-            // console.log(email+ "casa")
-            // if(password == null || confirmPassword == null || first == null || age == null || last ==null || account == null || email == null
-            //     || answer==null|| address == null || gender ==null || phone==null){
-            //     alert(" Please fill all content");
-            //     return false;
-            // }
 
             if (password != confirmPassword) {
                 layer.msg("Different password.");
@@ -181,12 +175,10 @@
                 return false;
             }
 
-
-
-            if (password == null || password == "") {
-                layer.msg("Password can't be empty");
-                return false;
-            }
+            // if (password == null || password == "") {
+            //     layer.msg("Password can't be empty");
+            //     return false;
+            // }
 
             if (account== null || account== "") {
                 layer.msg("Account can't be empty");
