@@ -159,7 +159,7 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Boolean login(HttpServletRequest request, String userAccount, String userPassword, Map<String, Object> body) {
+    public boolean login(HttpServletRequest request, String userAccount, String userPassword, Map<String, Object> body) {
         System.out.println(userAccount + ".,.." + userPassword);
         String userPasswordMD5 = code(userPassword);
 
@@ -174,7 +174,7 @@ public class UserController {
             System.out.println(listUser.get(0));
             return true;
         } else {
-            System.err.println("Some errors");
+            System.err.println("Password wrong");
             return false;
         }
     }

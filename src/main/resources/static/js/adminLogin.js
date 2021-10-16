@@ -24,23 +24,26 @@ function checkLogin() {
             "password": password,
         }
         $.ajax({
-            url: "/vacbook/admin/login/",
+            url: "/vacbook/admin/login",
             data: data,
             type: "post",
             dataType: "text",
-
             success: function(data){
-                var code = data.code;
-                console.log(code);
-                console.log(data.status+"2");
-                layer.msg("Welcome to our system!" );
-                setTimeout(function(){//两秒后跳转
-                    location.href = "/vacbook/admin/base";
-                },2000);
+                console.log(typeof data)
+                console.log(data)
+                if(data === "true"){
+                    layer.msg("Welcome to management system!" );
+                    setTimeout(function(){//两秒后跳转
+                        location.href = "/vacbook/admin/base";
+                    },2000);
+                }else{
+                    layer.msg("Your account or password is wrong！",{icon: 5});
+                    return false;
+                }
+
             },
             error : function() {
-                console.log(data.status+"1");
-                layer.msg("Your account or password is wrong！",{icon: 5});
+                location.href = "login";
             }
 
         });

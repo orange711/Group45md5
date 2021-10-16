@@ -251,9 +251,9 @@ public class AdminController {
         return "adminPages/adminLogin";
     }
 
-    //跳转到login  --- 但是现在登录成功的return我有点迷惑 报500错误
-    @RequestMapping("/login")
-    public String login(@RequestParam String account, String password, Map<String, Object> map) {
+    @PostMapping("/login")
+    @ResponseBody
+    public boolean login(@RequestParam String account, String password, Map<String, Object> map) {
 
         String MD5Password = code(password);
         QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
@@ -263,9 +263,11 @@ public class AdminController {
         String str = listAdmin.toString();
         if (!str.equals("[]")) {
             map.put("adminList", listAdmin.get(0));
-            return "adminPages/base";//重定向
+            System.out.println(listAdmin.get(0));
+            return true;
         } else {
-            return "no";//重定向
+            System.err.println("Password Wrong");
+            return false;
         }
 
     }

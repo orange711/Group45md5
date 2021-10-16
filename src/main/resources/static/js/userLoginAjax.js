@@ -12,7 +12,8 @@ function login() {
         type: "POST",
         dataType: "text",
         success: function (data) {
-            if(data === true){
+            console.log(typeof data)
+            if(data === "true"){
                 console.log(data + "200");
                 layer.msg("Login success!" );
                 setTimeout(function () {//两秒后跳转
