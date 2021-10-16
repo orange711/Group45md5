@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    public ModelAndView updateUser(@RequestParam String first, String last, Integer age, String account, String password, String email, String gender, String phone, String address, String answer) {
+    public ModelAndView updateUser(@RequestParam String first, String last, Integer age, String account, String password, String email, String gender, String phone, String address, String question, String answer) {
         User user = listUser.get(0);
         user.setUserFirstname(first);
         user.setUserLastname(last);
@@ -78,6 +78,7 @@ public class UserController {
         user.setPhoneNumber(phone);
         user.setAddress(address);
         user.setUserAccount(account);
+        user.setUserQuestion(question);
         if (password != null && password != " " && !password.isEmpty()) {
             String passwordMD5 = code(password);
             System.out.println(password + ".");

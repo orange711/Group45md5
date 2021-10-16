@@ -68,11 +68,13 @@
             success: function () {
                 console.log(data);
                 sessionStorage.clear()
-                location.href = "http://localhost:8080/vacBook/user/index"
+                layer.msg("change successfully!")
+                setTimeout(function () {//两秒后跳转
+                    location.href = "http://localhost:8080/vacBook/user/index"
+                }, 2000);
             },
             error: function () {
-                console.log("????");
-                //location.href = "login";
+                location.href = "login";
             }
         });
     }
