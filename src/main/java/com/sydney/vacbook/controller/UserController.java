@@ -58,7 +58,6 @@ public class UserController {
     private ILocationService iLocationService;
 
 
-    //    新增userlist
     List<User> listUser = new ArrayList<>();
 
     @GetMapping("/profile")
@@ -84,7 +83,6 @@ public class UserController {
             System.out.println(password + ".");
             user.setUserPassword(passwordMD5);
         }
-
         user.setUserSafeKey(answer);
         user.setAge(age);
         iUserService.saveOrUpdate(user);
@@ -94,43 +92,51 @@ public class UserController {
     /**
      * send account and receive user to get question
      */
-    @GetMapping("/get_user_by_account")
-    public User getUserByAccount(@RequestParam("user_account") String user_account) {//@RequestBody Map<String, Object> body){
-        //String user_account = body.get("user_account").toString();
-        System.out.println(user_account);
+    @RequestMapping("/getUserByAccount")
+    @ResponseBody
+    public String getUserByAccount(@RequestParam String userAccount) {
+        System.out.println(userAccount);
         QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
-        findUserByAccount.lambda().eq(User::getUserAccount, user_account);
+        findUserByAccount.lambda().eq(User::getUserAccount, userAccount);
+        User user = iUserService.getOne(findUserByAccount);
+        if (user != null) {
+            System.out.println(user);
+            String account = user.getUserQuestion();
+            return account;
+        } else {
+            return null;
+        }
+    }
+
+    @PostMapping("/forgetPassword")
+    @ResponseBody
+    public Integer forgetPassword(@RequestParam String userAccount, String answer){
+        System.out.println("check answer");
+        System.out.println(answer);
+        QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
+        findUserByAccount.lambda().eq(User::getUserAccount, userAccount);
         User user = iUserService.getOne(findUserByAccount);
         System.out.println(user);
-        return user;
+        if(!user.getUserSafeKey().equalsIgnoreCase(answer)){
+            System.out.println(answer);
+            System.out.println(user.getUserSafeKey());
+            return null;
+        }
+        return user.getUserId();
     }
-
-    // fontend should do this validation
-//    @PostMapping("/forgetPassword")
-//    public boolean forgetPassword(@RequestBody Map<String, Object> body){
-//        String user_account = body.get("user_account").toString();
-//        String input_answer = body.get("answer").toString();
-//        QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
-//        findUserByAccount.lambda().eq(User::getUserAccount, user_account);
-//        User user = iUserService.getOne(findUserByAccount);
-//        if(!user.getUserSafeKey().equalsIgnoreCase(input_answer)){
-//            System.out.println(input_answer);
-//            System.out.println(user.getUserSafeKey());
-//            return false;
-//        }
-//        //return user;
-//        return true;
-//    }
 
     @RequestMapping("/changePassword")
-    public String changePassword(User user, String changePassword){
-        user.setUserPassword(changePassword);
+    public String changePassword(@RequestParam  Integer user_id, String changePassword) {
+        User user = iUserService.getById(user_id);
+        System.out.println(user);
+        String userPasswordMD5 = code(changePassword);
+        user.setUserPassword(userPasswordMD5);
         iUserService.saveOrUpdate(user);
-        return "redirect:index";// 重定向
+        return "index";
     }
 
 
-    //    存放user list
+    //存放user list
     @RequestMapping("/userList")
     public ModelAndView userList() {
         ModelAndView modelAndView = new ModelAndView("userPages/index", "userList", listUser);
@@ -145,7 +151,7 @@ public class UserController {
         //根据vaccineList获取所有的adminId
         List<Integer> adminIdList = vaccineList.stream().map(Vaccine::getAdminId).collect(Collectors.toList());
         //查询adminId对应的管理员
-        List<Admin> adminList = iAdminService.list(new QueryWrapper<Admin>().in("admin_id",adminIdList));
+        List<Admin> adminList = iAdminService.list(new QueryWrapper<Admin>().in("admin_id", adminIdList));
         ModelAndView modelAndView = new ModelAndView("userPages/indexBooking", "providers", adminList);
         modelAndView.addObject("vaccineList", vaccineList);
         modelAndView.addObject("firstName", user.getUserFirstname());

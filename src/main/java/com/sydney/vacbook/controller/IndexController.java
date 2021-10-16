@@ -67,6 +67,11 @@ public class IndexController {
     @RequestMapping("/vacBook/user/forgottenPassword")
     public String userForgottenPassword() { return "userPages/forgot-psw";}
 
+    @GetMapping("/vacBook/user/changePassword")
+    public String userChangePassword() {
+        return "userPages/change-psw";
+    }
+
 
     @GetMapping("vacBook/user/checkEligibilityRegister")
     public String userCheckEligibilityInRegister() {
