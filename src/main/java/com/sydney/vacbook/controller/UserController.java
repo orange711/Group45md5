@@ -58,7 +58,6 @@ public class UserController {
     private ILocationService iLocationService;
 
 
-    //    新增userlist
     List<User> listUser = new ArrayList<>();
 
     @GetMapping("/profile")
@@ -70,7 +69,7 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    public ModelAndView updateUser(@RequestParam String first, String last, Integer age, String account, String password, String email, String gender, String phone, String address, String answer) {
+    public ModelAndView updateUser(@RequestParam String first, String last, Integer age, String account, String password, String email, String gender, String phone, String address, String question, String answer) {
         User user = listUser.get(0);
         user.setUserFirstname(first);
         user.setUserLastname(last);
@@ -79,12 +78,12 @@ public class UserController {
         user.setPhoneNumber(phone);
         user.setAddress(address);
         user.setUserAccount(account);
+        user.setUserQuestion(question);
         if (password != null && password != " " && !password.isEmpty()) {
             String passwordMD5 = code(password);
             System.out.println(password + ".");
             user.setUserPassword(passwordMD5);
         }
-
         user.setUserSafeKey(answer);
         user.setAge(age);
         iUserService.saveOrUpdate(user);
@@ -94,44 +93,51 @@ public class UserController {
     /**
      * send account and receive user to get question
      */
-    @GetMapping("/get_user_by_account")
-    public User getUserByAccount(@RequestParam("user_account") String user_account) {//@RequestBody Map<String, Object> body){
-        //String user_account = body.get("user_account").toString();
-        System.out.println(user_account);
+    @RequestMapping("/getUserByAccount")
+    @ResponseBody
+    public String getUserByAccount(@RequestParam String userAccount) {
+        System.out.println(userAccount);
         QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
-        findUserByAccount.lambda().eq(User::getUserAccount, user_account);
+        findUserByAccount.lambda().eq(User::getUserAccount, userAccount);
+        User user = iUserService.getOne(findUserByAccount);
+        if (user != null) {
+            System.out.println(user);
+            String account = user.getUserQuestion();
+            return account;
+        } else {
+            return null;
+        }
+    }
+
+    @PostMapping("/forgetPassword")
+    @ResponseBody
+    public Integer forgetPassword(@RequestParam String userAccount, String answer){
+        System.out.println("check answer");
+        System.out.println(answer);
+        QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
+        findUserByAccount.lambda().eq(User::getUserAccount, userAccount);
         User user = iUserService.getOne(findUserByAccount);
         System.out.println(user);
-        return user;
+        if(!user.getUserSafeKey().equalsIgnoreCase(answer)){
+            System.out.println(answer);
+            System.out.println(user.getUserSafeKey());
+            return null;
+        }
+        return user.getUserId();
     }
 
-    // fontend should do this validation
-//    @PostMapping("/forgetPassword")
-//    public boolean forgetPassword(@RequestBody Map<String, Object> body){
-//        String user_account = body.get("user_account").toString();
-//        String input_answer = body.get("answer").toString();
-//        QueryWrapper<User> findUserByAccount = new QueryWrapper<>();
-//        findUserByAccount.lambda().eq(User::getUserAccount, user_account);
-//        User user = iUserService.getOne(findUserByAccount);
-//        if(!user.getUserSafeKey().equalsIgnoreCase(input_answer)){
-//            System.out.println(input_answer);
-//            System.out.println(user.getUserSafeKey());
-//            return false;
-//        }
-//        //return user;
-//        return true;
-//    }
-
-    @PostMapping("/changePassword")
-    public void changePassword(User user, @RequestBody Map<String, Object> body) {
-        String changePassword = body.get("changePassword").toString();
-        user.setUserPassword(changePassword);
+    @RequestMapping("/changePassword")
+    public String changePassword(@RequestParam  Integer user_id, String changePassword) {
+        User user = iUserService.getById(user_id);
+        System.out.println(user);
+        String userPasswordMD5 = code(changePassword);
+        user.setUserPassword(userPasswordMD5);
         iUserService.saveOrUpdate(user);
-        //return main
+        return "index";
     }
 
 
-    //    存放user list
+    //存放user list
     @RequestMapping("/userList")
     public ModelAndView userList() {
         ModelAndView modelAndView = new ModelAndView("userPages/index", "userList", listUser);
@@ -141,11 +147,12 @@ public class UserController {
     @GetMapping("/index/booking")
     public ModelAndView userBooking() {
         User user = listUser.get(0);
+        System.out.println(listUser.get(0));
         List<Vaccine> vaccineList = iVaccineService.list();
         //根据vaccineList获取所有的adminId
         List<Integer> adminIdList = vaccineList.stream().map(Vaccine::getAdminId).collect(Collectors.toList());
         //查询adminId对应的管理员
-        List<Admin> adminList = iAdminService.list(new QueryWrapper<Admin>().in("admin_id",adminIdList));
+        List<Admin> adminList = iAdminService.list(new QueryWrapper<Admin>().in("admin_id", adminIdList));
         ModelAndView modelAndView = new ModelAndView("userPages/indexBooking", "providers", adminList);
         modelAndView.addObject("vaccineList", vaccineList);
         modelAndView.addObject("firstName", user.getUserFirstname());
@@ -157,8 +164,9 @@ public class UserController {
     }
 
 
-    @PostMapping("/loginForm")
-    public ModelAndView login(HttpServletRequest request, String userAccount, String userPassword, Map<String, Object> body) {
+    @PostMapping("/login")
+    @ResponseBody
+    public boolean login(HttpServletRequest request, String userAccount, String userPassword, Map<String, Object> body) {
         System.out.println(userAccount + ".,.." + userPassword);
         String userPasswordMD5 = code(userPassword);
 
@@ -171,22 +179,10 @@ public class UserController {
         if (!listUser.toString().equals("[]")) {
             System.out.println("Welcome to our system!");
             System.out.println(listUser.get(0));
-
-//            //Session 存储
-//            //第一步：获取session
-//            HttpSession session = request.getSession();
-//            //第二步：将想要保存到数据存入session中
-//            session.setAttribute("userName",userAccount);
-//            session.setAttribute("password",userPasswordMD5);
-//            //这样就完成了用户名和密码保存到session的操作
-//            System.out.println(session.getAttribute("userName"));
-
-            ModelAndView success = new ModelAndView("redirect:index/booking");
-            return success;
+            return true;
         } else {
-            System.err.println("Some errors");
-            ModelAndView fail = new ModelAndView("redirect:login");
-            return fail;
+            System.err.println("Password wrong");
+            return false;
         }
     }
 
@@ -194,24 +190,10 @@ public class UserController {
     public String register(User user, Map<String, Object> body) {
 
         System.out.println(user);
-
-//        user.setUserPassword(request.getParameter("password"));
-//        user.setUserAccount(request.getParameter("account"));
-//        user.setUserSafeKey(request.getParameter("safeKey"));
-//        user.setAddress(request.getParameter("address"));
-//        user.setAge(request.getIntHeader("age"));//could be some problems
-//        user.setGender(request.getParameter("gender"));
-//        user.setUserFirstname(request.getParameter("first"));
-//        user.setUserLastname(request.getParameter("last"));
-//        user.setUserQuestion(request.getParameter("question"));
-//        user.setPhoneNumber(request.getParameter("phone"));
-//        user.setEmail(request.getParameter("email"));
-
         String passwordMD5 = code(user.getUserPassword());
         user.setUserPassword(passwordMD5);
         QueryWrapper<User> checkQueryWrapper1 = new QueryWrapper<>();
         checkQueryWrapper1.eq("user_account", user.getUserAccount());
-
 
         if (iUserService.getOne(checkQueryWrapper1) != null) {
             System.err.println("This account has been registered");
@@ -241,12 +223,10 @@ public class UserController {
         } else {
             System.out.println("Hi!");
 
-
             QueryWrapper<User> sectionQueryWrapper = new QueryWrapper<>();
             sectionQueryWrapper.eq("user_account", user.getUserAccount());
 //            sectionQueryWrapper.eq("admin_password", user.getUserPassword());
             listUser = iUserService.list(sectionQueryWrapper);
-
 
             int userid = listUser.get(0).getUserId();
             String account = listUser.get(0).getUserAccount();
@@ -279,10 +259,6 @@ public class UserController {
 
 
     }
-//    @RequestMapping("/register/index")
-//    public String index(){
-//        return "redirect:index";
-//    }
 
     @RequestMapping("/sendEmail")
     public ModelAndView sendToUserEmail(@RequestParam String email) throws MessagingException {

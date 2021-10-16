@@ -58,9 +58,9 @@
                    th:value="${result.userLastname}" required>
         </div>
         <div class="col-md-6 mb-3">
-            <label>Password:</label>
-            <input type="password" class="form-control" id="txtPassword" onfocus="this.value=''"
-                   required>
+            <label>Safe question</label>
+            <input type="text" class="form-control" id="question" onfocus="this.value=''"
+                   th:value="${result.getUserQuestion()}" required>
         </div>
     </div>
 
@@ -72,9 +72,9 @@
                    th:value="${result.userAccount}" required>
         </div>
         <div class="col-md-6 mb-3">
-            <label>Confirm your password:</label>
-            <input type="password" class="form-control" id="txtConfirmPassword" onfocus="this.value=''"
-                    required>
+            <label>Safe Answer</label>
+            <input type="text" class="form-control" id="textfield8" onfocus="this.value=''"
+                   th:value="${result.userSafeKey}" required>
         </div>
     </div>
 
@@ -84,22 +84,6 @@
             <label>Email address:</label>
             <input type="email" class="form-control" id="textfield7" onfocus="this.value=''"
                    th:value="${result.email}" required>
-        </div>
-        <div class="col-md-6 mb-3">
-            <label>What's your mother's last name?</label>
-            <input type="text" class="form-control" id="textfield8" onfocus="this.value=''"
-                   th:value="${result.userSafeKey}" required>
-        </div>
-    </div>
-
-    <!--row 5-->
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label>Address:</label>
-            <div id="textfield9">
-                <input id="autocomplete" th:value="${result.address}" onFocus="geolocate(); this.value=''"
-                       type="text" class="form-control ">
-            </div>
         </div>
         <div class="col-md-6 mb-3">
             <label>Gender:</label>
@@ -121,15 +105,30 @@
             <input type="tel" id="textfield10" class="form-control" th:value="${result.phoneNumber}"
                    maxlength=10 required>
         </div>
-        <div class="col-md-6 mb-3" style="padding-top: 25px; text-align: right;">
-            <!-- <div class="check" style="display: inline; padding-right: 20px;">
-                <a  class="link-danger" onclick="ClearFields();">Edit</a>
-            </div> -->
-            <a th:href="@{/vacBook/user/index/booking}" type="submit" class="btn btn-outline-danger">Back to Home Page</a>
-            <button id = "submit" type="submit" class="btn btn-success">Save</button>
+        <div class="col-md-6 mb-3">
+            <label>Change Password:</label><br/>
+            <button type="submit" class="btn btn-success" onclick="changePassword()">Change</button>
         </div>
 
     </div>
+
+    <!--row 5-->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Address:</label>
+            <div id="textfield9">
+                <input id="autocomplete" th:value="${result.address}" onFocus="geolocate(); this.value=''"
+                       type="text" class="form-control ">
+            </div>
+        </div>
+        <div class="col-md-6 mb-3" style="padding-top: 25px; text-align: right;">
+            <a th:href="@{/vacBook/user/index/booking}" type="submit" class="btn btn-outline-danger">Back to Home
+                Page</a>
+            <button id="submit" type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+
+
 </div>
 
 
@@ -145,16 +144,12 @@
             var last = $("#textfield3").val();
             var account = $("#textfield5").val();
             var email = $("#textfield7").val();
+            var question = $("#question").val();
             var answer = $("#textfield8").val();
             var address = $("#autocomplete").val();
             var gender = $("#gender").val();
             var phone = $("#textfield10").val();
-            // console.log(email+ "casa")
-            // if(password == null || confirmPassword == null || first == null || age == null || last ==null || account == null || email == null
-            //     || answer==null|| address == null || gender ==null || phone==null){
-            //     alert(" Please fill all content");
-            //     return false;
-            // }
+
 
             if (password != confirmPassword) {
                 layer.msg("Different password.");
@@ -170,7 +165,7 @@
                 layer.msg("Age can't be empty");
                 return false;
             }
-            if (age<=0||age>120) {
+            if (age <= 0 || age > 120) {
                 layer.msg("Age is wrong.");
                 return false;
             }
@@ -181,22 +176,20 @@
                 return false;
             }
 
+            // if (password == null || password == "") {
+            //     layer.msg("Password can't be empty");
+            //     return false;
+            // }
 
-
-            if (password == null || password == "") {
-                layer.msg("Password can't be empty");
-                return false;
-            }
-
-            if (account== null || account== "") {
+            if (account == null || account == "") {
                 layer.msg("Account can't be empty");
                 return false;
             }
 
-            if (confirmPassword == null || confirmPassword == "") {
-                layer.msg("Password confirm can't be empty");
-                return false;
-            }
+            // if (confirmPassword == null || confirmPassword == "") {
+            //     layer.msg("Password confirm can't be empty");
+            //     return false;
+            // }
 
             if (email.trim() == null || email == "") {
                 layer.msg("email can't be empty");
@@ -204,8 +197,13 @@
             }
 
 
-            if ( address == "") {
-                layer.msg("Please select your address!")
+            if (address == "") {
+                layer.msg("Please set up  your address!")
+                return false;
+            }
+
+            if (question == "") {
+                layer.msg("Please set up your question!")
                 return false;
             }
 
@@ -220,53 +218,49 @@
                 return false;
             }
 
-            if(phone>9999999999){
+            if (phone > 9999999999) {
                 layer.msg("You phone number is wrong");
                 return false;
             }
 
-
-            if (confirmPassword!=" " && confirmPassword != null && password != confirmPassword ) {
-                return false;
-            }else{
-                var data = {
-                    "first": first,
-                    "last":last,
-                    "age": age,
-                    "email": email,
-                    "gender": gender,
-                    "phone": phone,
-                    "address": address,
-                    "account": account,
-                    "password": password,
-                    "answer": answer,
-                }
-                var msg = data.msg;
-                $.ajax({
-                    url: "/vacBook/user/profile",
-                    data: data,
-                    type: "put",
-                    dataType: "text",
-
-                    success: function(data){
-                        var code = data.code;
-                        console.log(code);
-                        console.log(data.status+"2");
-                        layer.msg("Change successfully!" );
-                        setTimeout(function(){//两秒后跳转
-                            location.href = "index";
-                        },2000);
-                    },
-                    error : function() {
-                        console.log(data.status+"1");
-                        layer.msg("Your email or phone has been registered！",{icon: 5});
-                    }
-                });
-                //layer.msg("change successfully!")
+            var data = {
+                "first": first,
+                "last": last,
+                "age": age,
+                "email": email,
+                "gender": gender,
+                "phone": phone,
+                "address": address,
+                "account": account,
+                "password": password,
+                "question": question,
+                "answer": answer,
             }
+            var msg = data.msg;
+            $.ajax({
+                url: "/vacBook/user/profile",
+                data: data,
+                type: "put",
+                dataType: "text",
+
+                success: function (data) {
+                    var code = data.code;
+                    console.log(code);
+                    console.log(data.status + "2");
+                    layer.msg("Change successfully!");
+                },
+                error: function () {
+                    console.log(data.status + "1");
+                    layer.msg("Your email or phone has been registered！", {icon: 5});
+                }
+            });
             return true;
         });
     });
+
+    function changePassword() {
+        location.href = "http://localhost:8080/vacBook/user/changePassword"
+    }
 </script>
 </body>
 

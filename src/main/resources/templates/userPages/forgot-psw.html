@@ -18,48 +18,103 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
-
     </script>
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
 </head>
 
 <body>
 
 <div class="container pswEdit" style="align-items: center;width: 500px;">
-
-
-
-    <div class="change-psw-table" style="align-items: center; padding-top: 250px;width: 500px;" >
+    <div class="change-psw-table" style="align-items: center; padding-top: 250px;width: 500px;">
         <div class="row username" style="width:500px; ">
             <div class="col">
-                <label>Username: </label>
-                <input type="text" class="form-control" placeholder="Username" required>
-
-
+                <label>Account: </label>
+                <input id="account" type="text" class="form-control" placeholder="Please enter your account" required
+                       onblur="findSafeQuestion()">
             </div>
         </div>
         <br>
         <div class="row" style="width:500px; ">
             <div class="col">
-                <label>What’s your mother’s last name?</label>
-                <input type="text" class="form-control" placeholder="Answer" required>
+                <label>Safe question</label>
+                <input id="question" readonly="readonly" type="text" class="form-control" placeholder="Safe Question" required>
             </div>
         </div>
-
-
-
+        <br/>
+        <div class="row" style="width:500px; ">
+            <div class="col">
+                <label>Please answer your question</label>
+                <input id= "answer" type="text" class="form-control" placeholder="Safe Answer" required>
+            </div>
+        </div>
     </div>
     <div class="" style="padding-top: 25px; text-align: right;">
-        <div class="edit" >
-            <a href="#" class="link-danger" style="color: #000; text-decoration: none;">Next</a>
-        </div>
-
-        <!-- <button type="submit" class="btn btn-success">Next</button> -->
+        <button type="submit" class="btn btn-success" onclick="check()">Next</button>
     </div>
-
-
-
-
 </div>
+<script>
+    function findSafeQuestion() {
+        console.log("finding account...")
+        const account = $("#account").val();
+        console.log(account);
+        var data = {userAccount: account}
+        $.ajax({
+            url: "http://localhost:8080/vacBook/user/getUserByAccount",
+            data: data,
+            type: "POST",
+            dataType: "text",
+            success: function (data) {
+                console.log(typeof data)
+                if (data === "") {
+                    console.log("no find");
+                    document.getElementById('question').value = "No account find, please check your input account!";
+                    document.getElementById('question').style = "color:red";
+                    layer.msg("No account find, please check your input account!");
+                } else {
+                    console.log(data);
+                    document.getElementById('question').value = data;
+                    document.getElementById('question').style = "color:black";
+                }
+            },
+            error: function () {
+                location.href = "login";
+            }
+        });
+    }
+
+    function check() {
+        console.log("checking invalid input..")
+        if (document.getElementById('question').value === "No account find, please check your input account!") {
+            layer.msg("No account find, please check your input account!");
+        } else {
+            const account = $("#account").val();
+            console.log(account);
+            const answer = $("#answer").val();
+            console.log(answer);
+            var data = {userAccount: account, answer: answer}
+            $.ajax({
+                url: "http://localhost:8080/vacBook/user/forgetPassword",
+                data: data,
+                type: "POST",
+                dataType: "text",
+                success: function (data) {
+                    console.log(typeof data)
+                    if(data === ""){
+                        console.log(data);
+                        layer.msg("Your input answer is not correct, please try again !");
+                    }else{
+                        console.log(data);
+                        sessionStorage.setItem("user_id", data)
+                        location.href = "http://localhost:8080/vacBook/user/changePassword"
+                    }
+                },
+                error: function () {
+                    location.href = "login";
+                }
+            });
+        }
+    }
+</script>
 </body>
 
 </html>
