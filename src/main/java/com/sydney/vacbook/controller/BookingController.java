@@ -281,7 +281,7 @@ public class BookingController {
     }
 
     @RequestMapping("/sendUpdateEmail")
-    public void sendUpdateEmailToUser(@RequestParam Integer booking_id){
+    public void sendUpdateEmailToUser(@RequestParam Integer booking_id, String date, String bookingTimezone){
         // get reject booking list
         Booking booking = ibookingService.getById(booking_id);
 
@@ -300,8 +300,8 @@ public class BookingController {
                 "Below are your booking details:\n\n"+
                 "Booking user first name:       "+ user.getUserFirstname()+"\n"+
                 "Booking user last name:        "+ user.getUserLastname()+"\n"+
-                "Booking Date:                      "+ booking.getDate()+"\n"+
-                "Booking period:                    "+ booking.getBookingTimezone()+"\n"+
+                "Booking Date:                      "+ date+"\n"+
+                "Booking period:                    "+ bookingTimezone+"\n"+
                 "Booked vaccine name:          "+ vaccineName+"\n\n"+
                 "If you have any questions about the above information, please don't hesitate to contact us: yanyukang29@gmail.com";
 

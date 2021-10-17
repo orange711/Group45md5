@@ -90,8 +90,6 @@ public class VaccineController {
         Booking booking = ibookingService.getById(bookingID);
         Integer vaccineId= booking.getVaccineId();
         Vaccine vaccine = iVaccineService.getById(vaccineId);
-        System.out.println("hahahdbah: "+ vaccine.getVaccineAmount());
-
         Integer newAmount = vaccine.getVaccineAmount() + 1;
         System.out.println("Here is new add amount: "+newAmount);
         vaccine.setVaccineAmount(newAmount);

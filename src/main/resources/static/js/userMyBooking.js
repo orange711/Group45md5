@@ -86,7 +86,7 @@ function sendUpdateEmail(booking_id,date,time){
     var data = {
         "booking_id": booking_id,
         "date": date,
-        "bookingTimezone":bookingTimezone,
+        "bookingTimezone":time,
     }
     $.ajax({
         url: "/vacbook/booking/sendUpdateEmail/",
