@@ -280,6 +280,35 @@ public class BookingController {
         System.out.println("sent confirm email success!");
     }
 
+    @RequestMapping("/sendUpdateEmail")
+    public void sendUpdateEmailToUser(@RequestParam Integer booking_id){
+        // get reject booking list
+        Booking booking = ibookingService.getById(booking_id);
+
+        // get reject user info by booking list
+        User user = userService.getById(booking.getUserId());
+
+        //get vaccine name by booking list's vaccine ID
+        Vaccine vaccine = vaccineService.getById(booking.getVaccineId());
+        String vaccineName = vaccine.getVaccineName();
+
+        //set email param
+        String toEmail = user.getEmail();
+        String topic = "Success Update Booking message from vacBook!";
+        String msg = "Dear "+ user.getUserFirstname() +":\n"+
+                "Congratulation! Your Booking has been updated!\n"+
+                "Below are your booking details:\n\n"+
+                "Booking user first name:       "+ user.getUserFirstname()+"\n"+
+                "Booking user last name:        "+ user.getUserLastname()+"\n"+
+                "Booking Date:                      "+ booking.getDate()+"\n"+
+                "Booking period:                    "+ booking.getBookingTimezone()+"\n"+
+                "Booked vaccine name:          "+ vaccineName+"\n\n"+
+                "If you have any questions about the above information, please don't hesitate to contact us: yanyukang29@gmail.com";
+
+        sendEmailService.sendEmail(toEmail,msg,topic);
+        System.out.println("sent update email success!");
+    }
+
 
 
 

@@ -19,7 +19,10 @@ function del_booking(btn,id) {
         $.ajax({
             url: "/vacbook/booking/reject/"+id,
             type: "get",
-            beforeSend : sendRejectEmail(id),
+            beforeSend: function (){
+                sendRejectEmail(id);
+                addVaccine(id);
+            },
             success:function (result){
                 if(result){
 
@@ -43,4 +46,16 @@ function sendRejectEmail(id){
         dataType: "json",
     });
 
+}
+
+function addVaccine(id){
+    var data = {
+        "bookingID": id,
+    };
+    $.ajax({
+        url: "/vacbook/vaccine/addVaccine",
+        data: data,
+        type: "post",
+        dataType: "json",
+    });
 }
