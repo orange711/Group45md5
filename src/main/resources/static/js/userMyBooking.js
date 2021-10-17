@@ -2,6 +2,7 @@
  * js for the adminBookingModel
  */
 function cal_booking(btn,id,userId) {
+
     layer.confirm('Are you sure you want to cancel this Booking now <br> And send reminder email?', {
         btn: ["Confirm", "Cancel"],
         icon: 2,
@@ -16,20 +17,17 @@ function cal_booking(btn,id,userId) {
                 layer.msg('The booking has been deleted !')
             }
         });*/
+
         $.ajax({
             url: "/vacbook/booking/reject/"+id,
             type: "get",
-            beforeSend : function () {
-                sendCancelEmail(id),
-                addVaccine(id)
-                console.log("haha")
-                console.log(id)
+            beforeSend: function (){
+                sendCancelEmail(id);
+                addVaccine(id);
             },
             success:function (result){
                 if(result){
                     window.location.href = userId;
-
-
                 }
             },
         });
@@ -48,9 +46,9 @@ function sendCancelEmail(id){
     });
 
 }
-function addVaccine(bookingID){
+function addVaccine(id){
     var data = {
-        "bookingID": bookingID,
+        "bookingID": id,
     };
     $.ajax({
         url: "/vacbook/vaccine/addVaccine",
@@ -60,7 +58,7 @@ function addVaccine(bookingID){
     });
 }
 
-function saveMyBooking(){
+function saveMyBooking(booking_id){
     let userID = document.getElementById("userID").value;
     let date = document.getElementById("date").value;
     let time = document.getElementById("time").value;
@@ -76,9 +74,25 @@ function saveMyBooking(){
             data: data,
             type: "post",
             dataType: "json",
+            success: sendUpdateEmail(booking_id,date,time),
         });
         layer.msg("change successfully")
 
         return true;
+
+}
+
+function sendUpdateEmail(booking_id,date,time){
+    var data = {
+        "booking_id": booking_id,
+        "date": date,
+        "bookingTimezone":time,
+    }
+    $.ajax({
+        url: "/vacbook/booking/sendUpdateEmail/",
+        data: data,
+        type: "post",
+        dataType: "json",
+    });
 
 }
