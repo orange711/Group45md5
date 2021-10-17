@@ -3,8 +3,10 @@ package com.sydney.vacbook.controller;
 
 import com.baomidou.mybatisplus.core.assist.ISqlRunner;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.sydney.vacbook.entity.Booking;
 import com.sydney.vacbook.entity.Vaccine;
 import com.sydney.vacbook.mapper.VaccineMapper;
+import com.sydney.vacbook.service.IBookingService;
 import com.sydney.vacbook.service.IVaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +39,8 @@ public class VaccineController {
     IVaccineService iVaccineService;
     @Autowired
     VaccineMapper vaccineMapper;
+    @Autowired
+    IBookingService ibookingService;
 
     //增加一条vaccine
     public boolean saveVaccine(Vaccine vaccine) {
@@ -80,6 +84,21 @@ public class VaccineController {
         //save new vaccine amount
         iVaccineService.saveOrUpdate(vaccine);
     }
+
+    @RequestMapping("/addVaccine")
+    public void addVaccineAmount(@RequestParam Integer bookingID){
+        Booking booking = ibookingService.getById(bookingID);
+        Integer vaccineId= booking.getVaccineId();
+        Vaccine vaccine = iVaccineService.getById(vaccineId);
+        System.out.println("hahahdbah: "+ vaccine.getVaccineAmount());
+
+        Integer newAmount = vaccine.getVaccineAmount() + 1;
+        System.out.println("Here is new add amount: "+newAmount);
+        vaccine.setVaccineAmount(newAmount);
+        //save new vaccine amount
+        iVaccineService.saveOrUpdate(vaccine);
+    }
+
 
 
 }

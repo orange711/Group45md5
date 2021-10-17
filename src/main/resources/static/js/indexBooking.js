@@ -42,6 +42,9 @@ function check(t){
             yes: function(index){    //点击确定回调
                 layer.close(index);
                 saveBooking();//调用保存方法
+                reduceVaccine(vaccineId);//
+                console.log("yes")
+                console.log(vaccineId)
             },
             btn2: function(){// 点击Cancel回调
                 layer.closeAll();

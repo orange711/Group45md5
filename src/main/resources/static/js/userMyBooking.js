@@ -19,10 +19,16 @@ function cal_booking(btn,id,userId) {
         $.ajax({
             url: "/vacbook/booking/reject/"+id,
             type: "get",
-            beforeSend : sendCancelEmail(id),
+            beforeSend : function () {
+                sendCancelEmail(id),
+                addVaccine(id)
+                console.log("haha")
+                console.log(id)
+            },
             success:function (result){
                 if(result){
                     window.location.href = userId;
+
 
                 }
             },
@@ -41,6 +47,17 @@ function sendCancelEmail(id){
         dataType: "json",
     });
 
+}
+function addVaccine(bookingID){
+    var data = {
+        "bookingID": bookingID,
+    };
+    $.ajax({
+        url: "/vacbook/vaccine/addVaccine",
+        data: data,
+        type: "post",
+        dataType: "json",
+    });
 }
 
 function saveMyBooking(){

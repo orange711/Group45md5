@@ -51,15 +51,15 @@
         </div>
         <div class="col-md-6 mb-3">
             <label>Password:</label>
-            <input id="password" type="password" class="form-control" placeholder="Create your password:" required>
+            <input id="password" type="password" class="form-control" placeholder="Create your password" required>
         </div>
     </div>
 
     <!--row 3-->
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label>Username:</label>
-            <input id="account" type="text" class="form-control" placeholder="Username" required>
+            <label>Account:</label>
+            <input id="account" type="text" class="form-control" placeholder="Account" required>
         </div>
         <div class="col-md-6 mb-3">
             <label>Confirm your password:</label>
@@ -76,7 +76,7 @@
         </div>
         <div class="col-md-6 mb-3">
             <label>Please set your security question:</label>
-            <input id="question" type="text" class="form-control" placeholder="What's your mother's last name?"
+            <input id="question" type="text" class="form-control" placeholder="Please enter your question"
                    required>
         </div>
     </div>
@@ -89,14 +89,11 @@
                    class="form-control">
         </div>
         <div class="col-md-6 mb-3">
-            <label>Gender:</label>
-            <select name="gender" id="gender" style="width: 100%; height: 33px;">
-                <option value="Select">Select your option</option>
-                <option value="Female">Female</option>
-                <option value="Male">Male</option>
-                <option value="Prefer not to say">Prefer not to say</option>
-            </select>
+            <label>Please set your security question answer:</label>
+            <input id="questionAnswer" type="text" class="form-control" placeholder="Please enter your answer"
+                   required>
         </div>
+
     </div>
 
     <!--row 6-->
@@ -105,6 +102,15 @@
             <label>Mobile Phone:</label>
             <input id="phoneNumber" type="number" class="form-control" placeholder="Mobile Phone (Start with 0)"
                    maxlength=10 required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>Gender:</label>
+            <select name="gender" id="gender" style="width: 100%; height: 33px;">
+                <option value="Select">Select your option</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+            </select>
         </div>
         <div class="col-md-6 mb-3" style="padding-top: 25px; text-align: right;">
             <div class="check" style="display: inline; padding-right: 30px;">
@@ -138,7 +144,7 @@
 
         console.log();
 
-        let key = document.getElementById("question").value;
+        let key = document.getElementById("questionAnswer").value
 
 
 
@@ -219,7 +225,7 @@
 
 
 
-        var question = "What's you mother's name";
+        var question = document.getElementById("question").value;
 
 
         if (password == passwordSecond) {
