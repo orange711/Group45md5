@@ -42,7 +42,7 @@ Import the Vacbook folder through IDEA or Eclipse
 
 
 
-Zhengcheng Liu @Orange711
+Zhengcheng Liu @orange711
 
 ## Contributing
 
