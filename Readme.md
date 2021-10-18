@@ -40,17 +40,8 @@ Import the Vacbook folder through IDEA or Eclipse
 
 ## Maintainers
 
-1.Zhengcheng Liu [![Click to his pages](https://avatars.githubusercontent.com/u/48581600?s=96&v=4 "title")](https://github.com/orange711)
-<li class="mb-2 d-flex" data-test-selector="grid-mode-element">
-      <a href="https://github.com/orange711" class="mr-2" data-hovercard-type="user" data-hovercard-url="/users/orange711/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self">
-        <img src="https://avatars.githubusercontent.com/u/48581600?v=4" alt="@orange711" size="32" height="32" width="32" data-view-component="true" class="avatar circle">
-      </a>
-      <span data-view-component="true" class="flex-self-center flex-auto min-width-0 css-truncate css-truncate-overflow width-fit">
-        <a href="https://github.com/orange711" class="Link--primary no-underline flex-self-center">
-          <strong>orange711</strong>
-          
-        </a>
-</span>    </li>
+1.Zhengcheng Liu [![Click to his pages](https://avatars.githubusercontent.com/u/48581600?v=4 "Click to his pages")](https://github.com/orange711)
+
 
 2.
 
