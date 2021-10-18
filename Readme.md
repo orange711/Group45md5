@@ -40,7 +40,7 @@ Import the Vacbook folder through IDEA or Eclipse
 
 ## Maintainers
 
-1.Zhengcheng Liu [![Click to his pages](https://avatars.githubusercontent.com/u/48581600?v=4 "Click to his pages")](https://github.com/orange711)
+1.Zhengcheng Liu [![Click to his pages](https://avatars.githubusercontent.com/u/48581600?v=4 "Click to his pages" size = 32)](https://github.com/orange711)
 
 
 2.
