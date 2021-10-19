@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorator="adminPages/base.html">
 <div layout:fragment="content" class="container"
-     style="max-width: 700px; margin-top: 50px; padding-top: 30px;  padding-bottom: 30px; line-height:30px; border: 1px solid black;">
-    <h1 align="center">Information</h1>
+     style="max-width: 700px; margin-top: 50px; padding-top: 30px;  padding-bottom: 30px; line-height:30px; border: 1px solid #e3e3e3; background-color: #FFF9F9">
+    <h1 align="center" style="font-family: 'ABeeZee', sans-serif">Information</h1>
 
-    <table class="table table-striped" style="border: 1px solid black;">
+    <table class="table table-striped" style="border: 1px solid #e3e3e3;">
 
-        <tbody style="text-align:center">
+        <tbody style="text-align:center; font-family:'ABeeZee', sans-serif" >
         <tr>
             <th>Admin account: </th>
             <td><span th:text="${result.account}"></span></td>
