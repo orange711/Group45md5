@@ -148,7 +148,8 @@ public class UserController {
     public ModelAndView userBooking() {
         User user = listUser.get(0);
         System.out.println(listUser.get(0));
-        List<Vaccine> vaccineList = iVaccineService.list();
+        //List<Vaccine> vaccineList = iVaccineService.list();
+        List<Vaccine> vaccineList = iVaccineService.list(new QueryWrapper<Vaccine>().gt("vaccine_amount",0));
         //根据vaccineList获取所有的adminId
         List<Integer> adminIdList = vaccineList.stream().map(Vaccine::getAdminId).collect(Collectors.toList());
         //查询adminId对应的管理员
