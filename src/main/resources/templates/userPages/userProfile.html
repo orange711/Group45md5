@@ -176,20 +176,15 @@
                 return false;
             }
 
-            // if (password == null || password == "") {
-            //     layer.msg("Password can't be empty");
-            //     return false;
-            // }
+            if (answer == null || answer == "") {
+                layer.msg("Safe Answer can't be empty");
+                return false;
+            }
 
             if (account == null || account == "") {
                 layer.msg("Account can't be empty");
                 return false;
             }
-
-            // if (confirmPassword == null || confirmPassword == "") {
-            //     layer.msg("Password confirm can't be empty");
-            //     return false;
-            // }
 
             if (email.trim() == null || email == "") {
                 layer.msg("email can't be empty");
