@@ -75,7 +75,7 @@ Import the Vacbook folder through IDEA or Eclipse
 
 2.Yukang Yan, GutHub account name:Sydney-YY and Yan YuKang
 
-3.Yuhuai Lai
+3.Yuhuai Lai, GutHub account name:lyh-cs
 
 4. Shuonan Wang (wsn976654769)
 
