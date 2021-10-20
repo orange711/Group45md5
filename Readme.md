@@ -16,15 +16,15 @@ Import the Vacbook folder through IDEA or Eclipse
 
 1. Please check this file and create a database which called "Vacbook"
 
-   ![image](https://github.com/reneeli0223/Group45md5/blob/master/src/main/resources/static/readme/image-20211018220842085.png)
+   ![image](https://github.com/reneeli0223/Group45md5/blob/master/src/main/resources/static/readme/image-20211018220842085.png?raw=true)
 
 2. Create the database table using the file vacbook.sql in the image
 
-   ![image](https://github.com/reneeli0223/Group45md5/blob/master/src/main/resources/static/readme/image-20211018214934823.png)
+   ![image](https://github.com/reneeli0223/Group45md5/blob/master/src/main/resources/static/readme/image-20211018214934823.png?raw=true)
 
 3. You can run this program directly after Maven imports the dependencies
 
-![image](https://github.com/reneeli0223/Group45md5/blob/master/src/main/resources/static/readme/image-20211018215916563.png)
+![image](https://github.com/reneeli0223/Group45md5/blob/master/src/main/resources/static/readme/image-20211018215916563.png?raw=true)
 
 ## Usage
 
