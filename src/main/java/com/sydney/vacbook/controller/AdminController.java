@@ -196,7 +196,6 @@ public class AdminController {
             vaccine.setVaccineName(name);
             vaccine.setVaccineType(type);
             vaccine.setVaccineAmount(amount);
-            vaccine.setVaccineDescription(" ");
             vaccine.setAdminId(listAdmin.get(0).getAdminId());
             iVaccineService.save(vaccine);
             System.out.println("add success");
@@ -293,6 +292,8 @@ public class AdminController {
             System.err.println("This account has been registered");
             return "redirect:registerPage";//重定向
         }
+
+
 
         System.out.println("===============");
         boolean newAdmin = iAdminService.save(admin);
