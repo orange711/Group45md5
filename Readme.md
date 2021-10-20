@@ -73,9 +73,9 @@ Import the Vacbook folder through IDEA or Eclipse
 
 1.Zhengcheng Liu GitHub：orange
 
-2.Yukang Yan, GutHub account name:Sydney-YY and Yan YuKang
+2.Yukang Yan, GitHub account name:Sydney-YY and Yan YuKang
 
-3.Yuhuai Lai, GutHub account name:lyh-cs
+3.Yuhuai Lai, GitHub account name:lyh-cs
 
 4. Shuonan Wang (wsn976654769)
 
