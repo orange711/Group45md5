@@ -38,18 +38,46 @@ Import the Vacbook folder through IDEA or Eclipse
 
 
 
+| **Functional requirement description**                       |
+| ------------------------------------------------------------ |
+| Users can register by email , password and personal information |
+| Users can login by authenticated account                     |
+| Users can reset & forget password                            |
+| Users can logout                                             |
+| Users can search for specific clinic                         |
+| Users can choose a preferred clinic or location.             |
+| Users can book an appointment.                               |
+| Users can change their appointed time                        |
+| Users can cancel their appointment                           |
+| User can check their booking information                     |
+| User can get a confirm email after finish booking an appointment |
+| User can choose the vaccine type                             |
+| Users can update their personal information.                 |
+| Users can receive   update email when users change their appointment time. |
+| Admin can login management system                            |
+| Admin can register account by account name, password and location |
+| Admin  can logout                                            |
+| Admin can update information(name, suburb, address and so on) |
+| Admin can add vaccine                                        |
+| Admin can edit vaccine’s stock                               |
+| Admin can delete vaccine                                     |
+| Admin can check user’s appointments in each hour             |
+| Admin can check user information in each appointment         |
+| Admin can reject an appointment                              |
+| Users can receive confirmation appointment emails.           |
+| Users can receive rejecting appointment emails.              |
+
+
+
 ## Maintainers
 
-1.Zhengcheng Liu Zhengcheng Liu [![Click to his pages](https://avatars.githubusercontent.com/u/48581600?s=96&v=4 "title")](https://github.com/orange711)
-
+1.Zhengcheng Liu GitHub：orange
 
 2.
 
 3.
 
-## Contributing
 
-## License
 
 
 
