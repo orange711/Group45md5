@@ -71,14 +71,13 @@ Import the Vacbook folder through IDEA or Eclipse
 
 ## Maintainers
 
-1.Zhengcheng Liu GitHub：orange
+- Darui Li, GitHub account name: reneeli0223
+- Shuonan Wang, GitHub account name: wsn976654769
+- Yukang Yan, GitHub account name: Sydney-YY and Yan YuKang
+- Yuhuai Lai, GitHub account name: lyh-cs
+- Zhengcheng Liu GitHub account name：orange
 
-2.Yukang Yan, GitHub account name:Sydney-YY and Yan YuKang
 
-3.Yuhuai Lai, GitHub account name:lyh-cs
-
-4. Shuonan Wang (wsn976654769)
-5. Darui Li GitHub account name:(reneeli0223)
 
 
 
