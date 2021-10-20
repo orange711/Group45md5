@@ -45,7 +45,7 @@ Import the Vacbook folder through IDEA or Eclipse
 
 2.Yukang Yan, GutHub account name:Sydney-YY and Yan YuKang
 
-3.
+3.Yuhuai Lai
 
 ## Contributing
 
