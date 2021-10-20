@@ -47,6 +47,8 @@ Import the Vacbook folder through IDEA or Eclipse
 
 3.Yuhuai Lai
 
+4. Shuonan Wang (wsn976654769)
+
 ## Contributing
 
 ## License
