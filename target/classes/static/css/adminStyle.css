@@ -11,16 +11,17 @@ nav ul {
 
 nav ul li {
     font-size: 40px;
-    font-family: sans-serif;
-    background-color: pink;
-    border: 0.5px solid black;
+    font-family: 'Red Hat Display', sans-serif;
+    background-color: #FFF9F9;
+    border: 0.5px solid #e3e3e3;
     letter-spacing: 0.1em;
-    width: 20vw;
+    /*width: 20vw;*/
     height: 1.5em;
     line-height: 1.5em;
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    text-align: center;
 }
 
 
@@ -45,7 +46,7 @@ nav ul li::before {
     position: absolute;
     width: 1.5em;
     height: inherit;
-    background-color: black;
+    background-color: #eaecf7;
     border-radius: 50%;
     top: 0;
     left: -0.75em;
@@ -56,13 +57,15 @@ nav ul li:hover::before {
     transform: scale(7);
 }
 .logo{
-    background-color: lightpink;
-    height: 75px;
+    background-color: #FFF9F9;
+    /*height: 70px;*/
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 10px;
 }
 .logo img {
-    max-width: 90%;
-    width: 400px;
-    height: 70px;
+    max-width: 85%;
+
 }
 .logout a{
     text-decoration: none;
@@ -70,11 +73,11 @@ nav ul li:hover::before {
 }
 .logout {
     font-size: 40px;
-    font-family: sans-serif;
-    background-color: pink;
-    border: 0.5px solid black;
+    font-family: 'Red Hat Display', sans-serif;
+    background-color: #FFF9F9;
+    border: 0.5px solid #e3e3e3;
     letter-spacing: 0.1em;
-    width: 20vw;
+    /*width: 20vw;*/
     height: 1.5em;
     line-height: 1.5em;
     position: relative;
@@ -107,7 +110,7 @@ nav ul li:hover::before {
     position: absolute;
     width: 1.5em;
     height: inherit;
-    background-color: black;
+    background-color: #eaecf7;
     border-radius: 50%;
     top: 0;
     left: -0.75em;

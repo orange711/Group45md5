@@ -10,12 +10,12 @@
   <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
 </head>
 <div layout:fragment="content" class="container"
-     style="max-width: 700px; margin-top: 50px; padding-top: 30px;  padding-bottom: 30px; line-height:30px; border: 1px solid black;">
-  <h1 align="center">Booking List Info</h1>
+     style="max-width: 700px; margin-top: 50px; padding-top: 30px;  padding-bottom: 30px; line-height:30px; border: 1px solid #e3e3e3;background-color: #FFF9F9">
+  <h1 align="center" style="font-family:'ABeeZee', sans-serif">Booking List Info</h1>
   <form action="" th:object="${result}" method="put">
 
-    <table class="table table-striped" style="border: 1px solid black;">
-      <tbody style="text-align: center">
+    <table class="table table-striped" style="border: 1px solid #e3e3e3;">
+      <tbody style="text-align: center;font-family:'ABeeZee', sans-serif">
 
       <tr >
         <th>ID</th>
@@ -42,10 +42,7 @@
       </tr>
       </tbody>
     </table>
-    <!--    <div>-->
 
-    <!--      <button class="shadow p-3 mb-3 bg-body rounded" type="submit" id="login-button">Save</button>-->
-    <!--    </div>-->
 
   </form>
 </div>

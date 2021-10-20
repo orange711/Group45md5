@@ -26,6 +26,40 @@ Import the Vacbook folder through IDEA or Eclipse
 
 ![image](https://github.com/reneeli0223/Group45md5/blob/master/src/main/resources/static/readme/image-20211018215916563.png?raw=true)
 
+
+## Libraries
+
+> spring-boot
+> 
+> mysql
+> 
+>lombok
+>
+>mybatis
+>
+>h2database
+>
+>mybatis-plus-generator
+>
+> thymeleaf
+> 
+> spring-boot-starter-mail(Gmail API)
+> 
+> layer
+> 
+>Jquery
+> 
+> AJAX
+> 
+> Google map API
+> 
+> bootstrap
+> 
+> Maven
+> 
+> 
+
+
 ## Usage
 
 - After the program runs, please access the admin page at the following URL
