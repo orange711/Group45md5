@@ -21,11 +21,9 @@ import static com.sydney.vacbook.tool.MD5.code;
  * @since 2021-09-15
  */
 
-//@RestController   如果加了这行注释 return 只会返回return里的实际内容、而不会跳转网页
 @Controller
 @RequestMapping("/vacbook/admin")
 public class AdminController {
-
 
     @Autowired
     private IUserService iUserService;
@@ -44,11 +42,10 @@ public class AdminController {
 
     @Autowired
     VaccineController vaccineController;
-    //一个adminList来判断登录合法性 并且存储相关信息
     List<Admin> listAdmin = new ArrayList<>();
 
     @RequestMapping("/base")
-    public String toBase(){
+    public String toBase() {
         return "adminPages/base";
     }
 
@@ -89,14 +86,13 @@ public class AdminController {
 
     @GetMapping("/bookings")
     public ModelAndView fetchBookings() {
-        //System.out.println("22222222");
         Integer admin_id = listAdmin.get(0).getAdminId();
         if (admin_id != null) {
             QueryWrapper<Vaccine> findVaccineByAdminId = new QueryWrapper<>();
             findVaccineByAdminId.eq("admin_id", listAdmin.get(0).getAdminId());
 
             List<Vaccine> vaccineList = iVaccineService.list(findVaccineByAdminId);
-            if(vaccineList.isEmpty()){
+            if (vaccineList.isEmpty()) {
                 System.out.println("There is no booking Here");
                 ModelAndView modelAndView = new ModelAndView("adminPages/adminBooking");
                 return modelAndView;
@@ -129,13 +125,6 @@ public class AdminController {
         return null;
     }
 
-    @PostMapping("/bookings")
-    public List<Booking> fetchBookings(@PathVariable("admin_id") int admin_id, @RequestBody Map<String, Object> body) {
-        //TODO JAMES
-        return null;
-    }
-
-
     @GetMapping("/bookings/user/{user_id}")
     public ModelAndView fetchBookingUser(@PathVariable("user_id") int user_id) {
         User user = iUserService.getById(user_id);
@@ -146,12 +135,13 @@ public class AdminController {
     /**
      * Vaccine can add, delete, update requests based on the design of figma
      */
-    @RequestMapping ("/vaccines/refresh")
+    @RequestMapping("/vaccines/refresh")
     public String fetchVaccinesRefresh(Model model) {
         List<Vaccine> resultSet = vaccineController.getVaccineListByAdminId(listAdmin.get(0).getAdminId());
-        model.addAttribute("adminVaccineList",resultSet);
+        model.addAttribute("adminVaccineList", resultSet);
         return "adminPages/adminVaccines::vac_container";
     }
+
     /**
      * Vaccine can add, delete, update requests based on the design of figma
      */
@@ -163,7 +153,7 @@ public class AdminController {
     }
 
     @PostMapping("/vaccines/update")
-    public String updateVaccine(@RequestParam Integer stock, Integer update_id,Model model) {
+    public String updateVaccine(@RequestParam Integer stock, Integer update_id, Model model) {
         System.out.println(stock);
         System.out.println(update_id);
         if (update_id != null && stock != null) {
@@ -177,9 +167,9 @@ public class AdminController {
     }
 
     @PostMapping("/vaccines/delete")
-    public String deleteVaccine(@RequestParam Integer delete_id,Model model) {
+    public String deleteVaccine(@RequestParam Integer delete_id, Model model) {
         System.out.println(delete_id);
-        if(delete_id!=null) {
+        if (delete_id != null) {
             System.out.println("delete vaccine");
             Vaccine vaccine = iVaccineService.getById(delete_id);
             vaccineController.delVaccine(vaccine);
@@ -189,7 +179,7 @@ public class AdminController {
     }
 
     @PostMapping("/vaccines/add")
-    public String addVaccine(@RequestParam String name, String type, Integer amount,Model model) {
+    public String addVaccine(@RequestParam String name, String type, Integer amount, Model model) {
         if (amount != null && name != null && type != null) {
             System.out.println("add vaccine");
             Vaccine vaccine = new Vaccine();
@@ -205,7 +195,6 @@ public class AdminController {
 
     @GetMapping("/setting")
     public ModelAndView fetchSetting() {
-
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("admin_id", listAdmin.get(0).getAdminId());
         result.put("account", listAdmin.get(0).getAdminAccount());
@@ -222,13 +211,6 @@ public class AdminController {
 
     @PostMapping(value = "/setting")
     public ModelAndView updateSetting(@RequestParam String name, String password, Integer location) {
-
-        System.out.println("hello");
-        System.out.println(name);
-        System.out.println(password);
-        System.out.println(location);
-
-
         Admin admin = listAdmin.get(0);
         admin.setAdminName(name);
         admin.setLocationId(location);
@@ -239,12 +221,10 @@ public class AdminController {
             admin.setAdminPassword(passwordMD5);
         }
 
-        //admin.updateByMap(body);
         iAdminService.saveOrUpdate(admin);
         return this.fetchSetting();
     }
 
-    //这个地方改成index了
     @RequestMapping("/index")
     public String index() {
         return "adminPages/adminLogin";
@@ -268,7 +248,6 @@ public class AdminController {
             System.err.println("Password Wrong");
             return false;
         }
-
     }
 
     @RequestMapping("/registerPage")
@@ -288,13 +267,10 @@ public class AdminController {
         QueryWrapper<Admin> checkQueryWrapper = new QueryWrapper<>();
         checkQueryWrapper.eq("admin_account", admin.getAdminAccount());
         checkQueryWrapper.eq("admin_name", admin.getAdminName());
-        if (iAdminService.getOne(checkQueryWrapper)!=null){
+        if (iAdminService.getOne(checkQueryWrapper) != null) {
             System.err.println("This account has been registered");
             return "redirect:registerPage";//重定向
         }
-
-
-
         System.out.println("===============");
         boolean newAdmin = iAdminService.save(admin);
         if (newAdmin == false) {
@@ -302,19 +278,13 @@ public class AdminController {
             return "redirect:index";//重定向
         } else {
             System.out.println("Thanks for join our system");
-
             QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
             sectionQueryWrapper.eq("admin_account", admin.getAdminAccount());
             sectionQueryWrapper.eq("admin_password", admin.getAdminPassword());
             listAdmin = iAdminService.list(sectionQueryWrapper);
-
             body.put("adminList", listAdmin.get(0));
-
-
             return "adminPages/base";
         }
-
-
     }
 
     @RequestMapping("/logout")
@@ -322,47 +292,5 @@ public class AdminController {
         map.put("adminList", "");
         return "redirect:index";// 重定向
     }
-
-//    取信息
-//    @RequestMapping("/adminList")
-//    public String  listAdmin(Model model) {
-//       model.addAttribute("listAdmin",listAdmin.get(0));
-//       return "admin/list";
-//
-//    }
-
-
-// exercises
-//    @GetMapping("{id}/getUserByAge")
-//    public List<User> getUserByAge(@PathVariable("id") int id, @RequestParam("age") int age) {
-//        System.out.println("hellp");
-//
-//        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-//        //lambda写法:
-//        queryWrapper.lambda().eq(User::getAge, age);
-//
-//
-//        List<User> userList = iUserService.list(queryWrapper);
-//        return userList;
-//    }
-//
-//    @GetMapping("/getUserListByAgeLimit")
-//    public List<User> getUserListByAgeLimit() {
-//
-//        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.lambda().gt(User::getAge, 1);
-//        queryWrapper.lambda().lt(User::getAge, 25);
-//
-//        List<User> userList = iUserService.list(queryWrapper);
-//        return userList;
-//    }
-
-//    @GetMapping("{id}/update")
-//    public void updateAdmin(@PathVariable("id") int id) {
-//        Admin admin = iAdminService.getById(id);
-//        admin.setAdminName("super_kevin");
-//        iAdminService.saveOrUpdate(admin);
-//    }
-
-
+    
 }
