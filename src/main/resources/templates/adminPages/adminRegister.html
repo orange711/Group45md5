@@ -19,6 +19,9 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="auto-complete.js"></script>
+    <script type="text/javascript" th:src="@{/js/adminRegister.js}"></script>
+    <!--   layer import-->
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
 </head>
 
 <body>
@@ -29,16 +32,16 @@
 </div>
 <!--Form starts here-->
 <div class="container" style="padding-top: 30px;">
-    <form th:action="@{/vacbook/admin/register}" class="form-register " >
+<!--    <form th:action="@{/vacbook/admin/register}" class="form-register " >-->
         <!--row 1-->
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Provider name:</label>
-                <input type="text" name="adminName" class="form-control" placeholder="Provider name" required>
+                <input type="text" id="adminName" name="adminName" class="form-control" placeholder="Provider name" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label>Location:</label>
-                <select class="form-control" name="locationId" required>
+                <select id="locationId" class="form-control" name="locationId" required>
                     <option value=""> Select a location in dropdown menu</option>
                     <option th:each="l:${result.location_options}"
                             th:text="${l.location}"
@@ -52,11 +55,11 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Account:</label>
-                <input type="text" name="adminAccount" class="form-control" placeholder="Enter Your Account Number" required>
+                <input type="text"  id="account" name="adminAccount" class="form-control" placeholder="Enter Your Account Number" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label>Password:</label>
-                <input type="password" name="adminPassword" class="form-control" placeholder="Create your password" required>
+                <input type="password" id="password" name="adminPassword" class="form-control" placeholder="Create your password" required>
             </div>
         </div>
 
@@ -67,7 +70,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label>Confirm your password:</label>
-                <input type="password" class="form-control" placeholder="Confirm your password" required>
+                <input type="password" id="passwordSecond" class="form-control" placeholder="Confirm your password" required>
             </div>
         </div>
 
@@ -80,10 +83,10 @@
 
             <div class="col-md-6 mb-3" style="padding-top: 25px; text-align: right;">
                 <a th:href="@{/vacbook/admin/index}" type="submit" class="btn btn-danger">Back</a>
-                <button  type="submit" class="btn btn-success">Save</button>
+                <button  type="submit" class="btn btn-success" onclick="checkRegister()">Save</button>
             </div>
         </div>
-    </form>
+<!--    </form>-->
 </div>
 
 
