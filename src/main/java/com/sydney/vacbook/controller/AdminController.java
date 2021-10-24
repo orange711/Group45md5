@@ -261,7 +261,7 @@ public class AdminController {
 
     @RequestMapping("/register")
     public String register(Admin admin, Map<Object, Object> body) {
-
+        System.out.println(admin);
         String MD5Password = code(admin.getAdminPassword());
         admin.setAdminPassword(MD5Password);
         QueryWrapper<Admin> checkQueryWrapper = new QueryWrapper<>();
