@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.34)
 # Database: Vacbook
-# Generation Time: 2021-10-20 13:54:41 +0000
+# Generation Time: 2021-10-24 13:21:12 +0000
 # ************************************************************
 
 
@@ -45,7 +45,8 @@ VALUES
 	(17,'Admin_1','81dc9bdb52d04dc20036dbd8313ed055','Sydney Olympic Park Vaccination Centre',9),
 	(18,'Admin_2','81dc9bdb52d04dc20036dbd8313ed055','Royal Prince Alfred Hospital Vaccination Centre',7),
 	(19,'Admin_3','81dc9bdb52d04dc20036dbd8313ed055','Fairfield Community Centre',40),
-	(21,'Admin_4','81dc9bdb52d04dc20036dbd8313ed055','Albury Clinic',7);
+	(21,'Admin_4','81dc9bdb52d04dc20036dbd8313ed055','Albury Clinic',7),
+	(22,'Admin_5','81dc9bdb52d04dc20036dbd8313ed055','Bland clinic',17);
 
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -74,7 +75,10 @@ LOCK TABLES `booking` WRITE;
 
 INSERT INTO `booking` (`booking_id`, `user_id`, `vaccine_id`, `booking_timezone`, `date`)
 VALUES
-	(29,48,38,'19:17','2021-10-20');
+	(1,52,33,'15:00','2021-10-25'),
+	(2,55,34,'23:00','2021-10-25'),
+	(3,49,34,'10:00','2021-10-26'),
+	(4,48,33,'11:00','2021-10-25');
 
 /*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -167,7 +171,11 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` (`user_id`, `phone_number`, `email`, `user_lastname`, `user_firstname`, `gender`, `address`, `age`, `user_password`, `user_account`, `user_question`, `user_safe_key`)
 VALUES
 	(48,'434273218','z5158298@gmail.com','Yan','yukang','Male','UNIT 1203 21 dunkerley place',23,'202cb962ac59075b964b07152d234b70','ward1','mother\'s name','ward'),
-	(49,'0434273211','976654769@qq.com','wang','kevin','Male','Room22-202 No.28 Research Institute',23,'202cb962ac59075b964b07152d234b70','kevin','kevin','1');
+	(49,'0434273211','976654769@qq.com','wang','kevin','Male','Room22-202 No.28 Research Institute',23,'202cb962ac59075b964b07152d234b70','kevin','kevin','1'),
+	(52,'12345678','2209705097@qq.com','Yan','testUser1','Female','UNIT 1403 19 dunkerley place',23,'202cb962ac59075b964b07152d234b70','test1','hh','hh'),
+	(53,'1234567','1','Renee','Li','Female','Sydney 新南威尔士州澳大利亚',23,'202cb962ac59075b964b07152d234b70','Renee','1','1'),
+	(54,'123456','22','zhengchen','liu','Male','Shanghai, 上海市中国',23,'202cb962ac59075b964b07152d234b70','zhengchen','1','1'),
+	(55,'12345','33','james','li','Male','Beijing, 北京市中国',23,'202cb962ac59075b964b07152d234b70','james','1','1');
 
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -194,11 +202,13 @@ LOCK TABLES `vaccine` WRITE;
 
 INSERT INTO `vaccine` (`vaccine_id`, `vaccine_type`, `vaccine_name`, `admin_id`, `vaccine_amount`)
 VALUES
-	(33,'mRNA','Pfizer',17,5),
-	(35,'mRNA','AstraZeneca',17,100),
-	(38,'mRNA','Pfizer',19,99),
-	(39,'mRNA','Moderna',19,0),
-	(40,'mRNA','Pfizer',21,100);
+	(33,'mRNA','Pfizer',17,3),
+	(34,'mRNA','AstraZeneca',17,2),
+	(39,'mRNA','Moderna',17,9),
+	(40,'mRNA','Pfizer',21,100),
+	(41,'mRNA','Pfizer',22,10),
+	(47,'mRNA','AstraZeneca',22,10),
+	(48,'mRNA','Pfzier',19,100);
 
 /*!40000 ALTER TABLE `vaccine` ENABLE KEYS */;
 UNLOCK TABLES;
