@@ -37,10 +37,8 @@ public class SendEmailService {
         mimeMessageHelper.setTo(to);
         mimeMessageHelper.setSubject(topic);
         Context context = new Context();
-//        context.setVariables(templateValue);
         String text = templateEngine.process("userPages/subscriptionEmail",context);
-//        FileSystemResource fileSystemResource = new FileSystemResource(new File(rscPath));
-//        mimeMessageHelper.addInline(rscId, fileSystemResource);
+
 
 
         mimeMessageHelper.setText(text,true);

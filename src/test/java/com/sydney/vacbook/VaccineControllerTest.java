@@ -46,7 +46,7 @@ class VaccineControllerTest {
     @Test
     void getVaccine() {
 
-        assertTrue(vaccineController.getVaccine(38).getVaccineId() == 38);
+        assertTrue(vaccineController.getVaccine(33).getVaccineId() == 33);
     }
 
     @Test
@@ -57,6 +57,21 @@ class VaccineControllerTest {
         testList.add(vaccineController.getVaccine(35));
         testList.add(vaccineController.getVaccine(38));
         assertTrue(vaccineController.getVaccineListByAdminId(17) .equals(testList) );
+    }
+    @Test
+    void reduceVaccineAmount(){
+        Integer amountOld = vaccineController.getVaccine(33).getVaccineAmount();
+        vaccineController.reduceVaccineAmount(33);
+        Integer amountNew = vaccineController.getVaccine(33).getVaccineAmount();
+        assertTrue(amountOld.equals(amountNew+1));
+    }
+
+    @Test
+    void addVaccineAmount(){
+        Integer amountOld = vaccineController.getVaccine(33).getVaccineAmount();
+        vaccineController.addVaccineAmount(31);
+        Integer amountNew = vaccineController.getVaccine(33).getVaccineAmount();
+        assertTrue(amountOld.equals(amountNew-1));
     }
 
 }
