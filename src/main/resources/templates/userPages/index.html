@@ -191,7 +191,10 @@
                         <p>There is no specific medicine to prevent or treat coronavirus disease (COVID-19). People may
                             need supportive care to .</p>
                         <div class="check-eligibility-btn">
-                            <a th:href="@{/vacBook/user/checkEligibility}">Check Eligibility</a>
+                            <div th:if="${user_name} == null">
+                                <a th:href="@{/vacBook/user/checkEligibility}">Check Eligibility</a>
+                            </div>
+
                         </div>
                     </div>
                     <div class="col overview-img">
@@ -208,12 +211,13 @@
             <h3>Have Question in mind?</h3>
             <h3>Let us help you</h3>
             <div class="subscribe-bar">
-                <form class="subscribe-container" th:action="@{/vacBook/user/sendEmail}" method="post">
-                    <input type="email" id="search-bar" name = "email" placeholder="email_address@gmail.com" required>
 
-                    <button type="submit" class="submit-btn">Send</button>
+                    <form class="subscribe-container" th:action="@{/vacBook/user/sendEmail}" method="post">
+                        <input type="email" id="search-bar" name = "email" placeholder="email_address@gmail.com" required>
 
-                </form>
+                        <button type="submit" class="submit-btn">Send</button>
+
+                    </form>
             </div>
         </div>
         <!-- Site footer -->
