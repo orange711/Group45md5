@@ -29,33 +29,35 @@ Import the Vacbook folder through IDEA or Eclipse
 
 ## Libraries
 
-> spring-boot
+> Spring-boot 2.5.4
 > 
-> mysql
+> Mysql-connector-java Runtime
 > 
->lombok
+>Lombok
 >
->mybatis
+>Mybatis-plus-boot-starter 3.4.3.3
 >
->h2database
+>H2database Runtime
 >
->mybatis-plus-generator
+>Mybatis-plus-generator 3.4.1
 >
-> thymeleaf
+> Thymeleaf 2.3.0
 > 
 > spring-boot-starter-mail(Gmail API)
 > 
-> layer
+> Junit4 
 > 
->Jquery
+> Layer v3.5.1
 > 
-> AJAX
+>Jquery 3.1.1
+> 
+> Ajax 3.1.1
 > 
 > Google map API
 > 
-> bootstrap
+> bootstrap 5.1.1
 > 
-> Maven
+> Maven 3.6.3
 > 
 > 
 
