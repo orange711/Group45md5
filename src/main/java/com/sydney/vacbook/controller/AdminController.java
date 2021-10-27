@@ -269,13 +269,13 @@ public class AdminController {
         checkQueryWrapper.eq("admin_name", admin.getAdminName());
         if (iAdminService.getOne(checkQueryWrapper) != null) {
             System.err.println("This account has been registered");
-            return "redirect:registerPage";//重定向
+            return "redirect:registerPage";
         }
         System.out.println("===============");
         boolean newAdmin = iAdminService.save(admin);
         if (newAdmin == false) {
             System.err.println("This account has been registered");
-            return "redirect:index";//重定向
+            return "redirect:index";
         } else {
             System.out.println("Thanks for join our system");
             QueryWrapper<Admin> sectionQueryWrapper = new QueryWrapper<>();
