@@ -122,6 +122,14 @@
 
 
         }
+
+        #map{
+            height: 400px;
+            width: 750px;
+            position: relative;
+            margin: auto;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -208,6 +216,11 @@
 
         </div>
         <div class="subscribe-form">
+
+                <h3 >Here is a google map you can check your position</h3>
+                <div id="map" ></div>
+            <br>
+            <br>
             <h3>Have Question in mind?</h3>
             <h3>Let us help you</h3>
             <div class="subscribe-bar">
@@ -220,6 +233,9 @@
                     </form>
             </div>
         </div>
+
+
+
         <!-- Site footer -->
         <footer class="site-footer">
             <div class="container">
@@ -239,13 +255,13 @@
                 </div>
             </div>
         </footer>
-        <div id="map"></div>
+
         <script>
            function initMap(){
                var map = new google.maps.Map(document.getElementById("map"),{center: {lat: -33.865,lng: 151.209 },zoom:5});
            }
         </script>
-        <script th:src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwa0rzQReLaWiXV_m6uALjtS-dGJP1-7s&callback=initMap" async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwa0rzQReLaWiXV_m6uALjtS-dGJP1-7s&callback=initMap" async defer></script>
         <script>
             $("a").click(function () {
                 var pageId = $(this).attr("data-page");
