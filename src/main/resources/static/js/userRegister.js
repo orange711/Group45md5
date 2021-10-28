@@ -9,10 +9,9 @@ function check() {
     let address = document.getElementById("autocomplete").value;
     let email = document.getElementById("email").value;
     let account = document.getElementById("account").value;
-
-    console.log();
-
     let key = document.getElementById("questionAnswer").value
+
+
 
 
 
@@ -20,6 +19,7 @@ function check() {
         layer.msg("Different password.");
         return false;
     }
+
 
     if (firstName.trim() == null || firstName == "") {
         layer.msg("First name can't be empty");
@@ -79,6 +79,8 @@ function check() {
     }
 
 
+
+
     if (phone.trim() == null || phone == "") {
         layer.msg("phone can't be empty");
         return false;
@@ -86,6 +88,12 @@ function check() {
 
     if(phone>9999999999){
         layer.msg("You phone number is wrong");
+        return false;
+    }
+
+    if(password.length < 6 || password.length > 16){
+
+        layer.msg("password should between 6-18 length");
         return false;
     }
 
