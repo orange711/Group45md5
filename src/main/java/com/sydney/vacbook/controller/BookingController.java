@@ -96,7 +96,7 @@ public class BookingController {
         }
     }
 
-    //取到用户所选择的数据
+    //obtain the booking data of user
     @PostMapping("/fetch")
     public boolean fetchBooking(Booking booking){
         Booking b = ibookingService.getOne(new QueryWrapper<Booking>().eq("user_id",booking.getUserId()));
