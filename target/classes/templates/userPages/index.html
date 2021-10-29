@@ -22,10 +22,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/api.js}"></script>
     <script type="text/javascript" th:src="@{/js/load-more.js}"></script>
     <script type="text/javascript" th:src="@{/js/search-box.js}"></script>
     <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <script type="text/javascript" th:src="@{/js/api.js}"></script>
+
     <style>
         /*--Tablet View--*/
         @media screen and (max-width: 1024px) {
@@ -132,6 +133,13 @@
             margin: auto;
             text-align: center;
         }
+        #covid_data {
+            height: 150px;
+            width: 450px;
+            position: relative;
+            margin: auto;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -139,26 +147,10 @@
 <script th:inline="javascript">
     var user_id = [[${user_id}]];
     var user_name = [[${user_name}]];
-    window.onload = function () {
-        sessionStorage.clear();
-        if (user_name != null) {
-            console.log("user login");
-            console.log(user_id);
-            console.log(user_name);
-            sessionStorage.setItem('user_name', user_name);
-            sessionStorage.setItem('user_id', user_id);
-            let option = document.getElementById("login");
-            let option1 = document.getElementById("logout");
-            console.log(option);
-            let profileURL = 'href=/vacBook/user/profile'
-            let profileURL1 = 'href=/vacBook/user/logout'
-            console.log(profileURL)
-            let element = "<a class=\"nav-link\" style=\"color: black\" " + profileURL + ">Hi, " + user_name + "</a>";
-            let element1 = "<a class=\"nav-link\" style=\"color: black\" " + profileURL1 + ">Logout" + "</a>";
-            option.innerHTML = element
-            option1.innerHTML = element1
-        }
-    };
+    var map = [[${map}]];
+
+    window.onload = getData()
+    window.onload = loginWithSession()
 </script>
 <div class="container">
     <nav class="navbar navbar-expand-md navbar-dark">
@@ -219,12 +211,12 @@
 
     </div>
     <div class="subscribe-form">
-        <h3>Covid Information</h3>
-
-        <div id="data"></div>
-        <p>Check how many COVID-19 cases by notification date and postcode, local health district, and local government
+        <h3 style="color: red">Covid Information</h3><br>
+        <h3>New cases of COVID-19 and current cases in hospital</h3>
+        <div id="covid_data" ></div>
+        <h3>Check how many COVID-19 cases by notification date and postcode, local health district, and local government
             area
-        </p>
+        </h3>
         <center>
             <div class="col-md-6 mb-3">
                 <select id="locationId" class="form-control" required>
@@ -236,7 +228,7 @@
                 </select>
             </div>
             <br/>
-            <button class="btn btn-success" onclick="covid()">search</button>
+            <button class="btn btn-success" onclick="checkCovidCase()">search</button>
         </center>
         <br/>
         <h3>Here is a google map you can check your position</h3>
@@ -277,25 +269,7 @@
         </div>
     </footer>
     <script>
-        window.onload = data()
-        function covid() {
-            let lga = document.getElementById('locationId').value
-            console.log(lga)
-            var data = {
-                resource_id: '21304414-1ff1-4243-a5d2-f52778048b29', // the resource id
-                limit: 5, // get 5 results
-                q: lga
-            };
-            $.ajax({
-                url: 'https://data.nsw.gov.au/data/api/3/action/datastore_search',
-                data: data,
-                dataType: 'json',
-                success: function (data) {
-                    layer.msg('Total cases: ' + data.result.total)
-                    console.log(data)
-                }
-            });
-        }
+
         function initMap() {
             var map = new google.maps.Map(document.getElementById("map"), {
                 center: {lat: -33.865, lng: 151.209},

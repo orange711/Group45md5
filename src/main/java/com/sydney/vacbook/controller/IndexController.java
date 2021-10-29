@@ -7,16 +7,21 @@ import com.sydney.vacbook.entity.Vaccine;
 import com.sydney.vacbook.service.IAdminService;
 import com.sydney.vacbook.service.ILocationService;
 import com.sydney.vacbook.service.IVaccineService;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
+import okhttp3.OkHttpClient;
 
 @Controller
 public class IndexController {
@@ -31,7 +36,7 @@ public class IndexController {
     private ILocationService iLocationService;
 
     @GetMapping("vacBook/user/index")
-    public  ModelAndView viewHomePage() {
+    public  ModelAndView viewHomePage()  {
         Map<String, Object> result = new LinkedHashMap<>();
         List<Location> locationList = iLocationService.list();
         result.put("location_options", locationList);
@@ -96,15 +101,5 @@ public class IndexController {
     public void sendGuestEmail(){
 
     }
-
-
-
-//
-//    @RequestMapping("/admin/fetch")
-//    public String adminLogin() {
-//        return "index";
-
-
-
 
 }
