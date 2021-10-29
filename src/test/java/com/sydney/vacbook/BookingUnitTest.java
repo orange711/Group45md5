@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
-class BookingControllerTest {
+class BookingUnitTest {
 
     @Autowired
     private UserMapper userMapper;
