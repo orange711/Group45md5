@@ -23,6 +23,14 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @author shuonan wang (kevin)
+ * @since 2021-10-25
+ *
+ * Test all admin functions from admin controller
+ *
+ */
+
 @SpringBootTest
 @Transactional
 public class AdminUnitTest {
