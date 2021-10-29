@@ -19,14 +19,13 @@ function checkCovidCase() {
 }
 
 function getData(){
-    console.log("load backend external api data")
+    console.log("load backend external api data 1")
     $.ajax({
         url: "/api/getData",
         type: "get",
         dataType: "json",
         success: function(result){
             console.log(result)
-            console.log(result.data[0])
             let data = result.data[0];
             display = document.getElementById('covid_data')
             let element =
@@ -35,13 +34,7 @@ function getData(){
                 '<div>Cases in hospital:' + data.concurrentHospitalisations + '</div>' +
                 '<div>Cases in ICU:' + data.concurrentHospitalisationsIcu + '</div>'
             display.innerHTML = element
-
         },
-        error : function() {
-            layer.msg("Your account or password is wrong！",{icon: 5});
-            // location.href = "login";
-        }
-
     });
 }
 
