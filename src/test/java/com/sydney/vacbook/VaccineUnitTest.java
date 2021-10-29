@@ -71,7 +71,7 @@ class VaccineUnitTest {
     @Test
     void addVaccineAmount(){
         Integer amountOld = vaccineController.getVaccine(33).getVaccineAmount();
-        vaccineController.addVaccineAmount(31);
+        vaccineController.addVaccineAmount(1);
         Integer amountNew = vaccineController.getVaccine(33).getVaccineAmount();
         assertTrue(amountOld.equals(amountNew-1));
     }
