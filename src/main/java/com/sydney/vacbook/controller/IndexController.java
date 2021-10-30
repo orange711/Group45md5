@@ -59,9 +59,13 @@ public class IndexController {
         return "userPages/index";
     }
 
-    @PostMapping("vacBook/user/indexCheckboxDone")
+    @PostMapping("vacBook/user/index")
     public ModelAndView indexCheckboxDone(){
+        Map<String, Object> result = new LinkedHashMap<>();
+        List<Location> locationList = iLocationService.list();
+        result.put("location_options", locationList);
         ModelAndView modelAndView = new ModelAndView( "userPages/index");
+        modelAndView.addObject("result", result);
         return modelAndView;
 
     }

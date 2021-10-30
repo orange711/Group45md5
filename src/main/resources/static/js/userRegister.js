@@ -9,6 +9,7 @@ function check() {
     let address = document.getElementById("autocomplete").value;
     let email = document.getElementById("email").value;
     let account = document.getElementById("account").value;
+    let question = document.getElementById("question").value;
     let key = document.getElementById("questionAnswer").value;
     <!--Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters-->
     let reg= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -78,10 +79,16 @@ function check() {
         return false;
     }
 
+    if (question == null || question == "") {
+        layer.msg("Question can't be empty");
+        return false;
+    }
+
     if (key == null || key == "") {
         layer.msg("Answer can't be empty");
         return false;
     }
+
 
     if ( address == "") {
         layer.msg("Please select your address!")
@@ -114,9 +121,6 @@ function check() {
 
 
 
-
-
-    var question = document.getElementById("question").value;
 
 
     if (password == passwordSecond) {

@@ -149,6 +149,8 @@
             var address = $("#autocomplete").val();
             var gender = $("#gender").val();
             var phone = $("#textfield10").val();
+            const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+            let checkEmail = re.test(email);
 
 
             if (password != confirmPassword) {
@@ -191,6 +193,10 @@
                 return false;
             }
 
+            if(!checkEmail){
+                layer.msg("email format invalid");
+                return false;
+            }
 
             if (address == "") {
                 layer.msg("Please set up  your address!")
