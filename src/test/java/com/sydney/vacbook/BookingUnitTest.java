@@ -33,6 +33,8 @@ class BookingUnitTest {
     @Autowired
     private VaccineController vaccineController;
 
+
+
     @Test
     void bookingRejectTest() {
         Booking booking = new Booking();

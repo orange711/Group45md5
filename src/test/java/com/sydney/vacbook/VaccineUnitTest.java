@@ -56,7 +56,7 @@ class VaccineUnitTest {
         List<Vaccine> testList = new ArrayList<Vaccine>();
         testList.add(vaccineController.getVaccine(33));
         testList.add(vaccineController.getVaccine(34));
-        testList.add(vaccineController.getVaccine(35));
+        //testList.add(vaccineController.getVaccine(35));
         testList.add(vaccineController.getVaccine(38));
         assertTrue(vaccineController.getVaccineListByAdminId(17) .equals(testList) );
     }
