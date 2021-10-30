@@ -13,12 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -131,6 +129,232 @@ public class AdminUnitTest {
     void registerTest(){
         Admin admin = new Admin(null,"testAccount","123","test1",7);
         Map<Object, Object> map = new HashMap<Object, Object>();
-        adminController.register(admin, map);
+        String result = adminController.register(admin, map);
+
+        assertTrue(result.equals("adminPages/base"));
     }
+
+    @Test
+    void addVaccineTest(){
+        login();
+        User user = iUserService.list().get(0);
+        Vaccine vaccineTest = new Vaccine(0, "mRNA", "Pfizer", 17, 100);
+        String result = adminController.addVaccine(vaccineTest.getVaccineName(), vaccineTest.getVaccineType(), vaccineTest.getVaccineAmount(), new Model() {
+            @Override
+            public Model addAttribute(String s, Object o) {
+                return null;
+            }
+
+            @Override
+            public Model addAttribute(Object o) {
+                return null;
+            }
+
+            @Override
+            public Model addAllAttributes(Collection<?> collection) {
+                return null;
+            }
+
+            @Override
+            public Model addAllAttributes(Map<String, ?> map) {
+                return null;
+            }
+
+            @Override
+            public Model mergeAttributes(Map<String, ?> map) {
+                return null;
+            }
+
+            @Override
+            public boolean containsAttribute(String s) {
+                return false;
+            }
+
+            @Override
+            public Object getAttribute(String s) {
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> asMap() {
+                return null;
+            }
+        });
+
+        assertTrue(result=="adminPages/adminVaccines::vac_container");
+    }
+
+    //    make sure the id is in database if this test is wrong because id is not in your database
+    @Test
+    void delVaccineTest(){
+        login();
+        User user = iUserService.list().get(0);
+        Vaccine vaccineTest = new Vaccine(48, "mRNA", "Pfizer", 17, 100);
+        String result = adminController.deleteVaccine(vaccineTest.getVaccineId(), new Model() {
+            @Override
+            public Model addAttribute(String s, Object o) {
+                return null;
+            }
+
+            @Override
+            public Model addAttribute(Object o) {
+                return null;
+            }
+
+            @Override
+            public Model addAllAttributes(Collection<?> collection) {
+                return null;
+            }
+
+            @Override
+            public Model addAllAttributes(Map<String, ?> map) {
+                return null;
+            }
+
+            @Override
+            public Model mergeAttributes(Map<String, ?> map) {
+                return null;
+            }
+
+            @Override
+            public boolean containsAttribute(String s) {
+                return false;
+            }
+
+            @Override
+            public Object getAttribute(String s) {
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> asMap() {
+                return null;
+            }
+        });
+        assertTrue(result=="adminPages/adminVaccines::vac_container");
+    }
+
+    @Test
+    void updateVaccineTest(){
+        login();
+        User user = iUserService.list().get(0);
+        Vaccine vaccineTest = new Vaccine(33, "mRNA", "Pfizer", 17, 200);
+        String result = adminController.updateVaccine( vaccineTest.getVaccineAmount(), vaccineTest.getVaccineId(), new Model() {
+            @Override
+            public Model addAttribute(String s, Object o) {
+                return null;
+            }
+
+            @Override
+            public Model addAttribute(Object o) {
+                return null;
+            }
+
+            @Override
+            public Model addAllAttributes(Collection<?> collection) {
+                return null;
+            }
+
+            @Override
+            public Model addAllAttributes(Map<String, ?> map) {
+                return null;
+            }
+
+            @Override
+            public Model mergeAttributes(Map<String, ?> map) {
+                return null;
+            }
+
+            @Override
+            public boolean containsAttribute(String s) {
+                return false;
+            }
+
+            @Override
+            public Object getAttribute(String s) {
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> asMap() {
+                return null;
+            }
+        });
+        System.out.println(result);
+        assertTrue(result=="adminPages/adminVaccines::vac_container");
+    }
+
+
+    @Test
+    void fetchVaccinesTest(){
+        login();
+        Admin admin = iAdminService.list().get(0);
+        System.out.println(admin);
+        ModelAndView modelAndView = adminController.fetchVaccines();
+        Map<String, Object> map = modelAndView.getModel();
+        LinkedHashMap result =  (LinkedHashMap) map.get("result");
+        System.out.println(result);
+        assertTrue(result==null);
+    }
+
+    @Test
+    void fetchVaccinesRefreshTest(){
+        login();
+        Admin admin = iAdminService.list().get(0);
+
+        String result = adminController.fetchVaccinesRefresh(new Model() {
+            @Override
+            public Model addAttribute(String s, Object o) {
+                return null;
+            }
+
+            @Override
+            public Model addAttribute(Object o) {
+                return null;
+            }
+
+            @Override
+            public Model addAllAttributes(Collection<?> collection) {
+                return null;
+            }
+
+            @Override
+            public Model addAllAttributes(Map<String, ?> map) {
+                return null;
+            }
+
+            @Override
+            public Model mergeAttributes(Map<String, ?> map) {
+                return null;
+            }
+
+            @Override
+            public boolean containsAttribute(String s) {
+                return false;
+            }
+
+            @Override
+            public Object getAttribute(String s) {
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> asMap() {
+                return null;
+            }
+        });
+
+        System.out.println(result);
+        assertTrue(result=="adminPages/adminVaccines::vac_container");
+    }
+
+    @Test
+    void registerPageTest(){
+        ModelAndView result = adminController.registerPage();
+        System.out.println(result);
+        assertTrue(result.hasView());
+        assertTrue(result.getModel()!=null);
+    }
+
+
 }

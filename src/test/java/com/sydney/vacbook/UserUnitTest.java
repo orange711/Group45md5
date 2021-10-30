@@ -123,4 +123,26 @@ public class UserUnitTest {
 
     }
 
+    @Test
+    void logoutTest(){
+        Map map = new HashMap();
+
+        assertTrue(userController.logout(map)=="redirect:login");
+    }
+
+    @Test
+    void registerTest(){
+        Map map = new HashMap();
+        User user = new User(0,"456711","test1133@qq.com",
+                "test12","test32","male","test",
+                20,"123","test2213","1","1");
+
+        assertTrue(userController.register(user,map)=="index");
+        assertFalse(userController.register(user,map)=="index");
+    }
+
+
+
+
+
 }
