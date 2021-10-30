@@ -45,11 +45,15 @@ function vaccineDel(delete_id) {
         data: data,
         type: "post",
         success:function (data){
-            $("#id_vac_container").html(data); //
+            $("#id_vac_container").html(data);
+            layer.msg('The vaccine has been deleted !')
+        },
+        error:function (){
+            layer.msg('Sorry You can not delete this vaccine Now!<br> Because there are some bookings for this vaccine!')
         }
 
     });
-    layer.msg('The vaccine has been deleted !')
+
 }
 
 function vaccine_add() {
@@ -59,26 +63,33 @@ function vaccine_add() {
         layer.prompt({btn: ["Confirm", "Cancel"],title: 'Please input new vaccine name', formType: 3}, function (vaccineName, index) {
             layer.close(index);
             layer.prompt({btn: ["Confirm", "Cancel"],title: 'Please input new vaccine stock', formType: 3}, function (stock, index) {
-                layer.close(index);
-                layer.msg('Add success' + '<br>New vaccine type：' + type + '<br>New vaccine name：' + vaccineName + '<br>New vaccine stock1：' + stock);
-
-                var data = {
-                    // name, String type, Integer amount
-                    "type": type,
-                    "name": vaccineName,
-                    "amount": stock,
+                const re = /^[0-9]+$/;
+                if(!(re.test(stock))){
+                    layer.close(index);
+                    layer.msg('Please input 0 or Positive integer!');
                 }
+                else {layer.close(index);
+                    layer.msg('Add success' + '<br>New vaccine type：' + type + '<br>New vaccine name：' + vaccineName + '<br>New vaccine stock1：' + stock);
 
-
-                $.ajax({
-                    url: "/vacbook/admin/vaccines/add",
-                    data: data,
-                    type: "post",
-                    success:function (data){
-                        $("#id_vac_container").html(data); //
+                    var data = {
+                        // name, String type, Integer amount
+                        "type": type,
+                        "name": vaccineName,
+                        "amount": stock,
                     }
 
-                });
+
+                    $.ajax({
+                        url: "/vacbook/admin/vaccines/add",
+                        data: data,
+                        type: "post",
+                        success:function (data){
+                            $("#id_vac_container").html(data); //
+                        }
+
+                    });}
+
+
 
             });
         });
@@ -92,23 +103,31 @@ function vaccine_update(vaccine_amount,update_id) {
     console.log('dd') //test
     //Integer stock, Integer update_id
     layer.prompt({value:vaccine_amount,btn: ["Confirm", "Cancel"],title: 'Please input new vaccine stock', formType: 3}, function (stock, index) {
-
-        layer.close(index);
-        layer.msg('Update success' + '<br>New vaccine stock2：' + stock);
-
-        var data = {
-            // name, String type, Integer amount
-            "update_id": update_id,
-            "stock": stock,
+        const re = /^[0-9]+$/;
+        if(!(re.test(stock))){
+            layer.close(index);
+            layer.msg('Please input 0 or Positive integer!');
         }
-        $.ajax({
-            url: "/vacbook/admin/vaccines/update",
-            data: data,
-            type: "POST",
-            success:function (data){
-                $("#id_vac_container").html(data);//
+        else{
+            layer.close(index);
+            layer.msg('Update success' + '<br>New vaccine stock2：' + stock);
+            var data = {
+                // name, String type, Integer amount
+                "update_id": update_id,
+                "stock": stock,
             }
-        });
+            $.ajax({
+                url: "/vacbook/admin/vaccines/update",
+                data: data,
+                type: "POST",
+                success:function (data){
+                    $("#id_vac_container").html(data);//
+                }
+            });
+        }
+
+
+
 
     });
 
