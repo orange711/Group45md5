@@ -60,7 +60,7 @@ class VacbookApplicationTests {
         admin.setAdminAccount("haha111");
         admin.setAdminName("Lucy");
         admin.setAdminPassword("123");
-        admin.setLocationId(1);
+        admin.setLocationId(7);
         int insert = adminMapper.insert(admin);//自动生成ID
         System.out.println(insert);//受影响的行数
         System.out.println(admin);//id自动回填
