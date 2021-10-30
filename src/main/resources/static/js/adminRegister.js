@@ -4,6 +4,9 @@ function checkRegister() {
     let passwordSecond = document.getElementById("passwordSecond").value;
     let adminName = document.getElementById("adminName").value;
     let account = document.getElementById("account").value;
+    <!--Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters-->
+    let reg= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    let checkPwd = reg.test(password);
 
     console.log(password);
 
@@ -27,6 +30,11 @@ function checkRegister() {
 
     if (password == null || password == "") {
         layer.msg("Password can't be empty");
+        return false;
+    }
+
+    if(checkPwd == false){
+        layer.msg("The password is invalid! The password MUST contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters");
         return false;
     }
 

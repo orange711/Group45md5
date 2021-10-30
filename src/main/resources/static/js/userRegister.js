@@ -9,7 +9,12 @@ function check() {
     let address = document.getElementById("autocomplete").value;
     let email = document.getElementById("email").value;
     let account = document.getElementById("account").value;
-    let key = document.getElementById("questionAnswer").value
+    let key = document.getElementById("questionAnswer").value;
+    <!--Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters-->
+    let reg= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    let checkPwd = reg.test(password);
+    const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    let checkEmail = re.test(email)
 
 
 
@@ -58,8 +63,18 @@ function check() {
         return false;
     }
 
+    if(checkPwd == false){
+        layer.msg("The password is invalid! The password MUST contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters");
+        return false;
+    }
+
     if (email.trim() == null || email == "") {
         layer.msg("email can't be empty");
+        return false;
+    }
+
+    if(!checkEmail){
+        layer.msg("Email is invalid");
         return false;
     }
 
