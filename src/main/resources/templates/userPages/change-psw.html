@@ -53,6 +53,14 @@
     function changePassword() {
         var password = document.getElementById("password").value,
             confirm_password = document.getElementById("confirm_password").value;
+        <!--Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters-->
+        let reg= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+        let checkPwd = reg.test(password);
+
+        if(checkPwd == false){
+            layer.msg("The password is invalid! The password MUST contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters");
+            return false;
+        }
         if (password !== confirm_password) {
             layer.msg("Passwords Don't Match");
         }
