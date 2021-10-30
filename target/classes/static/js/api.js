@@ -38,7 +38,8 @@ function getData(){
     });
 }
 
-function loginWithSession(){
+function loginWithSession(user_id, user_name, option, option1){
+    getData()
     sessionStorage.clear();
     if (user_name != null) {
         console.log("user login");
@@ -46,8 +47,7 @@ function loginWithSession(){
         console.log(user_name);
         sessionStorage.setItem('user_name', user_name);
         sessionStorage.setItem('user_id', user_id);
-        let option = document.getElementById("login");
-        let option1 = document.getElementById("logout");
+
         console.log(option);
         let profileURL = 'href=/vacBook/user/profile'
         let profileURL1 = 'href=/vacBook/user/logout'
@@ -55,6 +55,6 @@ function loginWithSession(){
         let element = "<a class=\"nav-link\" style=\"color: black\" " + profileURL + ">Hi, " + user_name + "</a>";
         let element1 = "<a class=\"nav-link\" style=\"color: black\" " + profileURL1 + ">Logout" + "</a>";
         option.innerHTML = element
-        option1.innerHTML = element
+        option1.innerHTML = element1
     }
 }

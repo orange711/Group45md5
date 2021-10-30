@@ -144,14 +144,7 @@
 </head>
 
 <body >
-<script th:inline="javascript">
-    var user_id = [[${user_id}]];
-    var user_name = [[${user_name}]];
-    var map = [[${map}]];
 
-    window.onload = getData()
-    window.onload = loginWithSession()
-</script>
 <div class="container">
     <nav class="navbar navbar-expand-md navbar-dark">
         <div class="container-fluid">
@@ -230,6 +223,7 @@
         </center>
         <br/>
         <h3>Latest Covid Case Locations</h3>
+        <h4 id="update_date"></h4>
         <div id="map"></div>
         <br>
         <br>
@@ -280,6 +274,7 @@
                     console.log(result)
                     locations = result.data.monitor
                     console.log(locations)
+                    document.getElementById('update_date').innerHTML = "Latest update date: " + result.date + " " + result.time;
                 },
             });
             var map = new google.maps.Map(document.getElementById("map"), {
@@ -289,29 +284,27 @@
                 zoom: 5
             });
 
-            for(var i=0; i<240;i++){
+            for(var i=0; i< locations.length;i++){
                 var point = { lat:  parseInt(locations[i].Lat), lng: parseInt(locations[i].Lon) }
                 var beachMarker = new google.maps.Marker({
                     position: point,
                     map: map,
                     title: locations[i].Address + "Date: " +locations[i].Date + " Time: " + locations[i].Time
                 });
-                points.push(point)
             }
-            console.log(points)
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7LDFj7g0d5XmGcOupvrdfQVdm6NVP2rM&callback=initMap"
             async defer>
     </script>
-
-    <script>
-        $("a").click(function () {
-            var pageId = $(this).attr("data-page");
-            $("html, body").animate({
-                scrollTop: $("#" + pageId).offset().top
-            }, 400);
-        });
+    <script th:inline="javascript">
+        var user_id = [[${user_id}]];
+        var user_name = [[${user_name}]];
+        let option = document.getElementById("login");
+        let option1 = document.getElementById("logout");
+        console.log(option)
+        console.log(option1)
+        window.onload = loginWithSession(user_id, user_name, option, option1 )
     </script>
 </div>
 </body>

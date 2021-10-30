@@ -157,6 +157,10 @@ public class UserController {
         modelAndView.addObject("user_name", user.getUserLastname());
         modelAndView.addObject("user_name", user.getUserLastname());
         modelAndView.addObject("user_id", user.getUserId());
+        Map<String, Object> result = new LinkedHashMap<>();
+        List<Location> locationList = iLocationService.list();
+        result.put("location_options", locationList);
+        modelAndView.addObject("result", result);
         return modelAndView;
     }
 
