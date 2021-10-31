@@ -110,7 +110,7 @@ function vaccine_update(vaccine_amount,update_id) {
         }
         else{
             layer.close(index);
-            layer.msg('Update success' + '<br>New vaccine stock2：' + stock);
+            layer.msg('Update success' + '<br>New vaccine stock：' + stock);
             var data = {
                 // name, String type, Integer amount
                 "update_id": update_id,
