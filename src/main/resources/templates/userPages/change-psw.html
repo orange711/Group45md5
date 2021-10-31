@@ -63,6 +63,7 @@
         }
         if (password !== confirm_password) {
             layer.msg("Passwords Don't Match");
+            return false;
         }
         console.log(password)
         console.log(confirm_password)
